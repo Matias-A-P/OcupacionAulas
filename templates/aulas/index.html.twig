@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aulas index{% endblock %}
+
+{% block body %}
+    <h1>Aulas</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Aula</th>
+                <th>Id_edificio</th>
+                <th>Capacidad</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for aula in aulas %}
+            <tr>
+                <td>{{ aula.id }}</td>
+                <td>{{ aula.aula }}</td>
+                <td>{{ aula.idEdificio }}</td>
+                <td>{{ aula.capacidad }}</td>
+                <td>
+                    <a href="{{ path('aulas_show', {'id': aula.id}) }}">show</a>
+                    <a href="{{ path('aulas_edit', {'id': aula.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('aulas_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catedras index{% endblock %}
+
+{% block body %}
+    <h1>Catedras index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for catedra in catedras %}
+            <tr>
+                <td>{{ catedra.id }}</td>
+                <td>{{ catedra.nombre }}</td>
+                <td>
+                    <a href="{{ path('catedras_show', {'id': catedra.id}) }}">show</a>
+                    <a href="{{ path('catedras_edit', {'id': catedra.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('catedras_new') }}">Create new</a>
+{% endblock %}

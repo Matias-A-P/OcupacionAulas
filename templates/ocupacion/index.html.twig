@@ -1,0 +1,485 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ocupacion
+{% endblock %}
+{% block stylesheets %}
+	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-6">
+		<h5>Ocupación de Aulas</h5>
+	</div>
+	<div class="col-sm-1">
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 0,hora: "14:00"|date('H:i')}) }}" role="button">Agregar</a>
+	</div>
+{% endblock %}
+{% block cardbody %}
+
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-bordered text-center">
+				<thead>
+					<tr class="bg-light-gray">
+						<th class="col-sm-1 text-uppercase">Aula</th>
+						<th class="col-sm-1 text-uppercase">14:00</th>
+						<th class="col-sm-1 text-uppercase">14:30</th>
+						<th class="col-sm-1 text-uppercase">15:00</th>
+						<th class="col-sm-1 text-uppercase">15:30</th>
+						<th class="col-sm-1 text-uppercase">16:00</th>
+						<th class="col-sm-1 text-uppercase">16:30</th>
+						<th class="col-sm-1 text-uppercase">17:00</th>
+						<th class="col-sm-1 text-uppercase">17:30</th>
+						<th class="col-sm-1 text-uppercase">18:00</th>
+						<th class="col-sm-1 text-uppercase">18:30</th>
+						<th class="col-sm-1 text-uppercase">19:00</th>
+						<th class="col-sm-1 text-uppercase">19:30</th>
+						<th class="col-sm-1 text-uppercase">20:00</th>
+						<th class="col-sm-1 text-uppercase">20:30</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ocupacion in ocupacions %}
+						{% if ocupacion[0].id is null %}
+							<tr>
+								<td class="align-middle">{{ ocupacion[0].IdAula }}</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">14:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">14:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 14:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">15:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 15:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">15:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 15:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">16:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 16:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">16:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 16:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">17:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 17:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">17:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 17:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">18:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 18:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">18:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 18:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">19:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 19:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">19:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 19:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">20:00</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 20:00"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+								<td class="bg-light-gray" style="transform: rotate(0)">
+									<div class="margin-10px-top font-size14">20:30</div>
+									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, hora: " 20:30"|date('H:i')}) }}" class="stretched-link"></a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								{% set ultCol=0 %}
+								{% set cant = ocupacion|length %}
+								{% for i in 0..13 %}
+									{% if i < cant %}
+										{% set ocup = ocupacion[i] %}
+									{% endif %}
+									{#{% for ocup in ocupacion %}#}
+									{% set inicio = ocup.horaInicio|date('H:i') %}
+									{% set fin = ocup.horaFin|date('H:i') %}
+
+									{% set h1 = ocup.horaInicio|date('H') %}
+									{% set m1 = ocup.horaInicio|date('i') %}
+									{% set h2 = ocup.horaFin|date('H') %}
+									{% set m2 = ocup.horaFin|date('i') %}
+									{% set bloques = ((h2-h1)*60+m2-m1)/30 %}
+
+									{% set continuar=true %}
+									{% if ultCol==0 %}
+										<td class="align-middle">
+											{{ocup.IdAula}}<div class="font-size13 text-light-gray">Capacidad:{{ocup.IdAula.capacidad}}</div>
+										</td>
+									{% endif %}
+
+									{% if 1 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='14:00' %}
+												{% set ultCol=bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{ bloques }}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=1 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 2 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='14:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=2 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "14:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 3 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='15:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=3 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "15:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 4 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='15:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=4 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "15:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 5 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='16:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=5 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "16:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 6 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='16:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=6 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "16:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 7 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='17:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=7 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "17:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 8 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='17:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=8 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "17:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 9 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='18:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=9 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "18:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 10 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='18:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=10 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "18:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 11 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='19:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=11 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "19:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 12 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='19:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=12 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "19:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 13 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='20:00' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=13 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "20:00"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+									{% if 14 > ultCol %}
+										{% if continuar==true %}
+											{% if inicio=='20:30' %}
+												{% set ultCol=ultCol+bloques %}
+												<td colspan="{{bloques}}" style="transform: rotate(0)">
+													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
+							ocup.IdCatedra }}</span>
+													<div class="margin-10px-top font-size14">{{inicio}}
+														a
+														{{fin}}</div>
+													<div class="font-size13 text-light-gray">Comisión:{{bloques}}</div>
+													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
+												</td>
+												{% set continuar=false %}
+											{% else %}
+												{% set ultCol=14 %}
+												<td class="bg-light-gray" style="transform: rotate(0)">
+													<div class="margin-10px-top font-size14">LIBRE</div>
+													<div class="font-size13 text-light-gray">{{bloques}}</div>
+													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, hora: "20:30"|date('H:i')}) }}" class="stretched-link"></a>
+												</td>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+								{% endfor %}
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</tbody>
+		</tr>
+	</tbody>
+</tr></tbody></table></div></div>{% endblock %}

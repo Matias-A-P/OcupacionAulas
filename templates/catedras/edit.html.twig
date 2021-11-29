@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Catedras{% endblock %}
+
+{% block body %}
+    <h1>Edit Catedras</h1>
+
+    {{ include('catedras/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('catedras_index') }}">back to list</a>
+
+    {{ include('catedras/_delete_form.html.twig') }}
+{% endblock %}

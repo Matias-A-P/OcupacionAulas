@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Catedras{% endblock %}
+
+{% block body %}
+    <h1>Create new Catedras</h1>
+
+    {{ include('catedras/_form.html.twig') }}
+
+    <a href="{{ path('catedras_index') }}">back to list</a>
+{% endblock %}
