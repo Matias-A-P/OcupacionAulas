@@ -6,7 +6,7 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
-use DateTime;
+use Symfony\Component\Intl\Timezones;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,14 +20,19 @@ class OcupacionController extends AbstractController
     /**
      * @Route("/", name="ocupacion_index", methods={"GET"})
      */
-    public function index(OcupacionRepository $ocupacionRepository): Response
+    public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
     {
-        $now = new \DateTime();
+        date_default_timezone_set("America/Buenos_Aires");
+        $dia = new \DateTime('now');    
+        //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));
+        if ($request->query->has('dia')) {
+            $dia = new \DateTime($request->query->get('dia'));
+        }
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i=0;
         foreach ($aulas as $aula) {
-            $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($now, $aula->getId());
+            $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
             if (empty($arrOcup[$i])) {
                 $ocup = new Ocupacion();
                 $ocup->setIdAula($aula);
@@ -37,8 +42,8 @@ class OcupacionController extends AbstractController
         }
 
         return $this->render('ocupacion/index.html.twig', [
-            'ocupacions' => $arrOcup
-            //,'aulas' => $aulas
+            'ocupacions' => $arrOcup,
+            'fecha' => $dia
         ]);
     }
 

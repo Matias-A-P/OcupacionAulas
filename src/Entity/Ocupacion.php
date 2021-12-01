@@ -43,6 +43,11 @@ class Ocupacion
      */
     private $hora_fin;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $comision;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Ocupacion
     public function setHoraFin(\DateTimeInterface $hora_fin): self
     {
         $this->hora_fin = $hora_fin;
+
+        return $this;
+    }
+
+    public function getComision(): ?int
+    {
+        return $this->comision;
+    }
+
+    public function setComision(int $comision): self
+    {
+        $this->comision = $comision;
 
         return $this;
     }

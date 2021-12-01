@@ -3,21 +3,31 @@
         <div class="card-body">
             {{ form_start(form) }}
             <div class="input-group mb-3">
-                <span class="input-group-text">Aula</span>
-                {{form_widget(form.id_aula)}}
-                <span class="input-group-text">Cátedra</span>
-                {{form_widget(form.id_catedra)}}
+                <div class="col-4">
+                    <span class="input-group-text">Aula</span>
+                    {{form_widget(form.id_aula)}}
+                </div>
+                <div class="col-6">
+                    <span class="input-group-text">Cátedra</span>
+                    {{form_widget(form.id_catedra)}}
+                </div>
+                <div class="col-2">
+                    <span class="input-group-text">Comisión</span>
+                    {{form_widget(form.comision)}}
+                </div>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Fecha</span>
-                {{form_widget(form.fecha)}}
-                <span class="input-group-text">Inicio</span>
-                {{form_widget(form.hora_inicio)}}
-                <span class="input-group-text">Fin</span>
-                {{form_widget(form.hora_fin)}}          
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            {{ form_end(form) }}
         </div>
     </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text">Fecha</span>
+        {{form_widget(form.fecha)}}
+        <span class="input-group-text">Inicio</span>
+        {{form_widget(form.hora_inicio)}}
+        <span class="input-group-text">Fin</span>
+        {{form_widget(form.hora_fin)}}
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    {{ form_end(form) }}
+</div>
+</div>
 </div>
