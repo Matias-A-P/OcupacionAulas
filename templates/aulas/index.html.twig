@@ -14,8 +14,8 @@
             <tr>
                 <th>Id</th>
                 <th>Aula</th>
-                <th>Edificio</th>
                 <th>Capacidad</th>
+                <th>Edificio</th>
                 <th>acciones</th>
             </tr>
         </thead>
@@ -23,9 +23,9 @@
         {% for aula in aulas %}
             <tr>
                 <td>{{ aula.id }}</td>
-                <td>{{ aula.aula }}</td>
-                <td>{{ aula.idEdificio }}</td>
+                <td>{{ aula.aula }}</td>             
                 <td>{{ aula.capacidad }}</td>
+                <td>{{ aula.IdEdificio.edificio }}</td>
                 <td>
                   <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('aulas_show', {'id': aula.id}) }}">Ver</a>
                   <a class="btn btn-outline-secondary btn-sm" role="button" href="{{ path('aulas_edit', {'id': aula.id}) }}">Editar</a>

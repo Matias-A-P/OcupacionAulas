@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Aulas;
-use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,8 +13,8 @@ class AulasType extends AbstractType
     {
         $builder
             ->add('aula')
-            ->add('id_edificio')
             ->add('capacidad')
+            ->add('id_edificio')
         ;
     }
 

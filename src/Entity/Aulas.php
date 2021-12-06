@@ -27,17 +27,18 @@ class Aulas
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $id_edificio;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
     private $capacidad;
 
     /**
      * @ORM\OneToMany(targetEntity=Ocupacion::class, mappedBy="id_aula")
      */
     private $ocupacions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Edificios::class, inversedBy="aulas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $id_edificio;
 
     public function __construct()
     {
@@ -57,18 +58,6 @@ class Aulas
     public function setAula(string $aula): self
     {
         $this->aula = $aula;
-
-        return $this;
-    }
-
-    public function getIdEdificio(): ?int
-    {
-        return $this->id_edificio;
-    }
-
-    public function setIdEdificio(?int $id_edificio): self
-    {
-        $this->id_edificio = $id_edificio;
 
         return $this;
     }
@@ -118,5 +107,17 @@ class Aulas
     public function __toString()
     {
         return $this->aula;
+    }
+
+    public function getIdEdificio(): ?Edificios
+    {
+        return $this->id_edificio;
+    }
+
+    public function setIdEdificio(?Edificios $id_edificio): self
+    {
+        $this->id_edificio = $id_edificio;
+
+        return $this;
     }
 }
