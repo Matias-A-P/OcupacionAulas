@@ -1,17 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Aulas index{% endblock %}
-
-{% block body %}
-    <h1>Aulas</h1>
-    <table class="table">
+{% block cardheader %}
+	<div class="col-sm-8">
+		<h5>Aulas</h5>
+	</div>
+    <div class="col-sm-4">
+        <a href="{{ path('aulas_new') }}" class="btn btn-sm btn-outline-secondary" role="button">Agregar Nueva</a>
+    </div>
+{% endblock %}
+{% block cardbody %}
+    <table class="table table-sm table-striped table-borderless">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Aula</th>
-                <th>Id_edificio</th>
+                <th>Edificio</th>
                 <th>Capacidad</th>
-                <th>actions</th>
+                <th>acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -22,17 +27,16 @@
                 <td>{{ aula.idEdificio }}</td>
                 <td>{{ aula.capacidad }}</td>
                 <td>
-                    <a href="{{ path('aulas_show', {'id': aula.id}) }}">show</a>
-                    <a href="{{ path('aulas_edit', {'id': aula.id}) }}">edit</a>
+                  <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('aulas_show', {'id': aula.id}) }}">Ver</a>
+                  <a class="btn btn-outline-secondary btn-sm" role="button" href="{{ path('aulas_edit', {'id': aula.id}) }}">Editar</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">sin registros</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('aulas_new') }}">Create new</a>
 {% endblock %}

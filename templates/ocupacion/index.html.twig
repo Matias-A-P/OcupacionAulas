@@ -7,12 +7,15 @@
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-6">
-		<h5>Ocupación de Aulas | {{fecha|date('d/m/Y')}}</h5>
+		<h5>Ocupación de Aulas</h5>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-5">
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button">Anterior</a>
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button">Hoy</a>
+		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button">Siguiente</a>
+	</div>
+	<div class="col-sm-1">
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button">Hoy</a>	
 	</div>
 {% endblock %}
 {% block cardbody %}

@@ -1,34 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Aulas{% endblock %}
-
-{% block body %}
-    <h1>Aulas</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ aula.id }}</td>
-            </tr>
-            <tr>
-                <th>Aula</th>
-                <td>{{ aula.aula }}</td>
-            </tr>
-            <tr>
-                <th>Id_edificio</th>
-                <td>{{ aula.idEdificio }}</td>
-            </tr>
-            <tr>
-                <th>Capacidad</th>
-                <td>{{ aula.capacidad }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('aulas_index') }}">back to list</a>
-
-    <a href="{{ path('aulas_edit', {'id': aula.id}) }}">edit</a>
-
-    {{ include('aulas/_delete_form.html.twig') }}
+{% block title %}Aulas
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-8">
+		<h5>Aula</h5>
+	</div>
+	<div class="col-sm-2">
+		<a href="{{ path('aulas_edit', {'id': aula.id}) }}" class="btn btn-outline-primary" role="button">Editar</a>
+	</div>
+	<div class="col-sm-2">
+		{{ include('aulas/_delete_form.html.twig') }}
+	</div>
+{% endblock %}
+{% block cardbody %}
+	<table class="table table-sm table-striped table-borderless">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ aula.id }}</td>
+			</tr>
+			<tr>
+				<th>Aula</th>
+				<td>{{ aula.aula }}</td>
+			</tr>
+			<tr>
+				<th>Id_edificio</th>
+				<td>{{ aula.idEdificio }}</td>
+			</tr>
+			<tr>
+				<th>Capacidad</th>
+				<td>{{ aula.capacidad }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="{{ path('aulas_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

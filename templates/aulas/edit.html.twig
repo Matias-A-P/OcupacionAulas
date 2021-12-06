@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Aulas{% endblock %}
+{% block title %}Editar Aula{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Editar Aula</h5>
+	</div>
+	<div class="col-sm-1">
+         {{ include('aulas/_delete_form.html.twig') }}
+	</div>
+{% endblock %}
 
-{% block body %}
-    <h1>Edit Aulas</h1>
-
+{% block cardbody %}
     {{ include('aulas/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('aulas_index') }}">back to list</a>
-
-    {{ include('aulas/_delete_form.html.twig') }}
+    <a href="{{ path('aulas_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

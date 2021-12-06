@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Nueva Ocupación{% endblock %}
-
-{% block body %}
-    <h1>Agregar Ocupación</h1>
-
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Nueva Ocupación</h5>
+	</div>
+	<div class="col-sm-1">
+         
+	</div>
+{% endblock %}
+{% block cardbody %}
     {{ include('ocupacion/_form.html.twig') }}
-
-    <a href="{{ path('ocupacion_index') }}">volver</a>
+    <a href="{{ path('ocupacion_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Catedras{% endblock %}
-
-{% block body %}
-    <h1>Create new Catedras</h1>
-
+{% block title %}Nueva Catedra{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Nueva Aula</h5>
+	</div>
+	<div class="col-sm-1">
+         
+	</div>
+{% endblock %}
+{% block cardbody %}
     {{ include('catedras/_form.html.twig') }}
-
-    <a href="{{ path('catedras_index') }}">back to list</a>
+    <a href="{{ path('catedras_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

@@ -1,26 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catedras{% endblock %}
+{% block title %}Catedras
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-6">
+		<h5>Cátedra</h5>
+	</div>
+	<div class="col-sm-2">
+		<a href="{{ path('catedras_edit', {'id': catedra.id}) }}" class="btn btn-outline-primary" role="button">Editar</a>
+	</div>
+	<div class="col-sm-2">
+		{{ include('catedras/_delete_form.html.twig') }}
+	</div>
+{% endblock %}
+{% block cardbody %}
+	<table class="table table-sm table-striped table-borderless">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ catedra.id }}</td>
+			</tr>
+			<tr>
+				<th>Nombre</th>
+				<td>{{ catedra.nombre }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="{{ path('catedras_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 
-{% block body %}
-    <h1>Catedras</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ catedra.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ catedra.nombre }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('catedras_index') }}">back to list</a>
-
-    <a href="{{ path('catedras_edit', {'id': catedra.id}) }}">edit</a>
-
-    {{ include('catedras/_delete_form.html.twig') }}
 {% endblock %}

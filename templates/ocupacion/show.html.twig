@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Ocupación{% endblock %}
-
-{% block body %}
-    <h1>Ocupación</h1>
-
-    <table class="table">
+{% block cardheader %}
+	<div class="col-sm-6">
+		<h5>Ocupación</h5>
+	</div>
+{% endblock %}
+{% block cardbody %}
+    <table class="table table-sm table-striped table-borderless">
         <tbody>
             <tr>
                 <th>Id</th>

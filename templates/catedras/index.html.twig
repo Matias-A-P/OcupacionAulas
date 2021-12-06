@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catedras index{% endblock %}
-
-{% block body %}
-    <h1>Catedras index</h1>
-
-    <table class="table">
+{% block cardheader %}
+	<div class="col-sm-8">
+		<h5>Cátedras</h5>
+	</div>
+    <div class="col-sm-4">
+        <a href="{{ path('catedras_new') }}" class="btn btn-sm btn-outline-secondary" role="button">Agregar Nueva</a>
+    </div>
+{% endblock %}
+{% block cardbody %}
+    <table class="table table-sm table-striped table-borderless">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>actions</th>
+                <th>acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -19,8 +23,8 @@
                 <td>{{ catedra.id }}</td>
                 <td>{{ catedra.nombre }}</td>
                 <td>
-                    <a href="{{ path('catedras_show', {'id': catedra.id}) }}">show</a>
-                    <a href="{{ path('catedras_edit', {'id': catedra.id}) }}">edit</a>
+                    <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('catedras_show', {'id': catedra.id}) }}">Ver</a>
+                    <a class="btn btn-outline-secondary btn-sm" role="button" href="{{ path('catedras_edit', {'id': catedra.id}) }}">Editar</a>
                 </td>
             </tr>
         {% else %}
@@ -30,6 +34,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('catedras_new') }}">Create new</a>
 {% endblock %}
