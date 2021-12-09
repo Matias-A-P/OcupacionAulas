@@ -48,14 +48,34 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/new/{aula}/{hora}", name="ocupacion_new", methods={"GET","POST"})
+     * @Route("/new/", name="ocupacion_new", methods={"GET","POST"})
      */
-    public function new(Request $request, int $aula=0, string $hora): Response
+    ///{aula}/{hora}   , int $aula=0, string $hora
+    public function new(Request $request): Response
     {
+        if ($request->query->has('aula')) {
+            $aula = $request->query->get('aula');
+        }
+        else {
+            $aula=1;
+        };
+        if ($request->query->has('dia')) {
+            $dia = new \DateTime($request->query->get('dia'));
+        } 
+        else {
+            $dia = new \DateTime();
+        };
+        if ($request->query->has('hora')) {
+            $hora = $request->query->get('hora');
+        }
+        else {
+            $hora = '14:00';
+        };
+        
         $ocupacion = new Ocupacion();
         $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
-        $ocupacion->setFecha( new \DateTime());
-        $ocupacion->setHoraInicio(new \DateTime($hora)); //new \DateTime('14:00')
+        $ocupacion->setFecha($dia);
+        $ocupacion->setHoraInicio(new \DateTime($hora));
         $ocupacion->setHoraFin(new \DateTime($hora));
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
