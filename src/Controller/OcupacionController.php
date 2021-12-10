@@ -6,7 +6,7 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
-use Symfony\Component\Intl\Timezones;
+use DateInterval;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +22,29 @@ class OcupacionController extends AbstractController
      */
     public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
     {
+        //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));    
         date_default_timezone_set("America/Buenos_Aires");
-        $dia = new \DateTime('now');    
-        //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));
+        $dia = new \DateTime('now');
         if ($request->query->has('dia')) {
             $dia = new \DateTime($request->query->get('dia'));
         }
+        $vista = 'dia';
+        if ($request->query->has('vista')) {
+            $vista = $request->query->get('vista');
+        }
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
-        $i=0;
+        $i = 0;
+        $diff7Day = new DateInterval('P7D');
+        $dia2 = $dia;
+        $dia2->add($diff7Day);
         foreach ($aulas as $aula) {
-            $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
+            if ($vista = 'semanal') {
+                $arrOcup[$i] = $ocupacionRepository->getOcupacionesSemana($dia, $dia2, $aula->getId());
+            } else {
+                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
+            }
+
             if (empty($arrOcup[$i])) {
                 $ocup = new Ocupacion();
                 $ocup->setIdAula($aula);
@@ -40,11 +52,17 @@ class OcupacionController extends AbstractController
             }
             $i++;
         }
-
-        return $this->render('ocupacion/index.html.twig', [
-            'ocupacions' => $arrOcup,
-            'fecha' => $dia
-        ]);
+        if ($vista = 'semanal') {
+            return $this->render('ocupacion/semanal.html.twig', [
+                'ocupacions' => $arrOcup,
+                'fecha' => $dia
+            ]);
+        } else {
+            return $this->render('ocupacion/index.html.twig', [
+                'ocupacions' => $arrOcup,
+                'fecha' => $dia
+            ]);
+        }
     }
 
     /**
@@ -55,23 +73,20 @@ class OcupacionController extends AbstractController
     {
         if ($request->query->has('aula')) {
             $aula = $request->query->get('aula');
-        }
-        else {
-            $aula=1;
+        } else {
+            $aula = 1;
         };
         if ($request->query->has('dia')) {
             $dia = new \DateTime($request->query->get('dia'));
-        } 
-        else {
+        } else {
             $dia = new \DateTime();
         };
         if ($request->query->has('hora')) {
             $hora = $request->query->get('hora');
-        }
-        else {
+        } else {
             $hora = '14:00';
         };
-        
+
         $ocupacion = new Ocupacion();
         $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
@@ -129,7 +144,7 @@ class OcupacionController extends AbstractController
      */
     public function delete(Request $request, Ocupacion $ocupacion): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$ocupacion->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $ocupacion->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ocupacion);
             $entityManager->flush();
@@ -137,6 +152,4 @@ class OcupacionController extends AbstractController
 
         return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

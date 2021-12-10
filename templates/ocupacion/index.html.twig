@@ -3,19 +3,22 @@
 {% block title %}Ocupacion
 {% endblock %}
 {% block stylesheets %}
+	{{ parent() }}
 	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block cardheader %}
-	<div class="col-sm-6">
-		<h5>Ocupación de Aulas</h5>
-	</div>
 	<div class="col-sm-5">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button">Anterior</a>
+		<h5>Ocupación de Aulas por día</h5>
+	</div>
+	<div class="col-sm-6">
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button"><i class="fas fa-calendar-day"></i></a>
+		&nbsp;&nbsp;&nbsp;
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-left"></i></a>
 		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button">Siguiente</a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-right"></i></a>
 	</div>
 	<div class="col-sm-1">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button">Hoy</a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-4 day")|date('Y-m-d')}), vista: 'semanal' }}" role="button"><i class="fas fa-calendar-day"></i></a>
 	</div>
 {% endblock %}
 {% block cardbody %}
@@ -120,7 +123,7 @@
 									{% set m1=ocup.horaInicio|date('i') %}
 									{% set h2=ocup.horaFin|date('H') %}
 									{% set m2=ocup.horaFin|date('i') %}
-									{% set bloques=(((h2-h1)*60+m2-m1)/30)|round %}
+
 									{% if m1 in range(1,15) %}
 										{% set m1=0 %}
 									{% endif %}
@@ -131,6 +134,7 @@
 										{% set h1=h1+1 %}
 										{% set m1=0 %}
 									{% endif %}
+									{% set bloques=(((h2-h1)*60+m2-m1)/30)|round %}
 
 									{% set continuar=true %}
 									{% if ultCol==0 %}
@@ -146,9 +150,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -171,9 +173,9 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14">
+														<strong>{{inicio}}&nbspa&nbsp{{fin}}</strong>
+													</div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -196,9 +198,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -221,9 +221,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -246,9 +244,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -271,9 +267,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -296,9 +290,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -321,9 +313,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -346,9 +336,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -371,9 +359,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -396,9 +382,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -421,9 +405,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -446,9 +428,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -471,9 +451,7 @@
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
 								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">{{inicio}}
-														a
-														{{fin}}</div>
+													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
 													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
 													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
 												</td>
@@ -497,5 +475,4 @@
 			</tbody>
 		</tr>
 	</tbody>
-</tr></tbody></table></div></div>
-{% endblock %}
+</tr></tbody></table></div></div>{% endblock %}

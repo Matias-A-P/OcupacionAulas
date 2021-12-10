@@ -21,9 +21,6 @@ class OcupacionRepository extends ServiceEntityRepository
 
     public function getOcupacionesDia(\DateTime $dia, int $aula)
     {
-        //$from = new \DateTime($dia->format("Y-m-d")." 00:00:00");
-        //$to   = new \DateTime($dia->format("Y-m-d")." 23:59:59");
-
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
             'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
@@ -35,6 +32,22 @@ class OcupacionRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function getOcupacionesSemana(\DateTime $dia1, \DateTime $dia2, int $aula)
+    {
+        //$from = new \DateTime($dia->format("Y-m-d")." 00:00:00");
+        //$to   = new \DateTime($dia->format("Y-m-d")." 23:59:59");
+
+        $entm = $this->getEntityManager();
+        $query = $entm->createQuery(
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha>=:d1 and o.fecha<:d2 order by o.id_aula ASC, o.fecha ASC'
+        )->setParameter('a', $aula)
+            ->setParameter('d1', new \DateTime($dia1->format("Y-m-d")))
+            ->setParameter('d2', new \DateTime($dia2->format("Y-m-d")))
+            ;
+        $result = $query->getResult();
+
+        return $result;
+    }
     // /**
     //  * @return Ocupacion[] Returns an array of Ocupacion objects
     //  */
