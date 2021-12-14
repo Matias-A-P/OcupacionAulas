@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211206174914 extends AbstractMigration
+final class Version20211214134408 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,8 @@ final class Version20211206174914 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE aulas ADD id_edificio_id INT NOT NULL');
+        $this->addSql('CREATE TABLE edificios (id INT AUTO_INCREMENT NOT NULL, edificio VARCHAR(100) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE aulas DROP id_edificio');
         $this->addSql('ALTER TABLE aulas ADD CONSTRAINT FK_CAB6B16A9277E621 FOREIGN KEY (id_edificio_id) REFERENCES edificios (id)');
         $this->addSql('CREATE INDEX IDX_CAB6B16A9277E621 ON aulas (id_edificio_id)');
     }
@@ -29,7 +30,8 @@ final class Version20211206174914 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE aulas DROP FOREIGN KEY FK_CAB6B16A9277E621');
+        $this->addSql('DROP TABLE edificios');
         $this->addSql('DROP INDEX IDX_CAB6B16A9277E621 ON aulas');
-        $this->addSql('ALTER TABLE aulas DROP id_edificio_id');
+        $this->addSql('ALTER TABLE aulas ADD id_edificio INT DEFAULT NULL');
     }
 }

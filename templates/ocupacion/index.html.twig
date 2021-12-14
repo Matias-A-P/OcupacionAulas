@@ -11,14 +11,15 @@
 		<h5>Ocupación de Aulas por día</h5>
 	</div>
 	<div class="col-sm-6">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button"><i class="fas fa-calendar-day"></i></a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Hoy</a>
 		&nbsp;&nbsp;&nbsp;
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-left"></i></a>
 		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-right"></i></a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-4 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
 	<div class="col-sm-1">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-4 day")|date('Y-m-d')}), vista: 'semanal' }}" role="button"><i class="fas fa-calendar-day"></i></a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"><i class="fas fa-plus-square"></i></a>
 	</div>
 {% endblock %}
 {% block cardbody %}
@@ -147,13 +148,7 @@
 										{% if continuar==true %}
 											{% if h1==14 and m1==00 %}
 												{% set ultCol=bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=1 %}
@@ -170,15 +165,7 @@
 										{% if continuar==true %}
 											{% if h1==14 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14">
-														<strong>{{inicio}}&nbspa&nbsp{{fin}}</strong>
-													</div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=2 %}
@@ -195,13 +182,7 @@
 										{% if continuar==true %}
 											{% if h1==15 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=3 %}
@@ -218,13 +199,7 @@
 										{% if continuar==true %}
 											{% if h1==15 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=4 %}
@@ -241,13 +216,7 @@
 										{% if continuar==true %}
 											{% if h1==16 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=5 %}
@@ -264,13 +233,7 @@
 										{% if continuar==true %}
 											{% if h1==16 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=6 %}
@@ -287,13 +250,7 @@
 										{% if continuar==true %}
 											{% if h1==17 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=7 %}
@@ -310,13 +267,7 @@
 										{% if continuar==true %}
 											{% if h1==17 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=8 %}
@@ -333,13 +284,7 @@
 										{% if continuar==true %}
 											{% if h1==18 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=9 %}
@@ -356,13 +301,7 @@
 										{% if continuar==true %}
 											{% if h1==18 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=10 %}
@@ -379,13 +318,7 @@
 										{% if continuar==true %}
 											{% if h1==19 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=11 %}
@@ -402,13 +335,7 @@
 										{% if continuar==true %}
 											{% if h1==19 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=12 %}
@@ -425,13 +352,7 @@
 										{% if continuar==true %}
 											{% if h1==20 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=13 %}
@@ -448,13 +369,7 @@
 										{% if continuar==true %}
 											{% if h1==20 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
-												<td colspan="{{bloques}}" style="transform: rotate(0)">
-													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
-								ocup.IdCatedra }}</span>
-													<div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-													<div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
-													<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>
-												</td>
+												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=14 %}

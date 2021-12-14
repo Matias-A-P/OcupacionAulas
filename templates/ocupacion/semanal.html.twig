@@ -8,7 +8,7 @@
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-5">
-		<h5>Ocupación de Aulas por día</h5>
+		<h5>Ocupación de Aulas por semana</h5>
 	</div>
 	<div class="col-sm-7">
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button"><i class="fas fa-calendar-day"></i></a>
@@ -100,7 +100,7 @@
 
 									{% if 1 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=1 %}
+											{% if diasem==1 %}
 												{% set ultCol=bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
@@ -123,7 +123,7 @@
 
 									{% if 2 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=2 %}
+											{% if diasem==2 %}
 												{% set ultCol=ultCol+bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
@@ -148,7 +148,7 @@
 
 									{% if 3 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=3 %}
+											{% if diasem==3 %}
 												{% set ultCol=ultCol+bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
@@ -171,7 +171,7 @@
 
 									{% if 4 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=4 %}
+											{% if diasem==4 %}
 												{% set ultCol=ultCol+bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
@@ -194,7 +194,7 @@
 
 									{% if 5 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=5 %}
+											{% if diasem==5 %}
 												{% set ultCol=ultCol+bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{
@@ -217,7 +217,7 @@
 
 									{% if 6 > ultCol %}
 										{% if continuar==true %}
-											{% if diasem=6 %}
+											{% if diasem==6 %}
 												{% set ultCol=ultCol+bloques %}
 												<td colspan="{{bloques}}" style="transform: rotate(0)">
 													<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{

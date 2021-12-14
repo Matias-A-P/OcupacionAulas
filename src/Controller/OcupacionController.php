@@ -35,11 +35,9 @@ class OcupacionController extends AbstractController
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i = 0;
-        $diff7Day = new DateInterval('P7D');
-        $dia2 = $dia;
-        $dia2->add($diff7Day);
+
         foreach ($aulas as $aula) {
-            if ($vista = 'semanal') {
+            if ($vista == 'semanal') {
                 $arrOcup[$i] = $ocupacionRepository->getOcupacionesSemana($dia, $dia2, $aula->getId());
             } else {
                 $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
@@ -52,7 +50,8 @@ class OcupacionController extends AbstractController
             }
             $i++;
         }
-        if ($vista = 'semanal') {
+        
+        if ($vista == 'semanal') {
             return $this->render('ocupacion/semanal.html.twig', [
                 'ocupacions' => $arrOcup,
                 'fecha' => $dia
