@@ -1,0 +1,10 @@
+repeticion
+
+limitar hora 00 30
+buscar
+mapa edificio
+
+catedras
+	docente
+	tutoria/teoria/practica/otros
+observaciones

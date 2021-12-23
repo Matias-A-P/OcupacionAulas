@@ -16,7 +16,8 @@
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-left"></i></a>
 		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-right"></i></a>
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-4 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
+		&nbsp;&nbsp;&nbsp;
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
 	<div class="col-sm-1">
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"><i class="fas fa-plus-square"></i></a>

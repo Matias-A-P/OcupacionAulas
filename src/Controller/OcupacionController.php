@@ -24,21 +24,35 @@ class OcupacionController extends AbstractController
     {
         //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));    
         date_default_timezone_set("America/Buenos_Aires");
-        $dia = new \DateTime('now');
         if ($request->query->has('dia')) {
-            $dia = new \DateTime($request->query->get('dia'));
+            $dia = $request->query->get('dia');
+        } else {
+            $dia = date('now');
         }
-        $vista = 'dia';
         if ($request->query->has('vista')) {
             $vista = $request->query->get('vista');
+        } else {
+            $vista = 'dia';
         }
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i = 0;
-
+        //$lunes = new \DateTime($dia)->add(new \DateInterval((intval(date('w', $dia))-1)."D"));
+        // $sabado = new \DateTime($lunes)->add(new \DateInterval("5D"));
+        $w = strtotime("w", strtotime($dia))-1;
+        $lun = date("Y-m-d", strtotime($dia) - strtotime("+1 day")); //strtotime($dia) - strtotime("+$w day")
+        //$sabado = date("Y-m-d", strtotime($lunes) + strtotime("+5D"));
         foreach ($aulas as $aula) {
             if ($vista == 'semanal') {
-                $arrOcup[$i] = $ocupacionRepository->getOcupacionesSemana($dia, $dia2, $aula->getId());
+                $lunes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun)), $aula->getId());
+                $martes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+1 day")), $aula->getId());
+                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+2 day")), $aula->getId());
+                $jueves[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+3 day")), $aula->getId());
+                $viernes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+4 day")), $aula->getId());
+                $sabado[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+5 day")), $aula->getId());
+
+                //$arrOcup[$i] = $ocupacionRepository->getOcupacionesSemana($lunes, $sabado, $aula->getId());
+                //$diaSem = date('w', $key->getFecha()->format('U'));
             } else {
                 $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
             }
@@ -53,7 +67,14 @@ class OcupacionController extends AbstractController
         
         if ($vista == 'semanal') {
             return $this->render('ocupacion/semanal.html.twig', [
+                'lunes' => $lunes,
+                'martes' => $martes,
+                'miercoles' => $miercoles,
+                'jueves' => $jueves,
+                'viernes' => $viernes,
+                'sabado' => $sabado,
                 'ocupacions' => $arrOcup,
+                'dia1' => $lun,
                 'fecha' => $dia
             ]);
         } else {
