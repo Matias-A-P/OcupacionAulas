@@ -40,7 +40,103 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#{% for d in 0..5 %}
+					{% set a = 0 %}
+					{% for aula in aulas %}
+						<tr>
+						<td class="align-middle">
+							{{aula.Id}}<div class="font-size13 text-light-gray">Capacidad:{{aula.capacidad}}</div>
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in lunes[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">LUNES</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in martes[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">MARTES</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in miercoles[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">MIERCOLES</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in jueves[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">JUEVES</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in viernes[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">VIERNES</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						<td style="transform: rotate(0)">
+						{% for ocup in sabado[a] %}						
+							{% if ocup.id is null %}								
+								<div class="margin-10px-top font-size14">SABADO</div>
+								<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>			
+							{% else %}			
+								<span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
+								<div class="margin-10px-top font-size14"><strong>{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</strong></div>
+								<div class="font-size13 text-light-gray">Comisión:{{ ocup.comision }}</div>
+								<a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a>					
+							{% endif %}					
+						{% endfor %}
+						</td>
+
+						{% set a = a+1 %}
+					{% endfor %}
+
+
+					{# {% for d in 0..5 %}
+						{% set ocupacion = lunes %}
 						{% if ocupacion[0].id is null %}
 							<tr>
 								<td class="align-middle">
@@ -268,7 +364,7 @@
 								{% endfor %}
 							</tr>
 						{% endif %}
-					{% endfor %}#}
+					{% endfor %} #}
 				</tbody>
 			</tbody>
 		</tr>
