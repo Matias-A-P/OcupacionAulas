@@ -94,7 +94,7 @@ class OcupacionController extends AbstractController
                 'jueves' => $jueves,
                 'viernes' => $viernes,
                 'sabado' => $sabado,
-                'fecha' => $dia,
+                'fecha' => strtotime($lun),
                 'aulas' => $aulas
             ]);
         } else {
