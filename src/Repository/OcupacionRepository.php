@@ -23,9 +23,9 @@ class OcupacionRepository extends ServiceEntityRepository
     {
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
-        )->setParameter('a', $aula)
-            ->setParameter('d', new \DateTime($dia));
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC')
+        ->setParameter('a', $aula)
+        ->setParameter('d', new \DateTime($dia));
 
         $result = $query->getResult();
 

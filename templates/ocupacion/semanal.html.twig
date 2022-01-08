@@ -40,10 +40,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{{dump(dia1)}}
-					{{dump(lunes)}}
-					{{dump(martes)}}
-					{% for ocupacion in ocupacions %}
+					{#{% for d in 0..5 %}
 						{% if ocupacion[0].id is null %}
 							<tr>
 								<td class="align-middle">
@@ -81,7 +78,7 @@
 								{% for i in 0..5 %}
 									{% if i < cant %}
 										{% set ocup=ocupacion[i] %}
-										{# ocupacion de un Aula #}
+										
 									{% endif %}
 									{% set diasem=ocup.fecha|date('w') %}
 									{% set h1=ocup.horaInicio|date('H') %}
@@ -271,7 +268,7 @@
 								{% endfor %}
 							</tr>
 						{% endif %}
-					{% endfor %}
+					{% endfor %}#}
 				</tbody>
 			</tbody>
 		</tr>

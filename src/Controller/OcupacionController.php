@@ -23,44 +23,65 @@ class OcupacionController extends AbstractController
     public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
     {
         //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));    
-        date_default_timezone_set("America/Buenos_Aires");
-        if ($request->query->has('dia')) {
-            $dia = $request->query->get('dia');
-        } else {
-            $dia = date('now');
-        }
-        if ($request->query->has('vista')) {
-            $vista = $request->query->get('vista');
-        } else {
-            $vista = 'dia';
-        }
-        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
+        //date_default_timezone_set("America/Buenos_Aires");
+        $dia = $request->query->get('dia', date('Y-m-d'));
+        $vista = $request->query->get('vista', 'dia');
+        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();  
         $arrOcup = [];
         $i = 0;
-        //$lunes = new \DateTime($dia)->add(new \DateInterval((intval(date('w', $dia))-1)."D"));
-        // $sabado = new \DateTime($lunes)->add(new \DateInterval("5D"));
-        $w = strtotime("w", strtotime($dia))-1;
-        $lun = date("Y-m-d", strtotime($dia) - strtotime("+1 day")); //strtotime($dia) - strtotime("+$w day")
-        //$sabado = date("Y-m-d", strtotime($lunes) + strtotime("+5D"));
+        $w = date('w', strtotime($dia));
+        $lun = date('Y-m-d', strtotime('-'.($w-1).' days', strtotime($dia)));
+        $mar = date('Y-m-d', strtotime('-'.($w-2).' days', strtotime($dia)));
+        $mie = date('Y-m-d', strtotime('-'.($w-3).' days', strtotime($dia)));
+        $jue = date('Y-m-d', strtotime('-'.($w-4).' days', strtotime($dia)));
+        $vie = date('Y-m-d', strtotime('-'.($w-5).' days', strtotime($dia)));
+        $sab = date('Y-m-d', strtotime('-'.($w-6).' days', strtotime($dia))); 
+
         foreach ($aulas as $aula) {
             if ($vista == 'semanal') {
-                $lunes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun)), $aula->getId());
-                $martes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+1 day")), $aula->getId());
-                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+2 day")), $aula->getId());
-                $jueves[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+3 day")), $aula->getId());
-                $viernes[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+4 day")), $aula->getId());
-                $sabado[$i] = $ocupacionRepository->getOcupacionesDia(date("Y-m-d", strtotime($lun) + strtotime("+5 day")), $aula->getId());
-
-                //$arrOcup[$i] = $ocupacionRepository->getOcupacionesSemana($lunes, $sabado, $aula->getId());
-                //$diaSem = date('w', $key->getFecha()->format('U'));
+                $lunes[$i] = $ocupacionRepository->getOcupacionesDia($lun, $aula->getId());
+                if (empty($lunes[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $lunes[$i] = array($ocup);
+                }
+                $martes[$i] = $ocupacionRepository->getOcupacionesDia($mar, $aula->getId());
+                if (empty($martes[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $martes[$i] = array($ocup);
+                }
+                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia($mie, $aula->getId());
+                if (empty($miercoles[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $miercoles[$i] = array($ocup);
+                }
+                $jueves[$i] = $ocupacionRepository->getOcupacionesDia($jue, $aula->getId());
+                if (empty($jueves[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $jueves[$i] = array($ocup);
+                }
+                $viernes[$i] = $ocupacionRepository->getOcupacionesDia($vie, $aula->getId());
+                if (empty($viernes[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $viernes[$i] = array($ocup);
+                }
+                $sabado[$i] = $ocupacionRepository->getOcupacionesDia($sab, $aula->getId());
+                if (empty($sabado[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $sabado[$i] = array($ocup);
+                }
             } else {
                 $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
-            }
-
-            if (empty($arrOcup[$i])) {
-                $ocup = new Ocupacion();
-                $ocup->setIdAula($aula);
-                $arrOcup[$i] = array($ocup);
+                if (empty($arrOcup[$i])) {
+                    $ocup = new Ocupacion();
+                    $ocup->setIdAula($aula);
+                    $arrOcup[$i] = array($ocup);
+                }
             }
             $i++;
         }
@@ -73,8 +94,6 @@ class OcupacionController extends AbstractController
                 'jueves' => $jueves,
                 'viernes' => $viernes,
                 'sabado' => $sabado,
-                'ocupacions' => $arrOcup,
-                'dia1' => $lun,
                 'fecha' => $dia
             ]);
         } else {
