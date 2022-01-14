@@ -162,11 +162,33 @@ class OcupacionController extends AbstractController
             return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $o = $request->query->get('id', 0);
+        return $this->renderForm('ocupacion/edit.html.twig', [
+            'ocupacion' => $ocupacion,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/edit_modal/{id}", name="ocupacion_edit_modal", methods={"GET","POST"})
+     */
+    public function editModal(Request $request, int $id): Response
+    {
+
+        $ocupacion = $this->getDoctrine()->getRepository(Ocupacion::class)->find($id); // $request->query->get('id',15)
+
+        $form = $this->createForm(OcupacionType::class, $ocupacion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
-            'action' => $this->generateUrl('ocupacion_edit', array('id'=>$o), UrlGeneratorInterface::RELATIVE_PATH),
+            'action' => $this->generateUrl('ocupacion_edit_modal', array('id'=>$ocupacion->getId())),
         ]);
     }
 

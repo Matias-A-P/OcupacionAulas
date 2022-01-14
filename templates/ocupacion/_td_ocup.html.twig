@@ -1,7 +1,7 @@
 <td colspan="{{bloques}}" style="transform: rotate(0); background-color: #00a2a7;">
     <span class="padding-5px-tb padding-5px-lr border-radius-5 margin-5px-bottom text-white font-size16 xs-font-size13">{{ocup.IdCatedra }}</span>
     <div class="margin-10px-top font-size14"><strong>{{inicio}}&nbsp;a&nbsp;{{fin}}</strong></div>
-    <div class="font-size13 text-light-gray">Comisión:{{ocup.comision}}</div>
+    <div class="font-size13 text-light-gray">Comisión:{{ocup.id}}</div>
     {# <a href="{{ path('ocupacion_edit', {'id': ocup.id}) }}" class="stretched-link"></a> #}
     {# {{ render(controller('App\\Controller\\OcupacionController::edit', {'id': ocup.id})) }} #}
     <button class="btn-info btn btn-sm edit-article" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);"><iclass="fas fa-eye"></i>
