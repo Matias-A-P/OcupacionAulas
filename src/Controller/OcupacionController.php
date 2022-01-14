@@ -6,11 +6,12 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
-use DateInterval;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 /**
  * @Route("/ocupacion")
@@ -26,16 +27,16 @@ class OcupacionController extends AbstractController
         //date_default_timezone_set("America/Buenos_Aires");
         $dia = $request->query->get('dia', date('Y-m-d'));
         $vista = $request->query->get('vista', 'dia');
-        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();  
+        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i = 0;
         $w = date('w', strtotime($dia));
-        $lun = date('Y-m-d', strtotime('-'.($w-1).' days', strtotime($dia)));
-        $mar = date('Y-m-d', strtotime('-'.($w-2).' days', strtotime($dia)));
-        $mie = date('Y-m-d', strtotime('-'.($w-3).' days', strtotime($dia)));
-        $jue = date('Y-m-d', strtotime('-'.($w-4).' days', strtotime($dia)));
-        $vie = date('Y-m-d', strtotime('-'.($w-5).' days', strtotime($dia)));
-        $sab = date('Y-m-d', strtotime('-'.($w-6).' days', strtotime($dia))); 
+        $lun = date('Y-m-d', strtotime('-' . ($w - 1) . ' days', strtotime($dia)));
+        $mar = date('Y-m-d', strtotime('-' . ($w - 2) . ' days', strtotime($dia)));
+        $mie = date('Y-m-d', strtotime('-' . ($w - 3) . ' days', strtotime($dia)));
+        $jue = date('Y-m-d', strtotime('-' . ($w - 4) . ' days', strtotime($dia)));
+        $vie = date('Y-m-d', strtotime('-' . ($w - 5) . ' days', strtotime($dia)));
+        $sab = date('Y-m-d', strtotime('-' . ($w - 6) . ' days', strtotime($dia)));
 
         foreach ($aulas as $aula) {
             if ($vista == 'semanal') {
@@ -85,7 +86,7 @@ class OcupacionController extends AbstractController
             }
             $i++;
         }
-        
+
         if ($vista == 'semanal') {
             return $this->render('ocupacion/semanal.html.twig', [
                 'lunes' => $lunes,
@@ -106,26 +107,14 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/new/", name="ocupacion_new", methods={"GET","POST"})
+     * @Route("/new", name="ocupacion_new", methods={"GET","POST"})
      */
     ///{aula}/{hora}   , int $aula=0, string $hora
     public function new(Request $request): Response
     {
-        if ($request->query->has('aula')) {
-            $aula = $request->query->get('aula');
-        } else {
-            $aula = 1;
-        };
-        if ($request->query->has('dia')) {
-            $dia = new \DateTime($request->query->get('dia'));
-        } else {
-            $dia = new \DateTime();
-        };
-        if ($request->query->has('hora')) {
-            $hora = $request->query->get('hora');
-        } else {
-            $hora = '14:00';
-        };
+        $aula = $request->query->get('aula', 0);
+        $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
+        $hora = $request->query->get('hora', '14:00');
 
         $ocupacion = new Ocupacion();
         $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
@@ -143,7 +132,7 @@ class OcupacionController extends AbstractController
             return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ocupacion/new.html.twig', [
+        return $this->renderForm('ocupacion/new_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
         ]);
@@ -173,9 +162,11 @@ class OcupacionController extends AbstractController
             return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ocupacion/edit.html.twig', [
+        $o = $request->query->get('id', 0);
+        return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
+            'action' => $this->generateUrl('ocupacion_edit', array('id'=>$o), UrlGeneratorInterface::RELATIVE_PATH),
         ]);
     }
 

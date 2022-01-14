@@ -11,6 +11,6 @@
 	</div>
 {% endblock %}
 {% block cardbody %}
-	{{ include('ocupacion/_form.html.twig', {'button_label': 'Update'}) }}
-    <a href="{{ path('ocupacion_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
+	{{ include('ocupacion/_form.html.twig') }}  {# {'button_label': 'Update'} #}
+    <a href="{{ path('ocupacion_index', {dia: ocupacion.fecha|date('Y-m-d')}) }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

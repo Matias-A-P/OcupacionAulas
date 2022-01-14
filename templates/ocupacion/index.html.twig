@@ -20,7 +20,8 @@
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
 	<div class="col-sm-1">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"><i class="fas fa-plus-square"></i></a>
+		{# <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"<i class="fas fa-plus-square"></i></a> #}
+		{{ render(controller('App\\Controller\\OcupacionController::new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')})) }}
 	</div>
 {% endblock %}
 {% block cardbody %}
@@ -48,7 +49,7 @@
 				</thead>
 				<tbody>
 					{% for ocupacion in ocupacions %}
-						{% if ocupacion[0].id is null %}
+						{% if ocupacion[0].id is null %} 
 							<tr>
 								<td class="align-middle">
 									{{ocupacion[0].IdAula}}<div class="font-size13 text-light-gray">Capacidad:{{ocupacion[0].IdAula.capacidad}}</div>
@@ -154,9 +155,11 @@
 											{% else %}
 												{% set ultCol=1 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
-													<div class="margin-10px-top font-size14">14:00</div>
+													<div class="margin-10px-top font-size14">14:000</div>
 													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>
+													{# <a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a> #}
+													{# {{ render(controller('App\\Controller\\OcupacionController::new', {'aula': ocup.IdAula.id, 'dia': fecha|date('Y-m-d'), 'hora': "14:00"|date('H:i')})) }} #}
+													
 												</td>
 											{% endif %}
 										{% endif %}
@@ -391,4 +394,48 @@
 			</tbody>
 		</tr>
 	</tbody>
-</tr></tbody></table></div></div>{% endblock %}
+</tr></tbody></table>
+
+<div class="modal fade" id="editOcup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editOcup" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editOcupLabel">Editar Ocupación</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="edit-result">			
+               
+			</div>
+			<div class="modal-footer">
+                
+			</div>
+		</div>
+	</div>
+</div>
+
+</div></div>{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function editar(btn) {       
+            var id = btn.getAttribute("data-edit-id");
+            $('#editOcup').modal('show');
+                $.ajax({
+                    type: "POST",
+                    url: '{{ path('ocupacion_edit', {'id': 16}) }}',
+                    data: {'id': 16},
+                    success: function (result) {
+                        $("#edit-result").html(result)
+					},
+    				error: function (request, status, error) {
+        				alert(request.responseText);
+                    }
+                });
+            
+
+        };
+    </script>
+{% endblock %}

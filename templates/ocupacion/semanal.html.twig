@@ -30,7 +30,7 @@
 			<table class="table table-bordered text-center">
 				<thead>
 					<tr class="bg-light-gray">
-						<th class="col-sm-1 text-uppercase">Aula</th>
+						<th class="col-sm-1 text-uppercase" style="max-width: 10px">Aula</th>
 						<th class="col-sm-1 text-uppercase">LUNES<br><div class="font-size13 text-light-gray">{{ fecha|date('d-m-Y') }}</div></th>
 						<th class="col-sm-1 text-uppercase">MARTES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+1 day")|date('d-m-Y') }}</div></th>
 						<th class="col-sm-1 text-uppercase">MIERCOLES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+2 day")|date('d-m-Y') }}</div></th>

@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\SubmitButtonTypeInterface;
 
 class OcupacionType extends AbstractType
 {
@@ -20,6 +22,7 @@ class OcupacionType extends AbstractType
             ->add('id_aula')
             ->add('id_catedra')
             ->add('comision')
+            //->add('save', SubmitType::class, ['attr' => ['label' => 'xGuardar']])
         ;
     }
 
@@ -29,4 +32,6 @@ class OcupacionType extends AbstractType
             'data_class' => Ocupacion::class,
         ]);
     }
+
+
 }
