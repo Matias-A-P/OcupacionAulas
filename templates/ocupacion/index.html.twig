@@ -21,7 +21,7 @@
 	</div>
 	<div class="col-sm-1">
 		{# <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"<i class="fas fa-plus-square"></i></a> #}
-		{{ render(controller('App\\Controller\\OcupacionController::new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')})) }}
+		{# {{ render(controller('App\\Controller\\OcupacionController::new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')})) }} #}
 	</div>
 {% endblock %}
 {% block cardbody %}
@@ -56,7 +56,7 @@
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link" rel="nofollow" id="btn-edit" onclick="nueva(this);" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}"><i class="fas fa-new"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:30</div>
@@ -396,6 +396,25 @@
 	</tbody>
 </tr></tbody></table>
 
+<div class="modal fade" id="newOcup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newOcup" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="newOcupLabel">Nueva Ocupación</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="new-result">			
+               
+			</div>
+			<div class="modal-footer">
+            	
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="editOcup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editOcup" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -409,7 +428,7 @@
                
 			</div>
 			<div class="modal-footer">
-                
+            	
 			</div>
 		</div>
 	</div>
@@ -420,21 +439,36 @@
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-	// $(document).ready(function () {
-            // $(".edit-article").click(function () {
+        function nueva(btn) {       
+            var aula = btn.getAttribute("data-id-aula");
+			var dia = btn.getAttribute("data-dia");
+			var dr = btn.getAttribute("data-ref");
+            $('#newOcup').modal('show');
+            $.ajax({
+                type: "POST",
+                url: dr,
+                //data: {'aula': aula, 'dia': dia},
+			}).done(function (result) {
+                $("#new-result").html(result);
+			});
+		};
+
         function editar(btn) {       
             var id = btn.getAttribute("data-edit-id");
             $('#editOcup').modal('show');
-                $.ajax({
-                    type: "POST",
-                    url: '/ocupacion/edit_modal/'+id, // '{{ path('ocupacion_edit_modal', {id:14}) }}',
-                    data: {'id': id},
-                    success: function (result) {
-                        $("#edit-result").html(result)
-					}
-                });
-            
+            $.ajax({
+                type: "POST",
+                url: '/ocupacion/edit_modal/'+id,
+                data: {'id': id},
+			}).done(function (result) {
+                $("#edit-result").html(result);
+			});
+		};
 
-        };
+		function guardar() {
+  			
+    		$('body').addClass('busy');
+  	
+		};
     </script>
 {% endblock %}

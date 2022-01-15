@@ -132,9 +132,10 @@ class OcupacionController extends AbstractController
             return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ocupacion/new_modal.html.twig', [
+        return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
+            'action' => $this->generateUrl('ocupacion_new'),
         ]);
     }
 
