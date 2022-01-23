@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/catedras")
@@ -17,6 +18,8 @@ class CatedrasController extends AbstractController
 {
     /**
      * @Route("/", name="catedras_index", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function index(CatedrasRepository $catedrasRepository): Response
     {
@@ -27,6 +30,8 @@ class CatedrasController extends AbstractController
 
     /**
      * @Route("/new", name="catedras_new", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request): Response
     {
@@ -50,6 +55,8 @@ class CatedrasController extends AbstractController
 
     /**
      * @Route("/{id}", name="catedras_show", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function show(Catedras $catedra): Response
     {
@@ -60,6 +67,8 @@ class CatedrasController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="catedras_edit", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Catedras $catedra): Response
     {
@@ -80,6 +89,8 @@ class CatedrasController extends AbstractController
 
     /**
      * @Route("/{id}", name="catedras_delete", methods={"POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Catedras $catedra): Response
     {

@@ -10,16 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-
-/**
- * @Route("/ocupacion")
- */
 class OcupacionController extends AbstractController
 {
     /**
-     * @Route("/", name="ocupacion_index", methods={"GET"})
+     * @Route("/ocupacion", name="ocupacion_index", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
     {
@@ -107,7 +105,9 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="ocupacion_new", methods={"GET","POST"})
+     * @Route("/ocupacion/new", name="ocupacion_new", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     ///{aula}/{hora}   , int $aula=0, string $hora
     public function new(Request $request): Response
@@ -140,7 +140,9 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ocupacion_show", methods={"GET"})
+     * @Route("/ocupacion/{id}", name="ocupacion_show", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function show(Ocupacion $ocupacion): Response
     {
@@ -150,7 +152,9 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="ocupacion_edit", methods={"GET","POST"})
+     * @Route("/ocupacion/{id}/edit", name="ocupacion_edit", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Ocupacion $ocupacion): Response
     {
@@ -170,7 +174,9 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/edit_modal/{id}", name="ocupacion_edit_modal", methods={"GET","POST"})
+     * @Route("/ocupacion/edit_modal/{id}", name="ocupacion_edit_modal", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editModal(Request $request, int $id): Response
     {
@@ -194,7 +200,9 @@ class OcupacionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ocupacion_delete", methods={"POST"})
+     * @Route("/ocupacion/{id}", name="ocupacion_delete", methods={"POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Ocupacion $ocupacion): Response
     {

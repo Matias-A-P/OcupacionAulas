@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/aulas")
@@ -17,6 +18,8 @@ class AulasController extends AbstractController
 {
     /**
      * @Route("/", name="aulas_index", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function index(AulasRepository $aulasRepository): Response
     {
@@ -27,6 +30,8 @@ class AulasController extends AbstractController
 
     /**
      * @Route("/new", name="aulas_new", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request): Response
     {
@@ -50,6 +55,8 @@ class AulasController extends AbstractController
 
     /**
      * @Route("/{id}", name="aulas_show", methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function show(Aulas $aula): Response
     {
@@ -60,6 +67,8 @@ class AulasController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="aulas_edit", methods={"GET","POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Aulas $aula): Response
     {
@@ -80,6 +89,8 @@ class AulasController extends AbstractController
 
     /**
      * @Route("/{id}", name="aulas_delete", methods={"POST"})
+     * 
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Aulas $aula): Response
     {

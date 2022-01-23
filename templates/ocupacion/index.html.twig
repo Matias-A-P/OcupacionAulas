@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ocupacion
-{% endblock %}
 {% block stylesheets %}
 	{{ parent() }}
 	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
@@ -56,59 +54,59 @@
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:00</div>
-									<a href="#" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link" rel="nofollow" id="btn-edit" onclick="nueva(this);" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}"><i class="fas fa-new"></i></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">15:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">15:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">16:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">16:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">17:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">17:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">18:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">18:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">19:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">19:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">20:00</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:00"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">20:30</div>
-									<a href="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:30"|date('H:i')}) }}" class="stretched-link"></a>
+									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 							</tr>
 						{% else %}
@@ -155,11 +153,8 @@
 											{% else %}
 												{% set ultCol=1 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
-													<div class="margin-10px-top font-size14">14:000</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													{# <a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" class="stretched-link"></a> #}
-													{# {{ render(controller('App\\Controller\\OcupacionController::new', {'aula': ocup.IdAula.id, 'dia': fecha|date('Y-m-d'), 'hora': "14:00"|date('H:i')})) }} #}
-													
+													<div class="margin-10px-top font-size14">14:00</div>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -175,8 +170,7 @@
 												{% set ultCol=2 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">14:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -192,8 +186,7 @@
 												{% set ultCol=3 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">15:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:00"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -209,8 +202,7 @@
 												{% set ultCol=4 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">15:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "15:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -226,8 +218,7 @@
 												{% set ultCol=5 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">16:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:00"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -243,8 +234,7 @@
 												{% set ultCol=6 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">16:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "16:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -260,8 +250,7 @@
 												{% set ultCol=7 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">17:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:00"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -277,8 +266,7 @@
 												{% set ultCol=8 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">17:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "17:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -294,8 +282,7 @@
 												{% set ultCol=9 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">18:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:00"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -311,8 +298,7 @@
 												{% set ultCol=10 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">18:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "18:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -328,8 +314,7 @@
 												{% set ultCol=11 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">19:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -345,8 +330,7 @@
 												{% set ultCol=12 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">19:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "19:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -362,8 +346,7 @@
 												{% set ultCol=13 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">20:00</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:00"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -379,8 +362,7 @@
 												{% set ultCol=14 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">20:30</div>
-													<div class="font-size13 text-light-gray">libre</div>
-													<a href="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:30"|date('H:i')}) }}" class="stretched-link"></a>
+													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "20:30"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -443,24 +425,26 @@
             var aula = btn.getAttribute("data-id-aula");
 			var dia = btn.getAttribute("data-dia");
 			var dr = btn.getAttribute("data-ref");
-            $('#newOcup').modal('show');
+            
             $.ajax({
                 type: "POST",
                 url: dr,
                 //data: {'aula': aula, 'dia': dia},
 			}).done(function (result) {
+				$('#newOcup').modal('show');
                 $("#new-result").html(result);
 			});
 		};
 
         function editar(btn) {       
             var id = btn.getAttribute("data-edit-id");
-            $('#editOcup').modal('show');
+            
             $.ajax({
                 type: "POST",
                 url: '/ocupacion/edit_modal/'+id,
                 data: {'id': id},
 			}).done(function (result) {
+				$('#editOcup').modal('show');
                 $("#edit-result").html(result);
 			});
 		};

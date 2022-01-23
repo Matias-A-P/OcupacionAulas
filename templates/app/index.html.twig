@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Bienvenido
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-5">
+		<h5>Bienvenido</h5>
+	</div>
+	<div class="col-sm-7 ">
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		<span>Usuario: {{ app.user.username }}</span>
+    {% else %}
+        <a class="btn btn-outline-primary" href="{{ path('app_login') }}" role="button">Ingresar</a>     
+    {% endif %}
+	</div>
+
+{% endblock %}
