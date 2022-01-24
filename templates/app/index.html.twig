@@ -1,16 +1,24 @@
 {% extends 'base.html.twig' %}
 {% block title %}Bienvenido
 {% endblock %}
-{% block cardheader %}
+{# {% block cardheader %}
 	<div class="col-sm-5">
-		<h5>Bienvenido</h5>
+		<h5>Aulas</h5>
 	</div>
-	<div class="col-sm-7 ">
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-		<span>Usuario: {{ app.user.username }}</span>
-    {% else %}
-        <a class="btn btn-outline-primary" href="{{ path('app_login') }}" role="button">Ingresar</a>     
-    {% endif %}
+{% endblock %} #}
+{% block cardbody %}
+	<div class="container-sm">
+		<div class="intro">
+			<h2 class="text-center">Bienvenido</h2>
+			<p class="text-center">Esta aplicación web permite consultar la ocupación de los diferentes espacios de la Facultad, con sus horarios y actividades. Disponible para alumnos y docentes registrados.</p>
+		</div>
+		<div class="text-center">
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				<span>Usuario:
+					{{ app.user.username }}</span>
+			{% else %}
+				<a class="btn btn-primary" href="{{ path('app_login') }}" role="button">Ingresar</a>
+			{% endif %}
+		</div>
 	</div>
-
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,7 +114,9 @@ class OcupacionController extends AbstractController
     public function new(Request $request): Response
     {
         $aula = $request->query->get('aula', 0);
-        $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
+        $sdia = $request->query->get('dia', date('Y-m-d'));
+        $dia = new \DateTime($sdia);
+        $dia->setTime(0,0,0);
         $hora = $request->query->get('hora', '14:00');
 
         $ocupacion = new Ocupacion();
@@ -125,11 +128,16 @@ class OcupacionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($ocupacion);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
+            if ($this->getDoctrine()->getRepository(Ocupacion::class)->isOcupado($ocupacion->getIdAula()->getId(), $ocupacion->getFecha(), $ocupacion->getHoraInicio(), $ocupacion->getHoraFin())) {
+               
+                return new Response(null, 200);
+            }
+            else {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($ocupacion);
+                $entityManager->flush();
+                return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
@@ -195,7 +203,7 @@ class OcupacionController extends AbstractController
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
-            'action' => $this->generateUrl('ocupacion_edit_modal', array('id'=>$ocupacion->getId())),
+            'action' => $this->generateUrl('ocupacion_edit_modal', array('id' => $ocupacion->getId())),
         ]);
     }
 

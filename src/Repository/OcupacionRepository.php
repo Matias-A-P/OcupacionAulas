@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Ocupacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @method Ocupacion|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,6 +48,24 @@ class OcupacionRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function isOcupado(int $aula, \DateTimeInterface $dia, $hora_inicio, $hora_fin): bool
+    {
+        $entm = $this->getEntityManager();
+        // $hora_inicio->setDate($dia);
+        $query = $entm->createQuery(// and ((o.hora_inicio>=:hi and o.hora_inicio<:hf)) or (o.hora_fin>:hi and o.hora_fin<=:hf)
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d ')
+        ->setParameter('a', $aula)
+        ->setParameter('d', $dia);
+        // ->setParameter('hi', $hora_inicio)
+        // ->setParameter('hf', $hora_fin);
+
+dd($query->getResult());
+
+        return (count( $query->getResult())>0); 
+    }
+
+
     // /**
     //  * @return Ocupacion[] Returns an array of Ocupacion objects
     //  */
