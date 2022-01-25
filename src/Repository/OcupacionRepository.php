@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Ocupacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @method Ocupacion|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,9 +34,6 @@ class OcupacionRepository extends ServiceEntityRepository
 
     public function getOcupacionesSemana(string $dia1, $dia2, int $aula)
     {
-        //$from = new \DateTime($dia->format("Y-m-d")." 00:00:00");
-        //$to   = new \DateTime($dia->format("Y-m-d")." 23:59:59");
-
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
             'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha>=:d1 and o.fecha<:d2 order by o.id_aula ASC, o.fecha ASC'
@@ -49,18 +45,15 @@ class OcupacionRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function isOcupado(int $aula, \DateTimeInterface $dia, $hora_inicio, $hora_fin): bool
+    public function isOcupado(int $aula, string $dia, $hora_inicio, $hora_fin): bool
     {
         $entm = $this->getEntityManager();
-        // $hora_inicio->setDate($dia);
-        $query = $entm->createQuery(// and ((o.hora_inicio>=:hi and o.hora_inicio<:hf)) or (o.hora_fin>:hi and o.hora_fin<=:hf)
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d ')
+        $query = $entm->createQuery(
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))')
         ->setParameter('a', $aula)
-        ->setParameter('d', $dia);
-        // ->setParameter('hi', $hora_inicio)
-        // ->setParameter('hf', $hora_fin);
-
-dd($query->getResult());
+        ->setParameter('d1', $dia)
+        ->setParameter('hi', $hora_inicio)
+        ->setParameter('hf', $hora_fin);
 
         return (count( $query->getResult())>0); 
     }

@@ -6,17 +6,18 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use DateInterval;
 
 class OcupacionController extends AbstractController
 {
     /**
-     * @Route("/ocupacion", name="ocupacion_index", methods={"GET"})
+     * @Route("/ocupacion", name="ocupacion_index", methods={"GET","POST"})
      * 
      * @IsGranted("ROLE_USER")
      */
@@ -114,30 +115,24 @@ class OcupacionController extends AbstractController
     public function new(Request $request): Response
     {
         $aula = $request->query->get('aula', 0);
-        $sdia = $request->query->get('dia', date('Y-m-d'));
-        $dia = new \DateTime($sdia);
-        $dia->setTime(0,0,0);
+        $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
+        $dia->setTime(0, 0, 0);
         $hora = $request->query->get('hora', '14:00');
 
         $ocupacion = new Ocupacion();
         $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
         $ocupacion->setHoraInicio(new \DateTime($hora));
-        $ocupacion->setHoraFin(new \DateTime($hora));
+        $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->getDoctrine()->getRepository(Ocupacion::class)->isOcupado($ocupacion->getIdAula()->getId(), $ocupacion->getFecha(), $ocupacion->getHoraInicio(), $ocupacion->getHoraFin())) {
-               
-                return new Response(null, 200);
-            }
-            else {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($ocupacion);
-                $entityManager->flush();
-                return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
-            }
+            $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($ocupacion);
+            $entityManager->flush();
+            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
@@ -221,5 +216,18 @@ class OcupacionController extends AbstractController
         }
 
         return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/ocupado", methods={"POST"})
+     */
+    public function ocupado(Request $request): Response
+    {
+        $aula = $request->request->get('aula', 0);
+        $dia = date('Y-m-d', strtotime($request->request->get('dia', '1970-01-02')));
+        $hi = $request->request->get('hi', '00:00') . ':00';
+        $hf = $request->request->get('hf', '00:00') . ':00';
+        $ocup = $this->getDoctrine()->getRepository(Ocupacion::class)->isOcupado($aula, $dia, $hi, $hf);
+        return new JsonResponse(json_encode($ocup));
     }
 }

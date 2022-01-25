@@ -421,24 +421,46 @@
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        function nueva(btn) {       
-            var aula = btn.getAttribute("data-id-aula");
-			var dia = btn.getAttribute("data-dia");
-			var dr = btn.getAttribute("data-ref");
-            
+        function nueva(btn) {  
+			$('body').removeClass('busy');     
+			var dr = btn.getAttribute("data-ref");           
             $.ajax({
                 type: "POST",
                 url: dr,
-                //data: {'aula': aula, 'dia': dia},
 			}).done(function (result) {
 				$('#newOcup').modal('show');
                 $("#new-result").html(result);
-			});
+				$("#formOcup").submit(function( event ) {
+					var au = $('#ocupacion_id_aula').val();
+					var di = $('#ocupacion_fecha').val();
+					var hi = $('#ocupacion_hora_inicio').val();
+					var hf = $('#ocupacion_hora_fin').val();
+					var co = $('#ocupacion_comision').val();
+					var d1 =  new Date(di +' '+ hi).getTime();
+					var d2 =  new Date(di +' '+ hf).getTime();
+					if (d1>=d2 || co<0)  {
+						event.preventDefault();
+						$('#msj').html('Verifique Horario y/o Comision')
+					}
+					else {
+					$.ajax({
+						type: "POST",
+						url: "/ocupado",
+						data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
+					}).done(function (res) {
+						if (res=='true') {
+							event.preventDefault();
+							$('#msj').html('Se superpone el horario');
+						};
+					});
+					};        			
+				});
+			});	
 		};
 
-        function editar(btn) {       
-            var id = btn.getAttribute("data-edit-id");
-            
+        function editar(btn) { 
+			$('body').removeClass('busy');      
+            var id = btn.getAttribute("data-edit-id");        
             $.ajax({
                 type: "POST",
                 url: '/ocupacion/edit_modal/'+id,
@@ -446,13 +468,34 @@
 			}).done(function (result) {
 				$('#editOcup').modal('show');
                 $("#edit-result").html(result);
+				$("#formOcup").submit(function( event ) {
+					var au = $('#ocupacion_id_aula').val();
+					var di = $('#ocupacion_fecha').val();
+					var hi = $('#ocupacion_hora_inicio').val();
+					var hf = $('#ocupacion_hora_fin').val();
+					var co = $('#ocupacion_comision').val();
+					var d1 =  new Date(di +' '+ hi).getTime();
+					var d2 =  new Date(di +' '+ hf).getTime();
+					if (d1>=d2 || co<0)  {
+						event.preventDefault();
+						$('#msj').html('Verifique Horario y/o Comision')
+					}
+					else {
+					$.ajax({
+						type: "POST",
+						url: "/ocupado",
+						data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
+					}).done(function (res) {
+						if (res=='true') {
+							event.preventDefault();
+							$('#msj').html('Se superpone el horario');
+						};
+					});
+					};        			
+				});
 			});
 		};
 
-		function guardar() {
-  			
-    		$('body').addClass('busy');
-  	
-		};
+
     </script>
 {% endblock %}
