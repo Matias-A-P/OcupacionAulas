@@ -54,7 +54,7 @@
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:00</div>
-									<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
+									<a class="text-decoration-none" href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocupacion[0].IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 								</td>
 								<td class="bg-light-gray" style="transform: rotate(0)">
 									<div class="margin-10px-top font-size14">14:30</div>
@@ -154,7 +154,7 @@
 												{% set ultCol=1 %}
 												<td class="bg-light-gray" style="transform: rotate(0)">
 													<div class="margin-10px-top font-size14">14:00</div>
-													<a href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
+													<a class="text-decoration-none" href="#" rel="nofollow" id="btn-edit" data-ref="{{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" data-id-aula="{ocupacion[0].IdAula.id}" data-dia="{fecha|date('Y-m-d')}" onclick="nueva(this);"><i class="fas fa-edit"></i></a>
 												</td>
 											{% endif %}
 										{% endif %}
@@ -421,9 +421,10 @@
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+		var err = false;
         function nueva(btn) {  
-			$('body').removeClass('busy');     
-			var dr = btn.getAttribute("data-ref");           
+			var dr = btn.getAttribute("data-ref");        
+			err = false;   
             $.ajax({
                 type: "POST",
                 url: dr,
@@ -431,6 +432,9 @@
 				$('#newOcup').modal('show');
                 $("#new-result").html(result);
 				$("#formOcup").submit(function( event ) {
+					err = false;
+					$('#msj').text('');
+					$(".spinner").css("display","block");					
 					var au = $('#ocupacion_id_aula').val();
 					var di = $('#ocupacion_fecha').val();
 					var hi = $('#ocupacion_hora_inicio').val();
@@ -439,36 +443,44 @@
 					var d1 =  new Date(di +' '+ hi).getTime();
 					var d2 =  new Date(di +' '+ hf).getTime();
 					if (d1>=d2 || co<0)  {
-						event.preventDefault();
-						$('#msj').html('Verifique Horario y/o Comision')
-					}
-					else {
-					$.ajax({
-						type: "POST",
-						url: "/ocupado",
-						data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
-					}).done(function (res) {
-						if (res=='true') {
-							event.preventDefault();
-							$('#msj').html('Se superpone el horario');
-						};
-					});
-					};        			
+						$('#msj').text('Verifique Horario y/o Comisión');
+						err = true;
+					};
+					if (!err) {
+						$.ajax({
+							type: "POST",
+							url: "/ocupado",
+							data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
+							async: false
+						}).done(function (res) {
+							if (res=='true') {
+								$('#msj').text('Se superpone el horario');
+								err = true;
+							};
+						});
+					};  
+					if (err) {  
+						event.preventDefault();  
+						$(".spinner").css("display","none");  			
+					};
 				});
 			});	
 		};
 
-        function editar(btn) { 
-			$('body').removeClass('busy');      
-            var id = btn.getAttribute("data-edit-id");        
+        function editar(btn) {   
+            var id = btn.getAttribute("data-edit-id"); 
+			err = false;      
             $.ajax({
                 type: "POST",
                 url: '/ocupacion/edit_modal/'+id,
                 data: {'id': id},
 			}).done(function (result) {
 				$('#editOcup').modal('show');
-                $("#edit-result").html(result);
+                $("#edit-result").text(result); 				
 				$("#formOcup").submit(function( event ) {
+					err = false;
+					$('#msj').text('');
+					$(".spinner").css("display","block");
 					var au = $('#ocupacion_id_aula').val();
 					var di = $('#ocupacion_fecha').val();
 					var hi = $('#ocupacion_hora_inicio').val();
@@ -476,22 +488,28 @@
 					var co = $('#ocupacion_comision').val();
 					var d1 =  new Date(di +' '+ hi).getTime();
 					var d2 =  new Date(di +' '+ hf).getTime();
+			
 					if (d1>=d2 || co<0)  {
-						event.preventDefault();
-						$('#msj').html('Verifique Horario y/o Comision')
-					}
-					else {
+						$('#msj').text('Verifique Horario y/o Comisión');
+						err = true;
+					};
+					if (!err) {
 					$.ajax({
 						type: "POST",
 						url: "/ocupado",
 						data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
+						async: false
 					}).done(function (res) {
 						if (res=='true') {
-							event.preventDefault();
-							$('#msj').html('Se superpone el horario');
+							$('#msj').text('Se superpone el horario');
+							err = true;
 						};
 					});
-					};        			
+					}; 
+					if (err) {  
+						event.preventDefault(); 
+						$(".spinner").css("display","none");   			
+					}					       			
 				});
 			});
 		};
