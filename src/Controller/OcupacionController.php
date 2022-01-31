@@ -227,7 +227,8 @@ class OcupacionController extends AbstractController
         $dia = date('Y-m-d', strtotime($request->request->get('dia', '1970-01-02')));
         $hi = $request->request->get('hi', '00:00') . ':00';
         $hf = $request->request->get('hf', '00:00') . ':00';
-        $ocup = $this->getDoctrine()->getRepository(Ocupacion::class)->isOcupado($aula, $dia, $hi, $hf);
+        $id = $request->request->get('id', 0);
+        $ocup = $this->getDoctrine()->getRepository(Ocupacion::class)->isOcupado($aula, $dia, $hi, $hf, $id);
         return new JsonResponse(json_encode($ocup));
     }
 }

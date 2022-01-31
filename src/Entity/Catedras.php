@@ -29,6 +29,12 @@ class Catedras
      */
     private $ocupacions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Areas::class, inversedBy="catedras")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $area;
+
     public function __construct()
     {
         $this->ocupacions = new ArrayCollection();
@@ -84,5 +90,17 @@ class Catedras
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    public function getArea(): ?areas
+    {
+        return $this->area;
+    }
+
+    public function setArea(?areas $area): self
+    {
+        $this->area = $area;
+
+        return $this;
     }
 }

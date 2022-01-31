@@ -9,7 +9,7 @@
 		<h5>Ocupación de Aulas por día</h5>
 	</div>
 	<div class="col-sm-6">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: 'now'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Hoy</a>
+		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Hoy</a>
 		&nbsp;&nbsp;&nbsp;
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button"><i class="fas fa-chevron-circle-left"></i></a>
 		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
@@ -18,8 +18,6 @@
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
 	<div class="col-sm-1">
-		{# <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }}" role="button"<i class="fas fa-plus-square"></i></a> #}
-		{# {{ render(controller('App\\Controller\\OcupacionController::new', {aula: 1, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')})) }} #}
 	</div>
 {% endblock %}
 {% block cardbody %}
@@ -383,9 +381,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="newOcupLabel">Nueva Ocupación</h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="new-result">			
                
@@ -402,9 +398,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="editOcupLabel">Editar Ocupación</h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="edit-result">			
                
@@ -420,100 +414,5 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-		var err = false;
-        function nueva(btn) {  
-			var dr = btn.getAttribute("data-ref");        
-			err = false;   
-            $.ajax({
-                type: "POST",
-                url: dr,
-			}).done(function (result) {
-				$('#newOcup').modal('show');
-                $("#new-result").html(result);
-				$("#formOcup").submit(function( event ) {
-					err = false;
-					$('#msj').text('');
-					$(".spinner").css("display","block");					
-					var au = $('#ocupacion_id_aula').val();
-					var di = $('#ocupacion_fecha').val();
-					var hi = $('#ocupacion_hora_inicio').val();
-					var hf = $('#ocupacion_hora_fin').val();
-					var co = $('#ocupacion_comision').val();
-					var d1 =  new Date(di +' '+ hi).getTime();
-					var d2 =  new Date(di +' '+ hf).getTime();
-					if (d1>=d2 || co<0)  {
-						$('#msj').text('Verifique Horario y/o Comisión');
-						err = true;
-					};
-					if (!err) {
-						$.ajax({
-							type: "POST",
-							url: "/ocupado",
-							data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
-							async: false
-						}).done(function (res) {
-							if (res=='true') {
-								$('#msj').text('Se superpone el horario');
-								err = true;
-							};
-						});
-					};  
-					if (err) {  
-						event.preventDefault();  
-						$(".spinner").css("display","none");  			
-					};
-				});
-			});	
-		};
-
-        function editar(btn) {   
-            var id = btn.getAttribute("data-edit-id"); 
-			err = false;      
-            $.ajax({
-                type: "POST",
-                url: '/ocupacion/edit_modal/'+id,
-                data: {'id': id},
-			}).done(function (result) {
-				$('#editOcup').modal('show');
-                $("#edit-result").text(result); 				
-				$("#formOcup").submit(function( event ) {
-					err = false;
-					$('#msj').text('');
-					$(".spinner").css("display","block");
-					var au = $('#ocupacion_id_aula').val();
-					var di = $('#ocupacion_fecha').val();
-					var hi = $('#ocupacion_hora_inicio').val();
-					var hf = $('#ocupacion_hora_fin').val();
-					var co = $('#ocupacion_comision').val();
-					var d1 =  new Date(di +' '+ hi).getTime();
-					var d2 =  new Date(di +' '+ hf).getTime();
-			
-					if (d1>=d2 || co<0)  {
-						$('#msj').text('Verifique Horario y/o Comisión');
-						err = true;
-					};
-					if (!err) {
-					$.ajax({
-						type: "POST",
-						url: "/ocupado",
-						data: {'aula': au, 'dia': di, 'hi': hi, 'hf': hf},
-						async: false
-					}).done(function (res) {
-						if (res=='true') {
-							$('#msj').text('Se superpone el horario');
-							err = true;
-						};
-					});
-					}; 
-					if (err) {  
-						event.preventDefault(); 
-						$(".spinner").css("display","none");   			
-					}					       			
-				});
-			});
-		};
-
-
-    </script>
+    <script src="{{ asset('js/ocupacion.js') }}"></script>
 {% endblock %}

@@ -48,6 +48,11 @@ class Ocupacion
      */
     private $comision;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Areas::class, inversedBy="ocupacions")
+     */
+    private $id_area;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Ocupacion
     public function setComision(int $comision): self
     {
         $this->comision = $comision;
+
+        return $this;
+    }
+
+    public function getIdArea(): ?Areas
+    {
+        return $this->id_area;
+    }
+
+    public function setIdArea(?Areas $id_area): self
+    {
+        $this->id_area = $id_area;
 
         return $this;
     }

@@ -13,6 +13,7 @@ class CatedrasType extends AbstractType
     {
         $builder
             ->add('nombre')
+            ->add('area')
         ;
     }
 

@@ -1,26 +1,38 @@
 <div class="container">
 	{{ form_start(form, {'action': action, 'attr': {'id': 'formOcup'} } ) }}
 	<div class="input-group mb-3">
-		<div class="col-4">
+		<div class="col-12">
 			<span class="input-group-text">Aula</span>
 			{{form_widget(form.id_aula)}}
 		</div>
-		<div class="col-6">
+	</div>
+	<div class="input-group mb-3">
+		<div class="col-5">
+			<span class="input-group-text">Area</span>
+			{{form_widget(form.id_area)}}
+		</div>
+		<div class="col-7">
 			<span class="input-group-text">Cátedra</span>
 			{{form_widget(form.id_catedra)}}
 		</div>
+	</div>
+	<div class="input-group mb-3">
 		<div class="col-2">
 			<span class="input-group-text">Comisión</span>
 			{{form_widget(form.comision)}}
 		</div>
-	</div>
-	<div class="input-group mb-3">
-		<span class="input-group-text">Fecha</span>
-		{{form_widget(form.fecha)}}
-		<span class="input-group-text">Inicio</span>
-		{{form_widget(form.hora_inicio)}}
-		<span class="input-group-text">Fin</span>
-		{{form_widget(form.hora_fin)}}
+		<div class="col-4">
+			<span class="input-group-text">Fecha</span>
+			{{form_widget(form.fecha)}}
+		</div>
+		<div class="col-3">
+			<span class="input-group-text">Inicio</span>
+			{{form_widget(form.hora_inicio)}}
+		</div>
+		<div class="col-3">
+			<span class="input-group-text">Fin</span>
+			{{form_widget(form.hora_fin)}}
+		</div>
 	</div>
 	<div class="d-flex justify-content-between align-items-center">
 		<button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
@@ -29,3 +41,28 @@
 	</div>
 	{{ form_end(form) }}
 </div>
+<script>
+var $area = $('#ocupacion_id_area');
+// When area gets selected ...
+$area.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected area value.
+  var data = {};
+  data[$area.attr('name')] = $area.val();
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data,
+    complete: function(html) {
+      // Replace current catedra field ...
+      $('#ocupacion_id_catedra').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html.responseText).find('#ocupacion_id_catedra')
+      );
+      // Position field now displays the appropriate catedras.
+    }
+  });
+});
+</script>
