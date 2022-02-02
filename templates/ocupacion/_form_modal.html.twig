@@ -42,26 +42,20 @@
 	{{ form_end(form) }}
 </div>
 <script>
-var $area = $('#ocupacion_id_area');
-// When area gets selected ...
-$area.change(function() {
-  // ... retrieve the corresponding form.
-  var $form = $(this).closest('form');
-  // Simulate form data, but only include the selected area value.
+var selArea = $('#ocupacion_id_area');
+var selCatedra = $('#ocupacion_id_catedra');
+$('#ocupacion_id_area').change(function() {
   var data = {};
-  data[$area.attr('name')] = $area.val();
-  // Submit data via AJAX to the form's action path.
+  data[selArea.attr('name')] = selArea.val();
   $.ajax({
-    url : $form.attr('action'),
-    type: $form.attr('method'),
-    data : data,
-    complete: function(html) {
-      // Replace current catedra field ...
-      $('#ocupacion_id_catedra').replaceWith(
-        // ... with the returned one from the AJAX response.
-        $(html.responseText).find('#ocupacion_id_catedra')
-      );
-      // Position field now displays the appropriate catedras.
+    url : '/areas/'+selArea.val()+'/catedras',
+    type: 'GET',
+    dataType : 'JSON',
+    complete: function(catedras) {
+		$.each(catedras, function (key, catedra) {
+        	selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
+        });
+    	
     }
   });
 });
