@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Areas{% endblock %}
+
+{% block body %}
+    <h1>Create new Areas</h1>
+
+    {{ include('areas/_form.html.twig') }}
+
+    <a href="{{ path('areas_index') }}">back to list</a>
+{% endblock %}
