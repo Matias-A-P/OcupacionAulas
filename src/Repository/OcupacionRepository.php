@@ -19,13 +19,23 @@ class OcupacionRepository extends ServiceEntityRepository
         parent::__construct($registry, Ocupacion::class);
     }
 
-    public function getOcupacionesDia(string $dia, int $aula)
+    public function getOcupacionesDia(string $dia, int $aula, int $area = 0)
     {
         $entm = $this->getEntityManager();
-        $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC')
-        ->setParameter('a', $aula)
-        ->setParameter('d', new \DateTime($dia));
+        if ($area == 0) {
+            $query = $entm->createQuery(
+                'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
+            )
+                ->setParameter('a', $aula)
+                ->setParameter('d', new \DateTime($dia));
+        } else {
+            $query = $entm->createQuery(
+                'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC'
+            )
+                ->setParameter('a', $aula)
+                ->setParameter('d', new \DateTime($dia))
+                ->setParameter('ar', $area);
+        };
 
         $result = $query->getResult();
 
@@ -49,14 +59,15 @@ class OcupacionRepository extends ServiceEntityRepository
     {
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf))) and id<>:id')
-        ->setParameter('a', $aula)
-        ->setParameter('d1', $dia)
-        ->setParameter('hi', $hora_inicio)
-        ->setParameter('hf', $hora_fin)
-        ->setParameter('id', $id);
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf))) and id<>:id'
+        )
+            ->setParameter('a', $aula)
+            ->setParameter('d1', $dia)
+            ->setParameter('hi', $hora_inicio)
+            ->setParameter('hf', $hora_fin)
+            ->setParameter('id', $id);
 
-        return (count( $query->getResult())>0); 
+        return (count($query->getResult()) > 0);
     }
 
 

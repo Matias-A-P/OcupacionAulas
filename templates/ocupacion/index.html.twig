@@ -5,7 +5,7 @@
 	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block cardheader %}
-	<div class="col-sm-5">
+	<div class="col-sm-3">
 		<h5>Ocupación de Aulas por día</h5>
 	</div>
 	<div class="col-sm-6">
@@ -17,8 +17,7 @@
 		&nbsp;&nbsp;&nbsp;
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
-	<div class="col-sm-1">
-	</div>
+	{% include "ocupacion/_form_filtro_area.html.twig" %}
 {% endblock %}
 {% block cardbody %}
 	<div class="container-fluid">
@@ -415,4 +414,19 @@
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('js/ocupacion.js') }}"></script>
+<script>
+
+//on ready 
+$(function() {
+	// filtro areas
+	var fArea = $('#area');
+    $.post("{{ path('areas_json') }}", function(areas) {
+        $.each(areas, function (key,ar) {
+            fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
+        });
+    });
+	$("#area").prop("selectedIndex", {{area}});
+	// fin filtro areas
+});
+</script>
 {% endblock %}

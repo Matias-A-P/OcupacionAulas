@@ -27,6 +27,7 @@ class OcupacionController extends AbstractController
         //date_default_timezone_set("America/Buenos_Aires");
         $dia = $request->query->get('dia', date('Y-m-d'));
         $vista = $request->query->get('vista', 'dia');
+        $area = $request->query->get('area', 0);
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i = 0;
@@ -77,7 +78,7 @@ class OcupacionController extends AbstractController
                     $sabado[$i] = array($ocup);
                 }
             } else {
-                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId());
+                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId(), $area);
                 if (empty($arrOcup[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
@@ -101,7 +102,8 @@ class OcupacionController extends AbstractController
         } else {
             return $this->render('ocupacion/index.html.twig', [
                 'ocupacions' => $arrOcup,
-                'fecha' => $dia
+                'fecha' => $dia,
+                'area' => $area
             ]);
         }
     }

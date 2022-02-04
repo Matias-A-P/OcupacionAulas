@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+
 #[Route('/areas')]
 class AreasController extends AbstractController
 {
@@ -41,6 +42,21 @@ class AreasController extends AbstractController
             'area' => $area,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/json', name: 'areas_json', methods: ['GET','POST'])]
+    public function getAreasJson(AreasRepository $areasRepository): Response
+    {
+        $areas = $areasRepository->findAll();
+        $responseArray = array();
+        foreach($areas as $a){
+            $responseArray[] = array(
+                "id" => $a->getId(),
+                "area" => $a->getArea()
+            );
+        };
+        //dd($responseArray);
+        return new JsonResponse($responseArray);
     }
 
     #[Route('/{id}', name: 'areas_show', methods: ['GET'])]
@@ -95,4 +111,6 @@ class AreasController extends AbstractController
         };
         return new JsonResponse($responseArray);
     }
+
+
 }
