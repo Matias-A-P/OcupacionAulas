@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/areas')]
 class AreasController extends AbstractController
@@ -84,7 +81,7 @@ class AreasController extends AbstractController
         return $this->redirectToRoute('areas_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/catedras', name: 'areas_catedras', methods: ['GET', 'POST'])]
+    #[Route('/{id}/catedras', name: 'areas_catedras', methods: ['POST'])]
     public function getCatedras(int $id): Response
     {
         $area = $this->getDoctrine()->getRepository(Areas::class)->find($id);
@@ -96,7 +93,6 @@ class AreasController extends AbstractController
                 "nombre" => $catedra->getNombre()
             );
         };
-        //dd($responseArray);
         return new JsonResponse($responseArray);
     }
 }

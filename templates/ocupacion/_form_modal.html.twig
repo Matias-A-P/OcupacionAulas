@@ -42,21 +42,22 @@
 	{{ form_end(form) }}
 </div>
 <script>
-var selArea = $('#ocupacion_id_area');
-var selCatedra = $('#ocupacion_id_catedra');
-$('#ocupacion_id_area').change(function() {
-  var data = {};
-  data[selArea.attr('name')] = selArea.val();
-  $.ajax({
-    url : '/areas/'+selArea.val()+'/catedras',
-    type: 'GET',
-    dataType : 'JSON',
-    complete: function(catedras) {
-		$.each(catedras, function (key, catedra) {
-        	selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
-        });
+	var selArea = $('#ocupacion_id_area');
+	var selCatedra = $('#ocupacion_id_catedra');
+	$('#ocupacion_id_area').change(function() {
+  		var data = {};
+  		data[selArea.attr('name')] = selArea.val();
+  		$.ajax({
+    		url : '/areas/'+selArea.val()+'/catedras',
+    		type: 'POST',
+    		dataType : 'JSON',
+    		success: function(catedras) {
+				$.each(catedras, function (key, catedra) {
+					selCatedra.html('');
+        			selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
+        		});
     	
-    }
-  });
-});
+    		}
+  		});
+	});
 </script>
