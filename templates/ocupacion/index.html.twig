@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
+	{# <link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/> #}
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-3">
@@ -22,8 +22,8 @@
 {% block cardbody %}
 	<div class="container-fluid">
 		<div class="table-responsive">
-			<table class="table table-bordered text-center">
-				<thead>
+			<table class="table table-sm table-hover table-borderless align-middle text-center">
+				<thead class="table-light">
 					<tr class="bg-light-gray">
 						<th class="col-sm-1 text-uppercase">Aula</th>
 						<th class="col-sm-1 text-uppercase">14:00</th>
@@ -424,8 +424,8 @@ $(function() {
         $.each(areas, function (key,ar) {
             fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
         });
-    });
-	$("#area").prop("selectedIndex", {{area}});
+		fArea.val({{area}}).change();
+    }); 
 	// fin filtro areas
 });
 </script>

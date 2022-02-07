@@ -12,7 +12,7 @@
 			{{form_widget(form.id_area)}}
 		</div>
 		<div class="col-7">
-			<span class="input-group-text">Cátedra</span>
+			<span class="input-group-text">Actividad</span>
 			{{form_widget(form.id_catedra)}}
 		</div>
 	</div>
@@ -41,12 +41,13 @@
 	</div>
 	{{ form_end(form) }}
 </div>
+
 <script>
 	var selArea = $('#ocupacion_id_area');
 	var selCatedra = $('#ocupacion_id_catedra');
 	$('#ocupacion_id_area').change(function() {
-  		var data = {};
-  		data[selArea.attr('name')] = selArea.val();
+  		//var data = {};
+  		//data[selArea.attr('name')] = selArea.val();
 		selCatedra.html('');
   		$.ajax({
     		url : '/areas/'+selArea.val()+'/catedras',
@@ -60,4 +61,5 @@
     		}
   		});
 	});
+	selArea.val(1).change();
 </script>

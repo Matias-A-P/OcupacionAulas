@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OcupacionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OcupacionRepository::class)
@@ -50,6 +51,7 @@ class Ocupacion
 
     /**
      * @ORM\ManyToOne(targetEntity=Areas::class, inversedBy="ocupacions")
+     * @Assert\NotBlank
      */
     private $id_area;
 
