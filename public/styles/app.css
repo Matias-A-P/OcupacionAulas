@@ -4,6 +4,14 @@
     font-size: small;
 }
 
+.table tr {
+    border-bottom: 0.5px solid lightgray;
+}
+
+.text-verdelogo {
+    color: #047835;
+}
+
 /* .table thead {
     border-bottom: 0.6px solid green;
 } */

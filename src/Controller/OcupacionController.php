@@ -97,7 +97,8 @@ class OcupacionController extends AbstractController
                 'viernes' => $viernes,
                 'sabado' => $sabado,
                 'fecha' => strtotime($lun),
-                'aulas' => $aulas
+                'aulas' => $aulas,
+                'area' => $area
             ]);
         } else {
             return $this->render('ocupacion/index.html.twig', [

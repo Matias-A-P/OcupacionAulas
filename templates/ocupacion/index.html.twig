@@ -17,14 +17,14 @@
 		&nbsp;&nbsp;&nbsp;
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="fas fa-calendar-day"></i>&nbsp;Semanal</a>
 	</div>
-	{% include "ocupacion/_form_filtro_area.html.twig" %}
+	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "dia"}) }}
 {% endblock %}
 {% block cardbody %}
 	<div class="container-fluid">
 		<div class="table-responsive">
-			<table class="table table-sm table-hover table-borderless align-middle text-center">
+			<table class="table table-sm table-hover table-borderless align-top text-center">
 				<thead class="table-light">
-					<tr class="bg-light-gray">
+					<tr>
 						<th class="col-sm-1 text-uppercase">Aula</th>
 						<th class="col-sm-1 text-uppercase">14:00</th>
 						<th class="col-sm-1 text-uppercase">14:30</th>
@@ -375,58 +375,26 @@
 	</tbody>
 </tr></tbody></table>
 
-<div class="modal fade" id="newOcup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newOcup" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="newOcupLabel">Nueva Ocupación</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body" id="new-result">			
-               
-			</div>
-			<div class="modal-footer">
-            	
-			</div>
-		</div>
-	</div>
-</div>
+{% include "ocupacion/_modales.html.twig" %}
 
-<div class="modal fade" id="editOcup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editOcup" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="editOcupLabel">Editar Ocupación</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body" id="edit-result">			
-               
-			</div>
-			<div class="modal-footer">
-            	
-			</div>
-		</div>
-	</div>
-</div>
+</div></div>
+{% endblock %}
 
-</div></div>{% endblock %}
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('js/ocupacion.js') }}"></script>
-<script>
-
-//on ready 
-$(function() {
-	// filtro areas
-	var fArea = $('#area');
-    $.post("{{ path('areas_json') }}", function(areas) {
-        $.each(areas, function (key,ar) {
-            fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
-        });
-		fArea.val({{area}}).change();
-    }); 
-	// fin filtro areas
-});
+	<script>//on ready 
+		$(function() {
+		// filtro areas
+		var fArea = $('#area');
+    	$.post("{{ path('areas_json') }}", function(areas) {
+        	$.each(areas, function (key,ar) {
+            	fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
+        	});
+			fArea.val({{area}}).change();
+    	}); 
+		// fin filtro areas
+		});
 </script>
 {% endblock %}
