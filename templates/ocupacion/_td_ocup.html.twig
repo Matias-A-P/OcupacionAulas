@@ -1,6 +1,6 @@
 <td
 	colspan="{{bloques}}" style="transform: rotate(0);">
-	{# verde: 047835   00a2a7 #}
+	{# verde logo: 047835 #}
 	<div class="text-verdelogo lh-1">
 		<strong>{{ocup.IdCatedra }}</strong>
 	</div>
@@ -9,7 +9,9 @@
 	<div class="text-danger align-bottom fw-bold">
 		<small>{{inicio}}&nbsp;a&nbsp;{{fin}}</small>
 	</div>
-	<a href="#" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
-		<i class="fas fa-edit"></i>
-	</a>
+	<div class="d-flex justify-content-center">
+		<a href="#" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);"><i class="fas fa-edit"></i></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		{{ include('ocupacion/_delete_form.html.twig', {'id': ocup.id}) }}
+	</div>
 </td>

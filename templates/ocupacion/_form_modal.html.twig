@@ -43,6 +43,7 @@
 </div>
 
 <script>
+	// filtrar Catedras por Area
 	var selArea = $('#ocupacion_id_area');
 	var selCatedra = $('#ocupacion_id_catedra');
 	$('#ocupacion_id_area').change(function() {
@@ -52,14 +53,12 @@
   		$.ajax({
     		url : '/areas/'+selArea.val()+'/catedras',
     		type: 'POST',
-    		dataType : 'JSON',
-    		success: function(catedras) {
+    		dataType : 'JSON'
+		  }).done(function(catedras) {
 				$.each(catedras, function (key, catedra) {
         			selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
         		});
-    	
-    		}
-  		});
+    		});
 	});
 	selArea.val(1).change();
 </script>

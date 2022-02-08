@@ -1,4 +1,5 @@
-<form method="post" action="{{ path('ocupacion_delete', {'id': ocupacion.id}) }}" onsubmit="return confirm('¿Borrar Ocupación?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ocupacion.id) }}">
-    <button class="btn btn-danger">Borrar</button>
+<form method="post" action="{{ path('ocupacion_delete', {'id': id}) }}" onsubmit="return confirm('¿Borrar Ocupación?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+    <a href="#" onclick="$(this).closest('form').submit()" style="color: red;"><i class="far fa-trash-alt"></i></a>
+    {# <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button> #}
 </form>
