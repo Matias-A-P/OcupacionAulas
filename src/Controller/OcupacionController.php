@@ -123,11 +123,16 @@ class OcupacionController extends AbstractController
     ///{aula}/{hora}   , int $aula=0, string $hora
     public function new(Request $request): Response
     {
-        $aula = $request->query->get('aula', 0);
-        $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
+        if ($request->isMethod('GET')) {
+            $aula = $request->query->get('aula', 0);
+            $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
+            $hora = $request->query->get('hora', '14:00');
+        } else {
+            $aula = $request->request->get('aula', 0);
+            $dia = new \DateTime($request->request->get('dia', date('Y-m-d')));
+            $hora = $request->request->get('hora', '14:00');
+        }
         $dia->setTime(0, 0, 0);
-        $hora = $request->query->get('hora', '14:00');
-
         $ocupacion = new Ocupacion();
         $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
@@ -137,7 +142,7 @@ class OcupacionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
+            $sdia = date('Y-m-d', $dia->getTimestamp()); // $ocupacion->getFecha()->getTimestamp()
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();
@@ -148,6 +153,7 @@ class OcupacionController extends AbstractController
             'ocupacion' => $ocupacion,
             'form' => $form,
             'action' => $this->generateUrl('ocupacion_new'),
+            'idOcup' => 0
         ]);
     }
 
@@ -200,14 +206,15 @@ class OcupacionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
+            $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
+            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
             'action' => $this->generateUrl('ocupacion_edit_modal', array('id' => $ocupacion->getId())),
+            'idOcup' => $ocupacion->getId()
         ]);
     }
 

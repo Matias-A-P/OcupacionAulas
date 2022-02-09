@@ -4,6 +4,7 @@ function onSubmit(event) {
     err = false;
     $('#msj').text('');
     $(".spinner").css("display", "block");
+    var id = $('#idocup').val();
     var au = $('#ocupacion_id_aula').val();
     var di = $('#ocupacion_fecha').val();
     var hi = $('#ocupacion_hora_inicio').val();
@@ -13,7 +14,6 @@ function onSubmit(event) {
     var d2 = new Date(di + ' ' + hf);
     var m1 = d1.getMinutes();
     var m2 = d2.getMinutes();
-    var id = 0;
     
     if ((d1.getTime() >= d2.getTime()) || ((m1!=0 && m1!=30) || (m2!=0 && m2!=30)) || (co <= 0)) {
         $('#msj').text('Verifique horario y/o comisión');
@@ -24,12 +24,11 @@ function onSubmit(event) {
             type: "POST",
             url: "/ocupado",
             data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id },
-            // async: false,
+            async: false,
             success: function (res) {
-                console.log(res);
                 if (res == 'true') {
-                    $('#msj').text('Se superpone el horario');
                     err = true;
+                    $('#msj').text('Se superpone el horario');
                 };
             } 
         });
@@ -40,7 +39,7 @@ function onSubmit(event) {
     }
 };
 
-window.onSubmit = onSubmit;
+//window.onSubmit = onSubmit;
 
 function nueva(btn) {
     var dr = btn.getAttribute("data-ref");

@@ -11,18 +11,18 @@
 		<h5>Ocupación de Aulas por semana</h5>
 	</div>
 	<div class="col-sm-6">
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
+	<div class="d-flex justify-content-center">
+		<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
 			<i class="fas fa-calendar-day"></i>
 		</a>
-		&nbsp;&nbsp;&nbsp;
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-1 day")|date('Y-m-d')}) }}" role="button">
 			<i class="fas fa-chevron-circle-left"></i>
 		</a>
-		<span>&nbsp;{{fecha|date('d/m/Y')}}&nbsp;</span>
+		<div class="text-verdelogo fw-bold mx-3">{{fecha|date('d/m/Y')}}</div>
 		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+1 day")|date('Y-m-d')}) }}" role="button">
 			<i class="fas fa-chevron-circle-right"></i>
 		</a>
-	</div>
+	</div></div>
 	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "semanal"}) }}
 {% endblock %}
 {% block cardbody %}

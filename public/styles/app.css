@@ -9,9 +9,11 @@
 }
 
 .text-verdelogo {
-    color: #047835;
+    color: #047835 !important;
 }
 
 /* .table thead {
     border-bottom: 0.6px solid green;
 } */
+
+/* verde logo fcvs: #047835 */

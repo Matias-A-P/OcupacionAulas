@@ -47,7 +47,8 @@ class OcupacionRepository extends ServiceEntityRepository
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
             'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha>=:d1 and o.fecha<:d2 order by o.id_aula ASC, o.fecha ASC'
-        )->setParameter('a', $aula)
+        )
+            ->setParameter('a', $aula)
             ->setParameter('d1', new \DateTime($dia1))
             ->setParameter('d2', new \DateTime($dia2));
         $result = $query->getResult();
@@ -59,15 +60,15 @@ class OcupacionRepository extends ServiceEntityRepository
     {
         $entm = $this->getEntityManager();
         $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d1 and id<>:id and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))'
+            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.id<>:id and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))'
         )
             ->setParameter('a', $aula)
-            ->setParameter('d1', $dia) //new \DateTime(
+            ->setParameter('d1', new \DateTime($dia)) 
             ->setParameter('hi', $hora_inicio)
             ->setParameter('hf', $hora_fin)
             ->setParameter('id', $id);
-        return true;
-        //return (count($query->getResult()) > 0);
+
+        return (count($query->getResult()) > 0);
     }
 
 

@@ -1,5 +1,5 @@
 <div class="col-sm-3">
-    <form action="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), area: area, vista: vista}) }}">
+    <form action="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: vista, area: area}) }}">
         <div class="input-group">
             <select name="area" id="area" class="form-control">
                 <option value="0">(todas las Areas)</option>
