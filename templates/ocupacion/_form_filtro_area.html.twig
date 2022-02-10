@@ -1,9 +1,11 @@
 <div class="col-sm-3">
-    <form action="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: vista, area: area}) }}">
+    <form action="{{ path('ocupacion_index') }}">
         <div class="input-group">
             <select name="area" id="area" class="form-control">
                 <option value="0">(todas las Areas)</option>
             </select>
+            <input type="hidden" name="dia" id="dia" value={{fecha|date('Y-m-d')}}>
+            <input type="hidden" name="vista" id="vista" value={{vista}}>
             <button type="submit" class="btn btn-sm btn-outline-secondary">Filtrar</button>
         </div>
     </form>

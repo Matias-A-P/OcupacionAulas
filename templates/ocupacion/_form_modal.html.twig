@@ -34,10 +34,19 @@
 			{{form_widget(form.hora_fin)}}
 		</div>
 	</div>
+	<div class="input-group mt-4">
+		<div class="col-2 align-middle">
+			{{form_widget(form.rep_semanal)}}
+		</div>
+		<div class="col-4">
+			<label for="ocupacion_rep_fecha_fin" class="form-label">Fecha Fin</span>
+			{{form_widget(form.rep_fecha_fin)}}
+		</div>
+	</div>
 	<div class="d-flex justify-content-between align-items-center">
-		<button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
-		<span id="msj" style="color: red;"></span>
 		<span class="spinner-border spinner text-info" id="spinner" role="status" aria-hidden="true" style="display: none"></span>
+		<span id="msj" style="color: red;"></span>
+		<button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
 	</div>
 	<input type="hidden" id="idocup" value={{idOcup}}>
 	{{ form_end(form) }}

@@ -55,6 +55,21 @@ class Ocupacion
      */
     private $id_area;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $rep_semanal;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $rep_fecha_fin;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rep_id_padre;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +155,42 @@ class Ocupacion
     public function setIdArea(?Areas $id_area): self
     {
         $this->id_area = $id_area;
+
+        return $this;
+    }
+
+    public function getRepSemanal(): ?bool
+    {
+        return $this->rep_semanal;
+    }
+
+    public function setRepSemanal(bool $rep_semanal): self
+    {
+        $this->rep_semanal = $rep_semanal;
+
+        return $this;
+    }
+
+    public function getRepFechaFin(): ?\DateTimeInterface
+    {
+        return $this->rep_fecha_fin;
+    }
+
+    public function setRepFechaFin(?\DateTimeInterface $rep_fecha_fin): self
+    {
+        $this->rep_fecha_fin = $rep_fecha_fin;
+
+        return $this;
+    }
+
+    public function getRepIdPadre(): ?int
+    {
+        return $this->rep_id_padre;
+    }
+
+    public function setRepIdPadre(?int $rep_id_padre): self
+    {
+        $this->rep_id_padre = $rep_id_padre;
 
         return $this;
     }

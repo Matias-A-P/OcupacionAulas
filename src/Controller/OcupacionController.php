@@ -146,6 +146,24 @@ class OcupacionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();
+
+            // repetir
+            if ($ocupacion->getRepSemanal()) {
+                $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+                $ocupRep = new Ocupacion();
+                $ocupRep->setIdAula($ocupacion->getIdAula());
+                $ocupRep->setIdArea($ocupacion->getIdArea());
+                $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
+                $ocupRep->setComision($ocupacion->getComision());
+                $ocupRep->setFecha($fecha);
+                $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
+                $ocupRep->setHoraFin($ocupacion->getHoraFin());
+                $ocupRep->setRepIdPadre($ocupacion->getId());
+                $ocupRep->setRepSemanal(true);
+                $entityManager->persist($ocupRep);
+                $entityManager->flush();
+            }
+
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
 
