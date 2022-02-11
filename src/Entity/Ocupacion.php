@@ -66,7 +66,7 @@ class Ocupacion
     private $rep_fecha_fin;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
     private $rep_id_padre;
 

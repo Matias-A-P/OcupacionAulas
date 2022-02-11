@@ -43,8 +43,11 @@ function onSubmit(event) {
 
 function nueva(btn) {
     var dr = btn.getAttribute("data-ref");
+    var aula = btn.getAttribute("data-id-aula");
+    var dia = btn.getAttribute("data-dia");
+    var hora = btn.getAttribute("data-hora");
     err = false;
-    $.post(dr, function (result) {
+    $.post(dr, {'aula': aula, 'dia': dia, 'hora': hora }, function (result) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);
@@ -54,10 +57,9 @@ function nueva(btn) {
 function editar(btn) {
     var id = btn.getAttribute("data-edit-id");
     err = false;
-    $.post("/ocupacion/edit_modal/" + id, { 'id': id }, function (result) {
+    $.post("/ocupacion/edit_modal/" + id, function (result) {
         $('#editOcup').modal('show');
         $("#edit-result").html(result);
         $("#formOcup").on('submit', onSubmit);
     });
 };
-

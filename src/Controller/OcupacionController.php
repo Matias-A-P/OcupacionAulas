@@ -120,7 +120,6 @@ class OcupacionController extends AbstractController
      * 
      * @IsGranted("ROLE_ADMIN")
      */
-    ///{aula}/{hora}   , int $aula=0, string $hora
     public function new(Request $request): Response
     {
         if ($request->isMethod('GET')) {
@@ -138,6 +137,7 @@ class OcupacionController extends AbstractController
         $ocupacion->setFecha($dia);
         $ocupacion->setHoraInicio(new \DateTime($hora));
         $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
+        $ocupacion->setRepFechaFin($dia);
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
 
@@ -150,18 +150,23 @@ class OcupacionController extends AbstractController
             // repetir
             if ($ocupacion->getRepSemanal()) {
                 $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
-                $ocupRep = new Ocupacion();
-                $ocupRep->setIdAula($ocupacion->getIdAula());
-                $ocupRep->setIdArea($ocupacion->getIdArea());
-                $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
-                $ocupRep->setComision($ocupacion->getComision());
-                $ocupRep->setFecha($fecha);
-                $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
-                $ocupRep->setHoraFin($ocupacion->getHoraFin());
-                $ocupRep->setRepIdPadre($ocupacion->getId());
-                $ocupRep->setRepSemanal(true);
-                $entityManager->persist($ocupRep);
-                $entityManager->flush();
+                $fecha_fin = $ocupacion->getRepFechaFin();
+                while ($fecha <= $fecha_fin) {
+                    $ocupRep = new Ocupacion();
+                    $ocupRep->setIdAula($ocupacion->getIdAula());
+                    $ocupRep->setIdArea($ocupacion->getIdArea());
+                    $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
+                    $ocupRep->setComision($ocupacion->getComision());
+                    $ocupRep->setFecha($fecha);
+                    $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
+                    $ocupRep->setHoraFin($ocupacion->getHoraFin());
+                    $ocupRep->setRepIdPadre($ocupacion->getId());
+                    $ocupRep->setRepSemanal(true);
+                    $ocupRep->setRepFechaFin($fecha_fin);
+                    $entityManager->persist($ocupRep);
+                    $entityManager->flush();
+                    $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+                }
             }
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
@@ -217,7 +222,7 @@ class OcupacionController extends AbstractController
     public function editModal(Request $request, int $id): Response
     {
 
-        $ocupacion = $this->getDoctrine()->getRepository(Ocupacion::class)->find($id); // $request->query->get('id',15)
+        $ocupacion = $this->getDoctrine()->getRepository(Ocupacion::class)->find($id);
 
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
@@ -225,6 +230,30 @@ class OcupacionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
+
+            // repetir
+            if ($ocupacion->getRepSemanal() && ($ocupacion->getRepIdPadre() <= 0)) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+                $fecha_fin = $ocupacion->getRepFechaFin();
+                while ($fecha <= $fecha_fin) {
+                    $ocupRep = new Ocupacion(); 
+                    $ocupRep->setIdAula($ocupacion->getIdAula());
+                    $ocupRep->setIdArea($ocupacion->getIdArea());
+                    $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
+                    $ocupRep->setComision($ocupacion->getComision());
+                    $ocupRep->setFecha($fecha);
+                    $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
+                    $ocupRep->setHoraFin($ocupacion->getHoraFin());
+                    $ocupRep->setRepIdPadre($ocupacion->getId());
+                    $ocupRep->setRepSemanal(true);
+                    $ocupRep->setRepFechaFin($fecha_fin);
+                    $entityManager->persist($ocupRep);
+                    $entityManager->flush();
+                    $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+                }
+            }
+
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
 

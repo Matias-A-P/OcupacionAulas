@@ -1,46 +1,46 @@
 <div class="container">
 	{{ form_start(form, {'action': action, 'attr': {'id': 'formOcup'} } ) }}
 	<div class="input-group mb-3">
-		<div class="col-12">
-			<span class="input-group-text">Aula</span>
+		<div class="form-floating col-12">
 			{{form_widget(form.id_aula)}}
+			<label for="ocupacion_id_aula">Aula</label>
 		</div>
 	</div>
 	<div class="input-group mb-3">
-		<div class="col-5">
-			<span class="input-group-text">Area</span>
+		<div class="form-floating col-5">
 			{{form_widget(form.id_area)}}
+			<label cfor="ocupacion_id_area">Area</label>
 		</div>
-		<div class="col-7">
-			<span class="input-group-text">Actividad</span>
+		<div class="form-floating col-7 ps-2">
 			{{form_widget(form.id_catedra)}}
+			<label for="ocupacion_id_catedra">Actividad</label>
 		</div>
 	</div>
 	<div class="input-group mb-3">
-		<div class="col-2">
-			<span class="input-group-text">Comisión</span>
-			{{form_widget(form.comision)}}
+		<div class="form-floating col-2">
+			{{form_widget(form.comision, {'attr': {'placeholder': 'Comisión'}})}}
+			<label for="ocupacion_comision">Comisión</label>
 		</div>
-		<div class="col-4">
-			<span class="input-group-text">Fecha</span>
+		<div class="form-floating col-4 ps-2">
 			{{form_widget(form.fecha)}}
+			<label for="ocupacion_fecha">Fecha</label>
 		</div>
-		<div class="col-3">
-			<span class="input-group-text">Inicio</span>
+		<div class="form-floating col-3 ps-2">
 			{{form_widget(form.hora_inicio)}}
+			<label for="ocupacion_hora_inicio">Inicio</label>
 		</div>
-		<div class="col-3">
-			<span class="input-group-text">Fin</span>
+		<div class="form-floating col-3 ps-2">
 			{{form_widget(form.hora_fin)}}
+			<label for="ocupacion_hora_fin">Fin</label>
 		</div>
 	</div>
 	<div class="input-group mt-4">
 		<div class="col-2 align-middle">
 			{{form_widget(form.rep_semanal)}}
 		</div>
-		<div class="col-4">
-			<label for="ocupacion_rep_fecha_fin" class="form-label">Fecha Fin</span>
+		<div class="form-floating col-4 ps-2">
 			{{form_widget(form.rep_fecha_fin)}}
+			<label for="ocupacion_rep_fecha_fin">Fin Repetición</span>
 		</div>
 	</div>
 	<div class="d-flex justify-content-between align-items-center">
