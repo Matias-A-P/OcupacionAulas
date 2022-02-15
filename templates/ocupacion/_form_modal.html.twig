@@ -9,7 +9,7 @@
 	<div class="input-group mb-3">
 		<div class="form-floating col-5">
 			{{form_widget(form.id_area)}}
-			<label cfor="ocupacion_id_area">Area</label>
+			<label for="ocupacion_id_area">Area</label>
 		</div>
 		<div class="form-floating col-7 ps-2">
 			{{form_widget(form.id_catedra)}}
@@ -48,6 +48,9 @@
 			{{form_widget(form.rep_fecha_fin)}}
 			<label for="ocupacion_rep_fecha_fin">Fin Repetición</span>
 		</div>
+		<div>
+			Fecha Inicio: {{ fecha_padre|date('d-m-Y') }}
+		</div>
 	</div>
 	<div class="d-flex justify-content-between align-items-center">
 		<span class="spinner-border spinner text-info" id="spinner" role="status" aria-hidden="true" style="display: none"></span>
@@ -63,11 +66,10 @@
 	var selArea = $('#ocupacion_id_area');
 	var selCatedra = $('#ocupacion_id_catedra');
 	$('#ocupacion_id_area').change(function() {
-  		//var data = {};
-  		//data[selArea.attr('name')] = selArea.val();
 		selCatedra.html('');
+		if (selArea.val()>0) {
   		$.ajax({
-    		url : '/areas/'+selArea.val()+'/catedras',
+    		url : '/areas/'+ selArea.val() +'/catedras',
     		type: 'POST',
     		dataType : 'JSON'
 		  }).done(function(catedras) {
@@ -75,6 +77,6 @@
         			selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
         		});
     		});
+		}
 	});
-	{#selArea.val(1).change();#}
 </script>

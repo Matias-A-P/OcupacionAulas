@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Ocupacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateInterval;
 
 /**
  * @method Ocupacion|null find($id, $lockMode = null, $lockVersion = null)
@@ -71,6 +72,39 @@ class OcupacionRepository extends ServiceEntityRepository
         return (count($query->getResult()) > 0);
     }
 
+    public function repetir(Ocupacion $ocupacion)
+    {
+        $entm = $this->getEntityManager();
+        $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+        $fecha_fin = $ocupacion->getRepFechaFin();
+        while ($fecha <= $fecha_fin) {
+            $ocupRep = new Ocupacion();
+            $ocupRep->setIdAula($ocupacion->getIdAula());
+            $ocupRep->setIdArea($ocupacion->getIdArea());
+            $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
+            $ocupRep->setComision($ocupacion->getComision());
+            $ocupRep->setFecha($fecha);
+            $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
+            $ocupRep->setHoraFin($ocupacion->getHoraFin());
+            $ocupRep->setRepIdPadre($ocupacion->getId());
+            $ocupRep->setRepSemanal(true);
+            $ocupRep->setRepFechaFin($fecha_fin);
+            $ocupRep->setObservaciones($ocupacion->getObservaciones());
+            $entm->persist($ocupRep);
+            $entm->flush();
+            $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
+        }
+        return true;
+    }
+
+    public function borrarRepeticiones(int $id_padre)
+    {
+        $entm = $this->getEntityManager();
+        $query = $entm->createQuery('delete from App\Entity\Ocupacion o where o.rep_id_padre = :p')
+            ->setParameter('p', $id_padre);
+        $query->execute();
+        return true;
+    }
 
     // /**
     //  * @return Ocupacion[] Returns an array of Ocupacion objects

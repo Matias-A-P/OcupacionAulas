@@ -13,6 +13,7 @@ class AppController extends AbstractController
      */
     public function index(): Response
     {
+        date_default_timezone_set("America/Buenos_Aires");
         return $this->render('app/index.html.twig', [
             'controller_name' => 'AppController',
         ]);

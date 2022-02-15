@@ -23,8 +23,6 @@ class OcupacionController extends AbstractController
      */
     public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
     {
-        //$dia->setTimezone(new TimeZones::getName("America/Buenos_Aires"));    
-        //date_default_timezone_set("America/Buenos_Aires");
         if ($request->isMethod('GET')) {
             $dia = $request->query->get('dia', date('Y-m-d'));
             $vista = $request->query->get('vista', 'dia');
@@ -146,28 +144,9 @@ class OcupacionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();
-
             // repetir
             if ($ocupacion->getRepSemanal()) {
-                $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
-                $fecha_fin = $ocupacion->getRepFechaFin();
-                while ($fecha <= $fecha_fin) {
-                    $ocupRep = new Ocupacion();
-                    $ocupRep->setIdAula($ocupacion->getIdAula());
-                    $ocupRep->setIdArea($ocupacion->getIdArea());
-                    $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
-                    $ocupRep->setComision($ocupacion->getComision());
-                    $ocupRep->setFecha($fecha);
-                    $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
-                    $ocupRep->setHoraFin($ocupacion->getHoraFin());
-                    $ocupRep->setRepIdPadre($ocupacion->getId());
-                    $ocupRep->setRepSemanal(true);
-                    $ocupRep->setRepFechaFin($fecha_fin);
-                    $ocupRep->setObservaciones($ocupacion->getObservaciones());
-                    $entityManager->persist($ocupRep);
-                    $entityManager->flush();
-                    $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
-                }
+                $this->getDoctrine()->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
@@ -232,37 +211,24 @@ class OcupacionController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
 
+            $this->getDoctrine()->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
             // repetir
             if ($ocupacion->getRepSemanal() && ($ocupacion->getRepIdPadre() <= 0)) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
-                $fecha_fin = $ocupacion->getRepFechaFin();
-                while ($fecha <= $fecha_fin) {
-                    $ocupRep = new Ocupacion(); 
-                    $ocupRep->setIdAula($ocupacion->getIdAula());
-                    $ocupRep->setIdArea($ocupacion->getIdArea());
-                    $ocupRep->setIdCatedra($ocupacion->getIdCatedra());
-                    $ocupRep->setComision($ocupacion->getComision());
-                    $ocupRep->setFecha($fecha);
-                    $ocupRep->setHoraInicio($ocupacion->getHoraInicio());
-                    $ocupRep->setHoraFin($ocupacion->getHoraFin());
-                    $ocupRep->setRepIdPadre($ocupacion->getId());
-                    $ocupRep->setRepSemanal(true);
-                    $ocupRep->setRepFechaFin($fecha_fin);
-                    $entityManager->persist($ocupRep);
-                    $entityManager->flush();
-                    $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));
-                }
+                $this->getDoctrine()->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
-
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
-
+        $fecha_padre = $ocupacion->getFecha();
+        if ($ocupacion->getRepIdPadre() > 0) {
+            $padre = $this->getDoctrine()->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
+            $fecha_padre = $padre->getFecha();
+        }
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
             'action' => $this->generateUrl('ocupacion_edit_modal', array('id' => $ocupacion->getId())),
-            'idOcup' => $ocupacion->getId()
+            'idOcup' => $ocupacion->getId(),
+            'fecha_padre' => $fecha_padre,
         ]);
     }
 
@@ -274,6 +240,7 @@ class OcupacionController extends AbstractController
     public function delete(Request $request, Ocupacion $ocupacion): Response
     {
         if ($this->isCsrfTokenValid('delete' . $ocupacion->getId(), $request->request->get('_token'))) {
+            $this->getDoctrine()->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ocupacion);
             $entityManager->flush();

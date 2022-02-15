@@ -51,6 +51,7 @@ function nueva(btn) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);
+        $('#ocupacion_id_area').val(0).change();
     });
 };
 

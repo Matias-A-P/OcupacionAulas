@@ -1,10 +1,7 @@
-repeticion
-
-limitar hora 00 30
+repeticion: que hacer cuando se edita?
 buscar
 mapa edificio
-
 catedras
 	docente
 	tutoria/teoria/practica/otros
-observaciones
+
