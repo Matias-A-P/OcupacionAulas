@@ -70,6 +70,11 @@ class Ocupacion
      */
     private $rep_id_padre;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $observaciones;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -191,6 +196,18 @@ class Ocupacion
     public function setRepIdPadre(?int $rep_id_padre): self
     {
         $this->rep_id_padre = $rep_id_padre;
+
+        return $this;
+    }
+
+    public function getObservaciones(): ?string
+    {
+        return $this->observaciones;
+    }
+
+    public function setObservaciones(?string $observaciones): self
+    {
+        $this->observaciones = $observaciones;
 
         return $this;
     }

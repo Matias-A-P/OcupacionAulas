@@ -20,7 +20,7 @@
 			{% set route_name = app.request.attributes.get('_route') %}
 			<nav class="navbar navbar-expand-md navbar-light bg-light">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="#"><img src="{{ asset('image/logo.png') }}" alt="" width="134" height="40"></a>
+					<a class="navbar-brand" href="javascript:void(0)"><img src="{{ asset('image/logo.png') }}" alt="" width="134" height="40"></a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
@@ -32,6 +32,7 @@
 						</div>
 						<div class="offcanvas-body">
 							<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+								{% if is_granted("ROLE_ADMIN") %}
 								<li class="nav-item">
 									<a {% if route_name == "aulas_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('aulas_index')}}">
 										<i class="fas fa-university"></i>&nbsp;Aulas</a>
@@ -40,14 +41,17 @@
 									<a {% if route_name == "catedras_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('catedras_index')}}">
 										<i class="fas fa-graduation-cap"></i>&nbsp;Actividades</a>
 								</li>
+								{% endif %}
 								<li class="nav-item">
 									<a {% if route_name == "ocupacion_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('ocupacion_index')}}">
 										<i class="far fa-calendar-alt"></i>&nbsp;Ocupación</a>
 								</li>
-																<li class="nav-item">
+								{% if app.user %}
+								<li class="nav-item">
 									<a {% if route_name == "app_logout" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('app_logout')}}">
-										<i class="fas fa-sign-out-alt"></i>&nbsp;Salir</a>
+										<i class="fas fa-sign-out-alt"></i>&nbsp;Salir ({{app.user.dni}})</a>
 								</li>
+								{% endif %}
 							</ul>
 						</div>
 					</div>

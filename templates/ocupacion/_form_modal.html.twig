@@ -34,6 +34,12 @@
 			<label for="ocupacion_hora_fin">Fin</label>
 		</div>
 	</div>
+	<div class="input-group mb-3">
+		<div class="form-floating col-12">
+			{{form_widget(form.observaciones, {'attr': {'placeholder': 'Observaciones'}})}}
+			<label for="ocupacion_observaciones">Observaciones</label>	
+		</div>
+	</div>
 	<div class="input-group mt-4">
 		<div class="col-2 align-middle">
 			{{form_widget(form.rep_semanal)}}
@@ -70,5 +76,5 @@
         		});
     		});
 	});
-	selArea.val(1).change();
+	{#selArea.val(1).change();#}
 </script>

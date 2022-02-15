@@ -163,6 +163,7 @@ class OcupacionController extends AbstractController
                     $ocupRep->setRepIdPadre($ocupacion->getId());
                     $ocupRep->setRepSemanal(true);
                     $ocupRep->setRepFechaFin($fecha_fin);
+                    $ocupRep->setObservaciones($ocupacion->getObservaciones());
                     $entityManager->persist($ocupRep);
                     $entityManager->flush();
                     $fecha = $ocupacion->getFecha()->add(new DateInterval('P7D'));

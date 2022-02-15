@@ -36,6 +36,7 @@ class OcupacionType extends AbstractType
             ->add('id_area')
             ->add('rep_semanal')
             ->add('rep_fecha_fin', DateType::class, ['widget' => 'single_text'])
+            ->add('observaciones')
         ;
     }
 
