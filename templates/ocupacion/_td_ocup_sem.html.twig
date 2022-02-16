@@ -1,10 +1,15 @@
-<div class="text-verdelogo lh-1">
-	<strong>{{ocup.IdCatedra }}</strong>
-</div>
-<div class="text-primary">Comisión:{{ocup.comision}}</div>
-<div class="text-info">{{ocup.IdArea}}</div>
-<div class="text-danger align-bottom fw-bold">
-	{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}
+<div class="container-ocup">
+	<div class="info-ocup">
+		<div class="text-verdelogo lh-1"><strong>{{ocup.IdCatedra }}</strong></div>
+		<div class="text-primary">Comisión:{{ocup.comision}}</div>
+		<div class="text-info">{{ocup.IdArea}}</div>
+		<div class="text-danger align-bottom fw-bold">{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</div>
+	</div>
+	{% if ocup.observaciones %}
+	<div class="overlay">
+		<div class="obs-ocup text-verdelogo px-1 lh-1">{{ ocup.observaciones }}</div>
+	</div>
+	{% endif %}
 </div>
 {% if is_granted("ROLE_ADMIN") %}
 <div class="d-flex justify-content-center">

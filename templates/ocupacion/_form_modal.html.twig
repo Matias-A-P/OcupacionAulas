@@ -42,15 +42,25 @@
 	</div>
 	<div class="input-group mt-4">
 		<div class="col-2 align-middle">
-			{{form_widget(form.rep_semanal)}}
+			{% if ocupacion.getRepIdPadre() > 0 %}
+				{{form_widget(form.rep_semanal, { 'attr': { 'disabled': 'true' } })}}
+			{% else %}
+				{{ form_widget(form.rep_semanal) }}
+			{% endif %}
 		</div>
 		<div class="form-floating col-4 ps-2">
-			{{form_widget(form.rep_fecha_fin)}}
+			{% if ocupacion.getRepIdPadre() > 0 %}
+				{{form_widget(form.rep_fecha_fin, { 'attr': { 'disabled': 'true' } })}}
+			{% else %}
+				{{form_widget(form.rep_fecha_fin)}}
+			{% endif %}
 			<label for="ocupacion_rep_fecha_fin">Fin Repetición</span>
 		</div>
-		<div>
-			Fecha Inicio: {{ fecha_padre|date('d-m-Y') }}
+		{% if ocupacion.getRepSemanal() %}
+		<div class="col-6 ps-3">
+			Inicio Repetición: {{ fecha_padre|date('l d/m/Y') }}
 		</div>
+		{% endif %}
 	</div>
 	<div class="d-flex justify-content-between align-items-center">
 		<span class="spinner-border spinner text-info" id="spinner" role="status" aria-hidden="true" style="display: none"></span>

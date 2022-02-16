@@ -56,20 +56,20 @@
 									{{ocupacion[0].IdAula}}<div class="font-size13 text-light-gray">
 										Capacidad:{{ocupacion[0].IdAula.capacidad}}</div>
 								</td>
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
-								{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
+								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
 							</tr>
 						{% else %}
 							<tr>
@@ -112,7 +112,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=1 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -125,7 +125,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=2 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -138,7 +138,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=3 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -151,7 +151,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=4 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -164,7 +164,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=5 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -177,7 +177,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=6 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -190,7 +190,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=7 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -203,7 +203,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=8 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -216,7 +216,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=9 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -229,7 +229,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=10 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -242,7 +242,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=11 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -255,7 +255,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=12 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -268,7 +268,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=13 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}
@@ -281,7 +281,7 @@
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=14 %}
-												{{ include('ocupacion/td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
+												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
 											{% endif %}
 										{% endif %}
 									{% endif %}

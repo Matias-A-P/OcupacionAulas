@@ -30,9 +30,7 @@ class OcupacionRepository extends ServiceEntityRepository
                 ->setParameter('a', $aula)
                 ->setParameter('d', new \DateTime($dia));
         } else {
-            $query = $entm->createQuery(
-                'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC'
-            )
+            $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC')
                 ->setParameter('a', $aula)
                 ->setParameter('d', new \DateTime($dia))
                 ->setParameter('ar', $area);
@@ -46,9 +44,7 @@ class OcupacionRepository extends ServiceEntityRepository
     public function getOcupacionesSemana(string $dia1, $dia2, int $aula)
     {
         $entm = $this->getEntityManager();
-        $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha>=:d1 and o.fecha<:d2 order by o.id_aula ASC, o.fecha ASC'
-        )
+        $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha>=:d1 and o.fecha<:d2 order by o.id_aula ASC, o.fecha ASC')
             ->setParameter('a', $aula)
             ->setParameter('d1', new \DateTime($dia1))
             ->setParameter('d2', new \DateTime($dia2));
@@ -60,9 +56,7 @@ class OcupacionRepository extends ServiceEntityRepository
     public function horarioOcupado(int $aula, string $dia, $hora_inicio, $hora_fin, int $id = 0): bool
     {
         $entm = $this->getEntityManager();
-        $query = $entm->createQuery(
-            'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.id<>:id and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))'
-        )
+        $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.id<>:id and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))')
             ->setParameter('a', $aula)
             ->setParameter('d1', new \DateTime($dia)) 
             ->setParameter('hi', $hora_inicio)

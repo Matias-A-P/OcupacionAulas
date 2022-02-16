@@ -151,12 +151,19 @@ class OcupacionController extends AbstractController
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
+        
+        $fecha_padre = $ocupacion->getFecha();
+        if ($ocupacion->getRepIdPadre() > 0) {
+            $padre = $this->getDoctrine()->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
+            $fecha_padre = $padre->getFecha();
+        }
 
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
             'ocupacion' => $ocupacion,
             'form' => $form,
             'action' => $this->generateUrl('ocupacion_new'),
-            'idOcup' => 0
+            'idOcup' => 0,
+            'fecha_padre' => $fecha_padre,
         ]);
     }
 
