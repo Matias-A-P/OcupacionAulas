@@ -20,20 +20,22 @@ class OcupacionRepository extends ServiceEntityRepository
         parent::__construct($registry, Ocupacion::class);
     }
 
-    public function getOcupacionesDia(string $dia, int $aula, int $area = 0)
+    public function getOcupacionesDia(string $dia, int $aula, int $area = 0, int $edificio = 0)
     {
         $entm = $this->getEntityManager();
         if ($area == 0) {
             $query = $entm->createQuery(
-                'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
+                'select o from App\Entity\Ocupacion o JOIN App\Entity\Aulas au where o.id_aula=:a and o.fecha=:d and au.id_edificio=:ed order by o.id_aula ASC, o.hora_inicio ASC'
             )
                 ->setParameter('a', $aula)
-                ->setParameter('d', new \DateTime($dia));
+                ->setParameter('d', new \DateTime($dia))
+                ->setParameter('ed', $edificio);
         } else {
             $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC')
                 ->setParameter('a', $aula)
                 ->setParameter('d', new \DateTime($dia))
-                ->setParameter('ar', $area);
+                ->setParameter('ar', $area)
+                ;
         };
 
         $result = $query->getResult();

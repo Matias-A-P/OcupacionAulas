@@ -24,6 +24,8 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private $edificio = 8;
+
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
@@ -32,6 +34,8 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): PassportInterface
     {
         $dni = $request->request->get('dni', '');
+        
+        $this->edificio = $request->request->get('edificio', 9);
 
         $request->getSession()->set(Security::LAST_USERNAME, $dni);
 
@@ -47,10 +51,11 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+            //return new RedirectResponse($targetPath);
+            return new RedirectResponse($this->urlGenerator->generate($targetPath, ['edificio' => $this->edificio]));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('ocupacion_index'));
+        return new RedirectResponse($this->urlGenerator->generate('ocupacion_index', ['edificio' => $this->edificio]));
     }
 
     protected function getLoginUrl(Request $request): string

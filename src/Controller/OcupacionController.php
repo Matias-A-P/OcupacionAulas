@@ -27,11 +27,14 @@ class OcupacionController extends AbstractController
             $dia = $request->query->get('dia', date('Y-m-d'));
             $vista = $request->query->get('vista', 'dia');
             $area = $request->query->get('area', 0);
+            $edificio = $request->query->get('edificio', 7);
         } else {
             $dia = $request->request->get('dia', date('Y-m-d'));
             $vista = $request->request->get('vista', 'dia');
             $area = $request->request->get('area', 0);
+            $edificio = $request->request->get('edificio', 6);
         }
+
         $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
         $arrOcup = [];
         $i = 0;
@@ -45,44 +48,44 @@ class OcupacionController extends AbstractController
 
         foreach ($aulas as $aula) {
             if ($vista == 'semanal') {
-                $lunes[$i] = $ocupacionRepository->getOcupacionesDia($lun, $aula->getId(), $area);
+                $lunes[$i] = $ocupacionRepository->getOcupacionesDia($lun, $aula->getId(), $area, $edificio);
                 if (empty($lunes[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $lunes[$i] = array($ocup);
                 }
-                $martes[$i] = $ocupacionRepository->getOcupacionesDia($mar, $aula->getId(), $area);
+                $martes[$i] = $ocupacionRepository->getOcupacionesDia($mar, $aula->getId(), $area, $edificio);
                 if (empty($martes[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $martes[$i] = array($ocup);
                 }
-                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia($mie, $aula->getId(), $area);
+                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia($mie, $aula->getId(), $area, $edificio);
                 if (empty($miercoles[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $miercoles[$i] = array($ocup);
                 }
-                $jueves[$i] = $ocupacionRepository->getOcupacionesDia($jue, $aula->getId(), $area);
+                $jueves[$i] = $ocupacionRepository->getOcupacionesDia($jue, $aula->getId(), $area, $edificio);
                 if (empty($jueves[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $jueves[$i] = array($ocup);
                 }
-                $viernes[$i] = $ocupacionRepository->getOcupacionesDia($vie, $aula->getId(), $area);
+                $viernes[$i] = $ocupacionRepository->getOcupacionesDia($vie, $aula->getId(), $area, $edificio);
                 if (empty($viernes[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $viernes[$i] = array($ocup);
                 }
-                $sabado[$i] = $ocupacionRepository->getOcupacionesDia($sab, $aula->getId(), $area);
+                $sabado[$i] = $ocupacionRepository->getOcupacionesDia($sab, $aula->getId(), $area, $edificio);
                 if (empty($sabado[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
                     $sabado[$i] = array($ocup);
                 }
             } else {
-                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId(), $area);
+                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId(), $area, $edificio);
                 if (empty($arrOcup[$i])) {
                     $ocup = new Ocupacion();
                     $ocup->setIdAula($aula);
@@ -124,10 +127,12 @@ class OcupacionController extends AbstractController
             $aula = $request->query->get('aula', 0);
             $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
             $hora = $request->query->get('hora', '14:00');
+            $vista = $request->query->get('vista', 'dia');
         } else {
             $aula = $request->request->get('aula', 0);
             $dia = new \DateTime($request->request->get('dia', date('Y-m-d')));
             $hora = $request->request->get('hora', '14:00');
+            $vista = $request->request->get('vista', 'dia');
         }
         $dia->setTime(0, 0, 0);
         $ocupacion = new Ocupacion();
@@ -140,7 +145,7 @@ class OcupacionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $sdia = date('Y-m-d', $dia->getTimestamp()); // $ocupacion->getFecha()->getTimestamp()
+            $sdia = date('Y-m-d', $dia->getTimestamp());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();
@@ -149,7 +154,7 @@ class OcupacionController extends AbstractController
                 $this->getDoctrine()->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
 
-            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia, 'vista' => $vista], Response::HTTP_SEE_OTHER);
         }
         
         $fecha_padre = $ocupacion->getFecha();
@@ -164,6 +169,7 @@ class OcupacionController extends AbstractController
             'action' => $this->generateUrl('ocupacion_new'),
             'idOcup' => 0,
             'fecha_padre' => $fecha_padre,
+            'vista' => $vista,
         ]);
     }
 

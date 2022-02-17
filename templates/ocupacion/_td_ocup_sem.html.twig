@@ -2,7 +2,7 @@
 	<div class="info-ocup">
 		<div class="text-verdelogo lh-1"><strong>{{ocup.IdCatedra }}</strong></div>
 		<div class="text-primary">Comisión:{{ocup.comision}}</div>
-		<div class="text-info">{{ocup.IdArea}}</div>
+		<div class="text-verdelogo">{{ocup.IdArea}}</div>
 		<div class="text-danger align-bottom fw-bold">{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</div>
 	</div>
 	{% if ocup.observaciones %}
@@ -13,8 +13,9 @@
 </div>
 {% if is_granted("ROLE_ADMIN") %}
 <div class="d-flex justify-content-center">
-	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);"><i class="fas fa-edit"></i></a>
+	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" data-vista="semanal" onclick="editar(this);"><i class="fas fa-edit"></i></a>
 	{{ include('ocupacion/_delete_form.html.twig', {'id': ocup.id}) }}
+	<a href="javascript:void(0)" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{ocup.getFecha()|date('Y-m-d')}} data-hora="14:00" data-vista="semanal" onclick="nueva(this);"><i class="fas fa-plus"></i></a>
 </div>
 {% endif %}
 <br>
