@@ -34,5 +34,7 @@ class Kernel extends BaseKernel
         } else {
             $routes->import('../config/{routes}.php');
         }
+
+        date_default_timezone_set("America/Buenos_Aires");
     }
 }

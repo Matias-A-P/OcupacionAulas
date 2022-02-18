@@ -8,7 +8,7 @@
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-3">
-		<h5>Ocupación de Aulas por semana</h5>
+		<h5>{{ app.session.get('edificio') }}</h5>
 	</div>
 	<div class="col-sm-6">
 	<div class="d-flex justify-content-center">

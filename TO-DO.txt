@@ -1,6 +1,4 @@
-elegir edificio en login
 idioma
-repeticion: que hacer cuando se edita?
 buscar
 mapa edificio
 catedras

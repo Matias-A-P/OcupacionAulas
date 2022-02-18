@@ -8,7 +8,7 @@ class Parametros
 
     public function __construct()
     {
-        $this->id_edificio = 0;
+        $this->id_edificio = 99;
     }
 
     public function getIdEdificio(): ?int

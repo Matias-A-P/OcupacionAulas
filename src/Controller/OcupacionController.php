@@ -6,6 +6,7 @@ use App\Entity\Ocupacion;
 use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
+use App\Entity\Edificios;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,15 +28,23 @@ class OcupacionController extends AbstractController
             $dia = $request->query->get('dia', date('Y-m-d'));
             $vista = $request->query->get('vista', 'dia');
             $area = $request->query->get('area', 0);
-            $edificio = $request->query->get('edificio', 7);
+            $edificio = $request->query->get('edificio', 0);
         } else {
             $dia = $request->request->get('dia', date('Y-m-d'));
             $vista = $request->request->get('vista', 'dia');
             $area = $request->request->get('area', 0);
-            $edificio = $request->request->get('edificio', 6);
+            $edificio = $request->request->get('edificio', 0);
+        }
+        $session = $this->get('session');
+        if ($edificio <= 0) {
+            $edificio = $session->get('id_edificio');
+        } else {
+            $session->set('id_edificio', $edificio);
+            $ed = $this->getDoctrine()->getRepository(Edificios::class)->find($edificio);
+            $session->set('edificio', $ed->getEdificio());
         }
 
-        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findAll();
+        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findBy(['id_edificio'=>$edificio]);
         $arrOcup = [];
         $i = 0;
         $w = date('w', strtotime($dia));
@@ -105,13 +114,15 @@ class OcupacionController extends AbstractController
                 'sabado' => $sabado,
                 'fecha' => strtotime($lun),
                 'aulas' => $aulas,
-                'area' => $area
+                'area' => $area,
+                'edificio' => $edificio,
             ]);
         } else {
             return $this->render('ocupacion/index.html.twig', [
                 'ocupacions' => $arrOcup,
                 'fecha' => $dia,
-                'area' => $area
+                'area' => $area,
+                'edificio' => $edificio,
             ]);
         }
     }
@@ -156,7 +167,7 @@ class OcupacionController extends AbstractController
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia, 'vista' => $vista], Response::HTTP_SEE_OTHER);
         }
-        
+
         $fecha_padre = $ocupacion->getFecha();
         if ($ocupacion->getRepIdPadre() > 0) {
             $padre = $this->getDoctrine()->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
