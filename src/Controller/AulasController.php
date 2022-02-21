@@ -23,8 +23,11 @@ class AulasController extends AbstractController
      */
     public function index(AulasRepository $aulasRepository): Response
     {
+        $session = $this->get('session');
+        $edificio = $session->get('id_edificio');
+
         return $this->render('aulas/index.html.twig', [
-            'aulas' => $aulasRepository->findAll(),
+            'aulas' => $aulasRepository->findBy(['id_edificio'=>$edificio]),
         ]);
     }
 
