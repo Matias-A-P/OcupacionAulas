@@ -1,23 +1,34 @@
 {% extends 'base.html.twig' %}
-{% block title %}Bienvenido
+{% block title %}Aulas FCVS{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+	{% if not is_mobile %}
+	body{
+		background-image: url("{{ asset('image/fcvs_uader_publica.jpg') }}");
+		background-repeat: no-repeat;
+		background-attachment: fixed;  
+		background-size: 100%;
+	}
+	{% endif %}
+	</style>
 {% endblock %}
-{# {% block cardheader %}
-	<div class="col-sm-5">
-		<h5>Aulas</h5>
-	</div>
-{% endblock %} #}
+{% block cardheader %}
+{% if is_mobile %}
+	<h5 class="text-center">Bienvenido</h2>
+	<h6 class="text-center">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios. Disponible para estudiantes y docentes registrados.</h5>	
+{% else %}		
+	<h4 class="text-center text-white">Bienvenido</h2>
+	<h5 class="text-center text-white">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios. Disponible para estudiantes y docentes registrados.</h5>
+{% endif %}
+{% endblock %}
 {% block cardbody %}
-	<div class="container-sm">
-		<div class="intro">
-			<h2 class="text-center">Bienvenido</h2>
-			<p class="text-center">Esta aplicación web permite consultar la ocupación de los diferentes espacios de la Facultad, con sus horarios y actividades. Disponible para alumnos y docentes registrados.</p>
-		</div>
+	<div class="container-sm">		
 		<div class="text-center">
 			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				<span>Usuario:
-					{{ app.user.username }}</span>
+				<span>Usuario: {{ app.user.username }}</span>
 			{% else %}
-				<a class="btn btn-primary" href="{{ path('app_login') }}" role="button">Ingresar</a>
+				<a class="btn btn-primary btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
 			{% endif %}
 		</div>
 	</div>
