@@ -1,6 +1,5 @@
 mas de una comision por ocupacion
 comisiones -> cantidad estudiantes -> ver capacidad aula
-buscar
 mapa edificio
 catedras
 	docente

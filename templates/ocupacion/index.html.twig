@@ -8,7 +8,7 @@
 	<div class="col-sm-3 pt-1">
 		<h5>{{ app.session.get('edificio') }}</h5>
 	</div>
-	<div class="col-sm-6 pt-1">
+	<div class="col-sm-5 pt-1">
 		<div class="d-flex justify-content-center">
 			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
 				<i class="fas fa-calendar-day"></i> Hoy</a>
@@ -28,7 +28,7 @@
 {% block cardbody %}
 	<div class="container-fluid">
 		<div class="table-responsive">
-			<table class="table table-sm table-hover table-borderless align-top text-center">
+			<table class="table table-sm table-hover table-borderless align-top text-center" id="tablaOcup">
 				<thead class="table-light text-verdelogo">
 					<tr>
 						<th class="col-sm-1 text-uppercase">Aula</th>
@@ -312,6 +312,16 @@ $(function () {
 		fArea.val({{ area }}).change();
 	});
 	// fin filtro areas
+
+	// filtro
+	$("#inputFiltro").on("keyup", function() {
+    	var value = $(this).val().toLowerCase();
+    	$("#tablaOcup tr").filter(function() {
+      		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    	});
+  	});
+
+
 });
 </script>
 {% endblock %}

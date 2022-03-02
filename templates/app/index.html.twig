@@ -28,7 +28,7 @@
 			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 				<span>Usuario: {{ app.user.username }}</span>
 			{% else %}
-				<a class="btn btn-primary btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
+				<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
 			{% endif %}
 		</div>
 	</div>

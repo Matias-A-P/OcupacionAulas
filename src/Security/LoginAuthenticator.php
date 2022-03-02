@@ -24,7 +24,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private $edificio = 8;
+    private $edificio = 1;
 
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
@@ -35,7 +35,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         $dni = $request->request->get('dni', '');
         
-        $this->edificio = $request->request->get('edificio', 9);
+        $this->edificio = $request->request->get('edificio', 1);
 
         $request->getSession()->set(Security::LAST_USERNAME, $dni);
 
