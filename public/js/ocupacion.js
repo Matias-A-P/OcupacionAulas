@@ -1,5 +1,25 @@
-var err = false;
+// on ready
+$(document).ready(function () { 
+	// filtro areas
+	var fArea = $('#area');
+	$.post(fArea.attr('data-json'), function (areas) {
+		$.each(areas, function (key, ar) {
+			fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
+		});
+		fArea.val(fArea.attr('data-area')).change();
+	});
+	// filtro palabra 
+	$("#inputFiltro").on("keyup click", function() {
+    	var value = $(this).val().toLowerCase();
+    	$("#tablaOcup tr").filter(function() {
+      		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    	});
+  	});
+});
 
+
+var err = false;
+// validar Ocupacion antes de guardar
 function onSubmit(event) {
     err = false;
     $('#msj').text('');
@@ -45,8 +65,7 @@ function onSubmit(event) {
     }
 };
 
-//window.onSubmit = onSubmit;
-
+// nueva Ocupacion
 function nueva(btn) {
     var dr = btn.getAttribute("data-ref");
     var aula = btn.getAttribute("data-id-aula");
@@ -62,6 +81,7 @@ function nueva(btn) {
     });
 };
 
+// editar Ocupacion
 function editar(btn) {
     var id = btn.getAttribute("data-edit-id");
     //var vista = btn.getAttribute("data-vista");

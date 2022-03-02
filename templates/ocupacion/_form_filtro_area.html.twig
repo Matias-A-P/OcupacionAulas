@@ -1,7 +1,7 @@
 <div class="col-sm-3 pt-1">
     <form action="{{ path('ocupacion_index') }}">
         <div class="input-group">
-            <select name="area" id="area" class="form-control form-control-sm">
+            <select name="area" id="area" class="form-control form-control-sm" data-area="{{area}}" data-json="{{ path('areas_json') }}">
                 <option value="0">(todas las Areas)</option>
             </select>
             <input type="hidden" name="dia" id="dia" value={{fecha|date('Y-m-d')}}>
@@ -11,5 +11,5 @@
     </form>
 </div>
 <div class="col-sm-1 pt-1">    
-    <input type="text" class="form-control form-control-sm" id="inputFiltro" placeholder="Buscar...">
+    <input type="search" class="form-control form-control-sm" id="inputFiltro" placeholder="Buscar...">
 </div>

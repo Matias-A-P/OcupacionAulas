@@ -150,27 +150,4 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('js/ocupacion.js') }}"></script>
 <script>
-
-//on ready 
-$(function() {
-	// filtro areas
-	var fArea = $('#area');
-    $.post("{{ path('areas_json') }}", function(areas) {
-        $.each(areas, function (key,ar) {
-            fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
-        });
-		fArea.val({{area}}).change();
-    }); 
-	// fin filtro areas
-
-	// filtro
-	$("#inputFiltro").on("keyup", function() {
-    	var value = $(this).val().toLowerCase();
-    	$("#tablaOcup tr").filter(function() {
-      		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    	});
-  	});
-
-});
-</script>
 {% endblock %}

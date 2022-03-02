@@ -12,6 +12,10 @@
     color: #047835 !important;
 }
 
+/* input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+} */
+
 /* .table thead {
     border-bottom: 0.6px solid green;
 } */

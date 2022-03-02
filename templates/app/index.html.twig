@@ -26,7 +26,8 @@
 	<div class="container-sm">		
 		<div class="text-center">
 			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				<span>Usuario: {{ app.user.username }}</span>
+				{# <small>Usuario: {{ app.user.username }}</small> #}
+				<a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button"><i class="far fa-calendar-alt"></i>&nbsp;Ver Ocupaciones</a>
 			{% else %}
 				<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
 			{% endif %}
