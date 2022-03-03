@@ -2,10 +2,10 @@
 
 {% block cardheader %}
 	<div class="col-sm-8">
-		<h5>Actividad</h5>
+		<h5>Actividades</h5>
 	</div>
     <div class="col-sm-4">
-        <a href="{{ path('catedras_new') }}" class="btn btn-sm btn-outline-secondary" role="button">Agregar Nueva</a>
+        <a href="{{ path('catedras_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nueva</a>
     </div>
 {% endblock %}
 {% block cardbody %}
@@ -23,8 +23,10 @@
                 <td>{{ catedra.id }}</td>
                 <td>{{ catedra.nombre }}</td>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('catedras_show', {'id': catedra.id}) }}">Ver</a>
-                    <a class="btn btn-outline-secondary btn-sm" role="button" href="{{ path('catedras_edit', {'id': catedra.id}) }}">Editar</a>
+                    {# <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('catedras_show', {'id': catedra.id}) }}">Ver</a> #}
+                    {% if is_granted("ROLE_ROOT") %}
+                    <a href="{{ path('catedras_edit', {'id': catedra.id}) }}"><i class="bi bi-pencil-square"></i></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

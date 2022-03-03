@@ -2,7 +2,7 @@
 	<div class="text-muted">{{hora}}</div>
 	{% if is_granted("ROLE_ADMIN") %}
 		<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocupacion[0].IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{hora}}" onclick="nueva(this);">
-			<i class="fas fa-plus"></i>
+		<i class="bi bi-plus-square"></i>
 		</a>
 	{% endif %}
 </td>

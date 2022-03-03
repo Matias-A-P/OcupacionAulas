@@ -5,7 +5,7 @@
 		<h5>Aulas</h5>
 	</div>
     <div class="col-sm-4">
-        <a href="{{ path('aulas_new') }}" class="btn btn-sm btn-outline-secondary" role="button">Agregar Nueva</a>
+        <a href="{{ path('aulas_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nueva</a>
     </div>
 {% endblock %}
 {% block cardbody %}
@@ -27,8 +27,10 @@
                 <td>{{ aula.capacidad }}</td>
                 <td>{{ aula.IdEdificio.edificio }}</td>
                 <td>
-                  <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('aulas_show', {'id': aula.id}) }}">Ver</a>
-                  <a class="btn btn-outline-secondary btn-sm" role="button" href="{{ path('aulas_edit', {'id': aula.id}) }}">Editar</a>
+                  {# <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('aulas_show', {'id': aula.id}) }}">Ver</a> #}
+                  {% if is_granted("ROLE_ROOT") %}
+                  <a href="{{ path('aulas_edit', {'id': aula.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                  {% endif %}
                 </td>
             </tr>
         {% else %}
