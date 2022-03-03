@@ -156,7 +156,7 @@ class OcupacionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $sdia = date('Y-m-d', $dia->getTimestamp());
+            $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();

@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class EdificiosController extends AbstractController
 {
     #[Route('/edificios', name: 'edificios')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ROOT')]
     public function index(): Response
     {
         return $this->render('edificios/index.html.twig', [

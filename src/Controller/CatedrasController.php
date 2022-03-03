@@ -31,7 +31,7 @@ class CatedrasController extends AbstractController
     /**
      * @Route("/new", name="catedras_new", methods={"GET","POST"})
      * 
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_ROOT")
      */
     public function new(Request $request): Response
     {
@@ -68,7 +68,7 @@ class CatedrasController extends AbstractController
     /**
      * @Route("/{id}/edit", name="catedras_edit", methods={"GET","POST"})
      * 
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_ROOT")
      */
     public function edit(Request $request, Catedras $catedra): Response
     {

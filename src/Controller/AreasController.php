@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[Route('/areas')]
 class AreasController extends AbstractController
 {
+
     #[Route('/', name: 'areas_index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function index(AreasRepository $areasRepository): Response
@@ -26,7 +27,7 @@ class AreasController extends AbstractController
     }
 
     #[Route('/new', name: 'areas_new', methods: ['GET','POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ROOT')]
     public function new(Request $request): Response
     {
         $area = new Areas();
@@ -71,6 +72,7 @@ class AreasController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'areas_edit', methods: ['GET','POST'])]
+    #[IsGranted('ROLE_ROOT')]
     public function edit(Request $request, Areas $area): Response
     {
         $form = $this->createForm(AreasType::class, $area);
@@ -89,6 +91,7 @@ class AreasController extends AbstractController
     }
 
     #[Route('/{id}', name: 'areas_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ROOT')]
     public function delete(Request $request, Areas $area): Response
     {
         if ($this->isCsrfTokenValid('delete'.$area->getId(), $request->request->get('_token'))) {

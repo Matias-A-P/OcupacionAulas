@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class OcupacionType extends AbstractType
 {
@@ -37,7 +38,7 @@ class OcupacionType extends AbstractType
             ->add('id_area')
             ->add('rep_semanal')
             ->add('rep_fecha_fin', DateType::class, ['widget' => 'single_text'])
-            ->add('observaciones');
+            ->add('observaciones', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
