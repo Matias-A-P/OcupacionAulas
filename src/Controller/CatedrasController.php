@@ -19,7 +19,7 @@ class CatedrasController extends AbstractController
     /**
      * @Route("/", name="catedras_index", methods={"GET"})
      * 
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(CatedrasRepository $catedrasRepository): Response
     {

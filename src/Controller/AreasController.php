@@ -10,12 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 #[Route('/areas')]
 class AreasController extends AbstractController
 {
     #[Route('/', name: 'areas_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(AreasRepository $areasRepository): Response
     {
         return $this->render('areas/index.html.twig', [
@@ -24,6 +26,7 @@ class AreasController extends AbstractController
     }
 
     #[Route('/new', name: 'areas_new', methods: ['GET','POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request): Response
     {
         $area = new Areas();

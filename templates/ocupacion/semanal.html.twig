@@ -8,7 +8,7 @@
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-3">
-		<h5>{{ app.session.get('edificio') }}</h5>
+		<h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5>
 	</div>
 	<div class="col-sm-5">
 	<div class="d-flex justify-content-center">
@@ -29,15 +29,15 @@
 	<div class="container-fluid">
 		<div class="table-responsive">
 			<table class="table table-sm table-hover table-borderless align-top text-center" id="tablaOcup">
-				<thead class="table-light">
+				<thead class="table-light text-verdelogo">
 					<tr class="bg-light-gray">
-						<th class="col-sm-1 text-uppercase" style="max-width: 10px">Aula</th>
-						<th class="col-sm-1 text-uppercase">LUNES<br><div class="font-size13 text-light-gray">{{ fecha|date('d-m-Y') }}</div></th>
-						<th class="col-sm-1 text-uppercase">MARTES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+1 day")|date('d-m-Y') }}</div></th>
-						<th class="col-sm-1 text-uppercase">MIERCOLES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+2 day")|date('d-m-Y') }}</div></th>
-						<th class="col-sm-1 text-uppercase">JUEVES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+3 day")|date('d-m-Y') }}</div></th>
-						<th class="col-sm-1 text-uppercase">VIERNES<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+4 day")|date('d-m-Y') }}</div></th>
-						<th class="col-sm-1 text-uppercase">SABADO<br><div class="font-size13 text-light-gray">{{ fecha|date_modify("+5 day")|date('d-m-Y') }}</div></th>
+						<th class="col-sm-1">Aula</th>
+						<th class="col-sm-1">LUNES<br><small>{{ fecha|date('d-m-Y') }}</small></th>
+						<th class="col-sm-1">MARTES<br><small>{{ fecha|date_modify("+1 day")|date('d-m-Y') }}</small></th>
+						<th class="col-sm-1">MIERCOLES<br><small>{{ fecha|date_modify("+2 day")|date('d-m-Y') }}</small></th>
+						<th class="col-sm-1">JUEVES<br><small>{{ fecha|date_modify("+3 day")|date('d-m-Y') }}</small></th>
+						<th class="col-sm-1">VIERNES<br><small>{{ fecha|date_modify("+4 day")|date('d-m-Y') }}</small></th>
+						<th class="col-sm-1">SABADO<br><small>{{ fecha|date_modify("+5 day")|date('d-m-Y') }}</small></th>
 					</tr>
 				</thead>
 				<tbody>
