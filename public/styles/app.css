@@ -17,6 +17,13 @@ body{
     color: #047835 !important;
 }
 
+.carousel {
+    margin: auto;
+}
+.carousel-inner img {
+    margin: auto;
+}
+
 /* input[type=search]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
 } */
