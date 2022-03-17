@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EdificiosPisos{% endblock %}
+
+{% block body %}
+    <h1>Edit EdificiosPisos</h1>
+
+    {{ include('edificios_pisos/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('edificios_pisos_index') }}">back to list</a>
+
+    {{ include('edificios_pisos/_delete_form.html.twig') }}
+{% endblock %}

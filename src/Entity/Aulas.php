@@ -40,6 +40,11 @@ class Aulas
      */
     private $id_edificio;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=EdificiosPisos::class, inversedBy="aulas")
+     */
+    private $id_piso;
+
     public function __construct()
     {
         $this->ocupacions = new ArrayCollection();
@@ -117,6 +122,18 @@ class Aulas
     public function setIdEdificio(?Edificios $id_edificio): self
     {
         $this->id_edificio = $id_edificio;
+
+        return $this;
+    }
+
+    public function getIdPiso(): ?EdificiosPisos
+    {
+        return $this->id_piso;
+    }
+
+    public function setIdPiso(?EdificiosPisos $id_piso): self
+    {
+        $this->id_piso = $id_piso;
 
         return $this;
     }

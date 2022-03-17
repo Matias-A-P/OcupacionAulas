@@ -49,8 +49,9 @@
 						{% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
 							<tr>
 								<td class="table-light align-middle">
-									{{ocupacion[0].IdAula}}<div class="font-size13 text-light-gray">
-										Capacidad:{{ocupacion[0].IdAula.capacidad}}</div>
+									{{ocupacion[0].IdAula}}<br>
+									{{ocupacion[0].IdAula.getIdPiso}}
+									<div class="text-muted">Capacidad:{{ocupacion[0].IdAula.capacidad}}</div>
 								</td>
 								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
 								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
@@ -95,7 +96,9 @@
 									{% set continuar=true %}
 									{% if ultCol==0 %}
 										<td class="align-middle">
-											{{ocup.IdAula}}<div class="font-size13 text-light-gray">Capacidad:{{ocup.IdAula.capacidad}}
+											{{ocup.IdAula}}
+											{{ocup.IdAula.getIdPiso}}
+											<div class="text-muted">Capacidad:{{ocup.IdAula.capacidad}}
 											</div>
 										</td>
 									{% endif %}

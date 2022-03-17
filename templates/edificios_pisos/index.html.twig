@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EdificiosPisos index{% endblock %}
+
+{% block body %}
+    <h1>EdificiosPisos index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Piso</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for edificios_piso in edificios_pisos %}
+            <tr>
+                <td>{{ edificios_piso.id }}</td>
+                <td>{{ edificios_piso.piso }}</td>
+                <td>
+                    <a href="{{ path('edificios_pisos_show', {'id': edificios_piso.id}) }}">show</a>
+                    <a href="{{ path('edificios_pisos_edit', {'id': edificios_piso.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('edificios_pisos_new') }}">Create new</a>
+{% endblock %}

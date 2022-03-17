@@ -20,3 +20,23 @@
 		</div>
 	</div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	// filtrar Pisos por Edificio
+	var selEdificio = $('#aulas_id_edificio');
+	var selPiso = $('#aulas_id_piso');
+	$('#aulas_id_edificio').change(function() {
+		selPiso.html('');
+		if (selEdificio.val()>0) {
+  		$.ajax({
+    		url : '/edificios/'+ selEdificio.val() +'/pisos',
+    		type: 'POST',
+    		dataType : 'JSON'
+		  }).done(function(pisos) {
+				$.each(pisos, function (key, piso) {
+        			selPiso.append('<option value="' + piso.id + '">' + piso.piso + '</option>');
+        		});
+    		});
+		}
+	});
+</script>

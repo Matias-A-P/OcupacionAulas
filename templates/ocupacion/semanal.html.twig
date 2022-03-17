@@ -45,7 +45,9 @@
 					{% for aula in aulas %}
 						<tr>
 						<td class="align-middle">
-							{{aula.Aula}}<div class="text-primary">Capacidad:{{aula.capacidad}}</div>
+							{{aula.Aula}}<br>
+							{{aula.getIdPiso}}
+							<div class="text-muted">Capacidad:{{aula.capacidad}}</div>
 						</td>
 
 						<td>

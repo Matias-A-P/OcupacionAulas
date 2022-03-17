@@ -2,19 +2,111 @@
 
 namespace App\Controller;
 
+use App\Entity\Edificios;
+use App\Form\EdificiosType;
+use App\Repository\EdificiosRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
+#[Route('/edificios')]
 class EdificiosController extends AbstractController
 {
-    #[Route('/edificios', name: 'edificios')]
-    #[IsGranted('ROLE_ROOT')]
-    public function index(): Response
+    #[Route('/', name: 'edificios_index', methods: ['GET'])]
+    public function index(EdificiosRepository $edificiosRepository): Response
     {
         return $this->render('edificios/index.html.twig', [
-            'controller_name' => 'EdificiosController',
+            'edificios' => $edificiosRepository->findAll(),
         ]);
+    }
+
+    #[Route('/new', name: 'edificios_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $edificio = new Edificios();
+        $form = $this->createForm(EdificiosType::class, $edificio);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($edificio);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('edificios_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('edificios/new.html.twig', [
+            'edificio' => $edificio,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/json', name: 'edificios_json', methods: ['GET','POST'])]
+    public function getEdificiosJson(EdificiosRepository $edificiosRepository): Response
+    {
+        $areas = $edificiosRepository->findAll();
+        $responseArray = array();
+        foreach($areas as $a){
+            $responseArray[] = array(
+                "id" => $a->getId(),
+                "edificio" => $a->getEdificio()
+            );
+        };
+        return new JsonResponse($responseArray);
+    }
+
+    #[Route('/{id}', name: 'edificios_show', methods: ['GET'])]
+    public function show(Edificios $edificio): Response
+    {
+        return $this->render('edificios/show.html.twig', [
+            'edificio' => $edificio,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'edificios_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Edificios $edificio, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EdificiosType::class, $edificio);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('edificios_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('edificios/edit.html.twig', [
+            'edificio' => $edificio,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'edificios_delete', methods: ['POST'])]
+    public function delete(Request $request, Edificios $edificio, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $edificio->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($edificio);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('edificios_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/{id}/pisos', name: 'edificios_pisos', methods: ['GET','POST'])]
+    public function getPisos(int $id): Response
+    {
+        $edificio = $this->getDoctrine()->getRepository(Edificios::class)->find($id);
+        $pisos = $edificio->getEdificiosPisos();
+        $responseArray = array();
+        foreach ($pisos as $piso) {
+            $responseArray[] = array(
+                "id" => $piso->getId(),
+                "piso" => $piso->getPiso()
+            );
+        };
+        return new JsonResponse($responseArray);
     }
 }

@@ -29,9 +29,15 @@ class Edificios
      */
     private $aulas;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EdificiosPisos::class, mappedBy="id_edificio", orphanRemoval=true)
+     */
+    private $edificiosPisos;
+
     public function __construct()
     {
         $this->aulas = new ArrayCollection();
+        $this->edificiosPisos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,5 +89,35 @@ class Edificios
 
     public function __toString() {
         return $this->edificio;
+    }
+
+    /**
+     * @return Collection<int, EdificiosPisos>
+     */
+    public function getEdificiosPisos(): Collection
+    {
+        return $this->edificiosPisos;
+    }
+
+    public function addEdificiosPiso(EdificiosPisos $edificiosPiso): self
+    {
+        if (!$this->edificiosPisos->contains($edificiosPiso)) {
+            $this->edificiosPisos[] = $edificiosPiso;
+            $edificiosPiso->setIdEdificio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEdificiosPiso(EdificiosPisos $edificiosPiso): self
+    {
+        if ($this->edificiosPisos->removeElement($edificiosPiso)) {
+            // set the owning side to null (unless already changed)
+            if ($edificiosPiso->getIdEdificio() === $this) {
+                $edificiosPiso->setIdEdificio(null);
+            }
+        }
+
+        return $this;
     }
 }

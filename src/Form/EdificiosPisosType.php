@@ -2,27 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Aulas;
+use App\Entity\EdificiosPisos;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AulasType extends AbstractType
+class EdificiosPisosType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('aula')
-            ->add('capacidad')
+            ->add('piso')
             ->add('id_edificio')
-            ->add('id_piso')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Aulas::class,
+            'data_class' => EdificiosPisos::class,
         ]);
     }
 }

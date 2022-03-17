@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EdificiosPisos{% endblock %}
+
+{% block body %}
+    <h1>Create new EdificiosPisos</h1>
+
+    {{ include('edificios_pisos/_form.html.twig') }}
+
+    <a href="{{ path('edificios_pisos_index') }}">back to list</a>
+{% endblock %}
