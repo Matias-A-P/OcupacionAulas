@@ -15,6 +15,10 @@ $(document).ready(function () {
       		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     	});
   	});
+    // cambio de dia
+    $('#dia').on('change', function() {
+        $(this).closest('form').submit();
+    });
 });
 
 

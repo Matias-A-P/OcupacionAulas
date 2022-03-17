@@ -10,17 +10,13 @@
 	</div>
 	<div class="col-sm-5 pt-1">
 		<div class="d-flex justify-content-center">
-			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
-			<i class="bi bi-calendar4-event"></i> Hoy</a>
-			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button">
-			<i class="bi bi-arrow-left"></i>
-			</a>
-			<div class="text-verdelogo fw-bold mx-3">{{fecha|date('d/m/Y')}}</div>
-			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button">
-			<i class="bi bi-arrow-right"></i>
-			</a>
-			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button">
-			<i class="bi bi-calendar4-week"></i> Semanal</a>
+			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button"><i class="bi bi-calendar4-event"></i> Hoy</a>
+			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
+			<form action="/ocupacion?dia=dia">
+				<input type="date" name="dia" id="dia" value={{fecha}} class="form-control form-control-sm" onkeydown="return false">
+			</form>
+			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-calendar4-week"></i> Semanal</a>
 		</div>
 	</div>
 	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "dia"}) }}
@@ -50,7 +46,7 @@
 				</thead>
 				<tbody>
 					{% for ocupacion in ocupacions %}
-						{% if ocupacion[0].id is null %}
+						{% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
 							<tr>
 								<td class="table-light align-middle">
 									{{ocupacion[0].IdAula}}<div class="font-size13 text-light-gray">
@@ -71,7 +67,7 @@
 								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
 								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
 							</tr>
-						{% else %}
+						{% elseif not ocupacion[0].id is null %}
 							<tr>
 								{% set ultCol=0 %}
 								{% set cant = ocupacion|length %}
