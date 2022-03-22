@@ -14,15 +14,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use DateInterval;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class OcupacionController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine) {}
+
     /**
      * @Route("/ocupacion", name="ocupacion_index", methods={"GET","POST"})
      * 
      * @IsGranted("ROLE_USER")
      */
-    public function index(Request $request, OcupacionRepository $ocupacionRepository): Response
+    public function index(Request $request, OcupacionRepository $ocupacionRepository, SessionInterface $session): Response
     {
         if ($request->isMethod('GET')) {
             $dia = $request->query->get('dia', date('Y-m-d'));
@@ -35,16 +39,15 @@ class OcupacionController extends AbstractController
             $area = $request->request->get('area', 0);
             $edificio = $request->request->get('edificio', 0);
         }
-        $session = $this->get('session');
         if ($edificio <= 0) {
             $edificio = $session->get('id_edificio');
         } else {
             $session->set('id_edificio', $edificio);
-            $ed = $this->getDoctrine()->getRepository(Edificios::class)->find($edificio);
+            $ed = $this->doctrine->getRepository(Edificios::class)->find($edificio);
             $session->set('edificio', $ed->getEdificio());
         }
 
-        $aulas = $this->getDoctrine()->getRepository(Aulas::class)->findBy(['id_edificio'=>$edificio]);
+        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio'=>$edificio]);
         $arrOcup = [];
         $i = 0;
         $w = date('w', strtotime($dia));
@@ -147,7 +150,7 @@ class OcupacionController extends AbstractController
         }
         $dia->setTime(0, 0, 0);
         $ocupacion = new Ocupacion();
-        $ocupacion->setIdAula($this->getDoctrine()->getRepository(Aulas::class)->find($aula));
+        $ocupacion->setIdAula($this->doctrine->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
         $ocupacion->setHoraInicio(new \DateTime($hora));
         $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
@@ -157,12 +160,12 @@ class OcupacionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($ocupacion);
             $entityManager->flush();
             // repetir
             if ($ocupacion->getRepSemanal()) {
-                $this->getDoctrine()->getRepository(Ocupacion::class)->repetir($ocupacion);
+                $this->doctrine->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia, 'vista' => $vista], Response::HTTP_SEE_OTHER);
@@ -170,7 +173,7 @@ class OcupacionController extends AbstractController
 
         $fecha_padre = $ocupacion->getFecha();
         if ($ocupacion->getRepIdPadre() > 0) {
-            $padre = $this->getDoctrine()->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
+            $padre = $this->doctrine->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
             $fecha_padre = $padre->getFecha();
         }
 
@@ -207,7 +210,7 @@ class OcupacionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -226,25 +229,25 @@ class OcupacionController extends AbstractController
     public function editModal(Request $request, int $id): Response
     {
 
-        $ocupacion = $this->getDoctrine()->getRepository(Ocupacion::class)->find($id);
+        $ocupacion = $this->doctrine->getRepository(Ocupacion::class)->find($id);
 
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
             $sdia = date('Y-m-d', $ocupacion->getFecha()->getTimestamp());
 
-            $this->getDoctrine()->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
+            $this->doctrine->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
             // repetir
             if ($ocupacion->getRepSemanal() && ($ocupacion->getRepIdPadre() <= 0)) {
-                $this->getDoctrine()->getRepository(Ocupacion::class)->repetir($ocupacion);
+                $this->doctrine->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
         }
         $fecha_padre = $ocupacion->getFecha();
         if ($ocupacion->getRepIdPadre() > 0) {
-            $padre = $this->getDoctrine()->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
+            $padre = $this->doctrine->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
             $fecha_padre = $padre->getFecha();
         }
         return $this->renderForm('ocupacion/_form_modal.html.twig', [
@@ -264,8 +267,8 @@ class OcupacionController extends AbstractController
     public function delete(Request $request, Ocupacion $ocupacion): Response
     {
         if ($this->isCsrfTokenValid('delete' . $ocupacion->getId(), $request->request->get('_token'))) {
-            $this->getDoctrine()->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
-            $entityManager = $this->getDoctrine()->getManager();
+            $this->doctrine->getRepository(Ocupacion::class)->borrarRepeticiones($ocupacion->getId());
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($ocupacion);
             $entityManager->flush();
         }
@@ -283,7 +286,7 @@ class OcupacionController extends AbstractController
         $hi = $request->request->get('hi', '00:00') . ':00';
         $hf = $request->request->get('hf', '00:00') . ':00';
         $id = $request->request->get('id', 0);
-        $ocup = $this->getDoctrine()->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id);
+        $ocup = $this->doctrine->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id);
         return new JsonResponse(json_encode($ocup));
     }
 }
