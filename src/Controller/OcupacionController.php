@@ -7,6 +7,8 @@ use App\Form\OcupacionType;
 use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
 use App\Entity\Edificios;
+use App\Entity\Areas;
+use App\Entity\Catedras;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -142,11 +144,15 @@ class OcupacionController extends AbstractController
             $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
             $hora = $request->query->get('hora', '14:00');
             $vista = $request->query->get('vista', 'dia');
+            $area = $request->query->get('area', 0);
+            $activ = $request->query->get('activ', 0);
         } else {
             $aula = $request->request->get('aula', 0);
             $dia = new \DateTime($request->request->get('dia', date('Y-m-d')));
             $hora = $request->request->get('hora', '14:00');
             $vista = $request->request->get('vista', 'dia');
+            $area = $request->request->get('area', 0);
+            $activ = $request->request->get('activ', 0);
         }
         $dia->setTime(0, 0, 0);
         $ocupacion = new Ocupacion();
@@ -155,6 +161,12 @@ class OcupacionController extends AbstractController
         $ocupacion->setHoraInicio(new \DateTime($hora));
         $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
         $ocupacion->setRepFechaFin($dia);
+        if ($area>0) {
+            $ocupacion->setIdArea($this->doctrine->getRepository(Areas::class)->find($area));
+        }
+        if ($activ>0) {
+            $ocupacion->setIdCatedra($this->doctrine->getRepository(Catedras::class)->find($activ));
+        }
         $form = $this->createForm(OcupacionType::class, $ocupacion);
         $form->handleRequest($request);
 
@@ -286,7 +298,9 @@ class OcupacionController extends AbstractController
         $hi = $request->request->get('hi', '00:00') . ':00';
         $hf = $request->request->get('hf', '00:00') . ':00';
         $id = $request->request->get('id', 0);
-        $ocup = $this->doctrine->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id);
+        $ac = $request->request->get('ac', 0);
+        $co = $request->request->get('co', 0);
+        $ocup = $this->doctrine->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id, $ac, $co);
         return new JsonResponse(json_encode($ocup));
     }
 }

@@ -53,7 +53,7 @@ function onSubmit(event) {
         $.ajax({
             type: "POST",
             url: "/ocupado",
-            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id },
+            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id, 'ac': ac, 'co': co},
             async: false,
             success: function (res) {
                 if (res == 'true') {
@@ -76,12 +76,21 @@ function nueva(btn) {
     var dia = btn.getAttribute("data-dia");
     var hora = btn.getAttribute("data-hora");
     var vista = btn.getAttribute("data-vista");
+    var area = 0;
+    var activ = 0;
+    if (btn.hasAttribute("data-area")) {
+        area = btn.getAttribute("data-area");    
+    };
+    if (btn.hasAttribute("data-activ")) {
+        activ = btn.getAttribute("data-activ");    
+    };
     err = false;
-    $.post(dr, {'aula': aula, 'dia': dia, 'hora': hora, 'vista': vista }, function (result) {
+    $.post(dr, {'aula': aula, 'dia': dia, 'hora': hora, 'vista': vista, 'area': area, 'activ': activ }, function (result) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);
-        $('#ocupacion_id_area').val(0).change();
+        $('#ocupacion_id_area').val(area).change();
+        $('#ocupacion_id_catedra').val(activ).change();
     });
 };
 
