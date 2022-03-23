@@ -1,7 +1,6 @@
 <div class="container-ocup">
 	<div class="info-ocup">
 		<div class="text-verdelogo lh-1"><strong>{{ocup.IdCatedra }}</strong></div>
-		<div class="badge bg-secondary text-white">Comisión: {{ocup.comision}}</div>
 		<div class="text-verdelogo">{{ocup.IdArea}}</div>
 		<div class="text-black align-bottom fw-bold">{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</div>
 	</div>
@@ -11,11 +10,28 @@
 	</div>
 	{% endif %}
 </div>
+<small>Comisiones:</small>
+<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
+<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+{#
+{% set break = false %}
+{% for c in range(1,9) %}
+	{% if i+1 < cant and not break%}
+		{% set ocupSig = ocups[i+1] %}
+		{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+			<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+			<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+			{% set i = (i + 1) %}
+		{% else %}
+			{% set break = true %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
 {% if is_granted("ROLE_ADMIN") %}
-<div class="d-flex justify-content-center">
+	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" data-vista="semanal" onclick="editar(this);"><i class="bi bi-pencil-square"></i></a>
+{#<div class="d-flex justify-content-center">
 	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" data-vista="semanal" onclick="editar(this);"><i class="bi bi-pencil-square"></i></a>
 	{{ include('ocupacion/_delete_form.html.twig', {'id': ocup.id}) }}
 	<a href="javascript:void(0)" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{ocup.getFecha()|date('Y-m-d')}} data-hora="14:00" data-vista="semanal" onclick="nueva(this);"><i class="bi bi-plus-square"></i></a>
 </div>
-{% endif %}
-<br>
+{% endif %} #}

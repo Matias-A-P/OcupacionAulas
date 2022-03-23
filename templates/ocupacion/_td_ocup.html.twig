@@ -13,23 +13,23 @@
 			</div>
 		{% endif %}
 	</div>
-			<small>Comisiones:</small>
-			<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
-			<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
-			{% set break = false %}
-			{% for c in range(1,9) %}
-				{% if i+c < cant and not break%}
-					{% set ocupSig = ocupacion[i+c] %}
-					{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-						<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-						<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-					{% else %}
-						{% set break = true %}
-					{% endif %}
-				{% else %}
-					{% set break = true %}
-				{% endif %}
-			{% endfor %}
+	<small>Comisiones:</small>
+	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
+	<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+	{% set break = false %}
+	{% for c in range(1,9) %}
+		{% if i+c < cant and not break%}
+			{% set ocupSig = ocupacion[i+c] %}
+			{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+				<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+				<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+			{% else %}
+				{% set break = true %}
+			{% endif %}
+		{% else %}
+			{% set break = true %}
+		{% endif %}
+	{% endfor %}
 	{% if is_granted("ROLE_ADMIN") %}
 		<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
 		{#<div class="d-flex justify-content-center">

@@ -45,7 +45,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for ocupacion in ocupacions %}
+					{% for ocupacion in ocupacions %} {# ocupacion = ocupaciones de un aula #}
 						{% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
 							<tr>
 								<td class="table-light align-middle">
@@ -94,6 +94,7 @@
 									{% endif %}
 									{% set bloques=(((h2-h1)*60+m2-m1)/30)|round %}
 									{% set continuar=true %}
+
 									{% if ultCol==0 %}
 										<td class="align-middle">
 											{{ocup.IdAula}}
@@ -109,7 +110,6 @@
 												{% set ultCol=bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
 												{% set continuar=false %}
-												
 											{% else %}
 												{% set ultCol=1 %}
 												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
