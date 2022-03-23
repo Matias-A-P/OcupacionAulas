@@ -71,8 +71,11 @@
 						{% elseif not ocupacion[0].id is null %}
 							<tr>
 								{% set ultCol=0 %}
+								{% set i = 0 %}
 								{% set cant = ocupacion|length %}
-								{% for i in 0..13 %}
+								{% for idx in 0..13 %}
+								{% if idx>i or idx==0 %}	
+								{% set i = idx %}	
 									{% if i < cant %}
 										{% set ocup=ocupacion[i] %}
 									{% endif %}
@@ -109,6 +112,22 @@
 											{% if h1==14 and m1==00 %}
 												{% set ultCol=bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>		
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=1 %}
@@ -122,6 +141,22 @@
 											{% if h1==14 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=2 %}
@@ -135,6 +170,22 @@
 											{% if h1==15 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=3 %}
@@ -148,6 +199,22 @@
 											{% if h1==15 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=4 %}
@@ -161,6 +228,22 @@
 											{% if h1==16 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=5 %}
@@ -174,6 +257,22 @@
 											{% if h1==16 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=6 %}
@@ -187,6 +286,22 @@
 											{% if h1==17 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=7 %}
@@ -200,6 +315,22 @@
 											{% if h1==17 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=8 %}
@@ -213,6 +344,22 @@
 											{% if h1==18 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=9 %}
@@ -226,6 +373,22 @@
 											{% if h1==18 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=10 %}
@@ -239,6 +402,22 @@
 											{% if h1==19 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=11 %}
@@ -252,6 +431,22 @@
 											{% if h1==19 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=12 %}
@@ -265,6 +460,22 @@
 											{% if h1==20 and m1==00 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=13 %}
@@ -278,6 +489,22 @@
 											{% if h1==20 and m1==30 %}
 												{% set ultCol=ultCol+bloques %}
 												{% include 'ocupacion/_td_ocup.html.twig' %}
+												{% set break = false %}
+												{% for c in range(1,9) %}
+												{% if i+1 < cant and not break%}
+													{% set ocupSig = ocupacion[i+1] %}
+													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+														{% set i = (i+1) %}
+													{% else %}
+														{% set break = true %}
+													{% endif %}
+												{% else %}
+													{% set break = true %}
+												{% endif %}
+												{% endfor %}
+												</td></td>													
 												{% set continuar=false %}
 											{% else %}
 												{% set ultCol=14 %}
@@ -285,7 +512,7 @@
 											{% endif %}
 										{% endif %}
 									{% endif %}
-
+								{% endif %}
 								{% endfor %}
 							</tr>
 						{% endif %}
