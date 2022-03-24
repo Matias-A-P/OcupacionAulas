@@ -63,24 +63,27 @@
 								<div class="text-muted">LUNES</div>
 								{# {{ path('ocupacion_new', {aula: ocup.IdAula.id, dia: fecha|date('Y-m-d'), hora: "14:00"|date('H:i')}) }} #}
 								{% if is_granted("ROLE_ADMIN") %}
-								<a href="javascript:void(0)" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="14:00" onclick="nueva(this);"><i class="bi bi-plus-square"></i></a>
+									<a href="javascript:void(0)" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="14:00" onclick="nueva(this);"><i class="bi bi-plus-square"></i></a>
 								{% endif %}
 							{% else %}		
 								{% include 'ocupacion/_td_ocup_sem.html.twig' %}	 
-									{% set break = false %}
-									{% for c in range(1,9) %}
-									{% if i+1 < cant and not break%}
-										{% set ocupSig = ocups[i+1] %}
-										{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-											<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-											<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-											{% set i = (i+1) %}
-										{% else %}
-											{% set break = true %}
-										{% endif %}
+								{% set break = false %}
+								{% for c in range(1,9) %}
+								{% if i+1 < cant and not break%}
+									{% set ocupSig = ocups[i+1] %}
+									{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+										<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
+										{% set i = (i+1) %}
+									{% else %}
+										{% set break = true %}
 									{% endif %}
-									{% endfor %}
-									<br>								
+								{% endif %}
+								{% endfor %}
+								{% if is_granted("ROLE_ADMIN") %}
+									<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+								{% endif %}
+								<br>								
 							{% endif %}	
 							<br>			
 							{% if idx==i %} {% set i = (i+1) %} {% endif %}
@@ -117,6 +120,9 @@
 										{% endif %}
 									{% endif %}
 									{% endfor %}
+									{% if is_granted("ROLE_ADMIN") %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+									{% endif %}
 									<br>	
 								{% endif %}	
 								<br>							
@@ -152,6 +158,9 @@
 										{% endif %}
 									{% endif %}
 									{% endfor %}
+									{% if is_granted("ROLE_ADMIN") %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+									{% endif %}
 									<br>
 								{% endif %}				
 								<br>
@@ -187,6 +196,9 @@
 										{% endif %}
 									{% endif %}
 									{% endfor %}
+									{% if is_granted("ROLE_ADMIN") %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+									{% endif %}
 									<br>								
 							{% endif %}	
 							<br>
@@ -222,6 +234,9 @@
 										{% endif %}
 									{% endif %}
 									{% endfor %}
+									{% if is_granted("ROLE_ADMIN") %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+									{% endif %}
 									<br>									
 							{% endif %}	
 							<br>	
@@ -257,6 +272,9 @@
 										{% endif %}
 									{% endif %}
 									{% endfor %}
+									{% if is_granted("ROLE_ADMIN") %}
+										<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i></a>
+									{% endif %}
 									<br>									
 							{% endif %}	
 							<br>	

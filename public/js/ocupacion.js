@@ -1,22 +1,22 @@
 // on ready
-$(document).ready(function () { 
-	// filtro areas
-	var fArea = $('#area');
-	$.post(fArea.attr('data-json'), function (areas) {
-		$.each(areas, function (key, ar) {
-			fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
-		});
-		fArea.val(fArea.attr('data-area')).change();
-	});
-	// filtro palabra 
-	$("#inputFiltro").on("keyup click", function() {
-    	var value = $(this).val().toLowerCase();
-    	$("#tablaOcup tr").filter(function() {
-      		$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    	});
-  	});
+$(document).ready(function () {
+    // filtro areas
+    var fArea = $('#area');
+    $.post(fArea.attr('data-json'), function (areas) {
+        $.each(areas, function (key, ar) {
+            fArea.append('<option value="' + ar.id + '">' + ar.area + '</option>');
+        });
+        fArea.val(fArea.attr('data-area')).change();
+    });
+    // filtro palabra 
+    $("#inputFiltro").on("keyup click", function () {
+        var value = $(this).val().toLowerCase();
+        $("#tablaOcup tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
     // cambio de dia
-    $('#dia').on('change', function() {
+    $('#dia').on('change', function () {
         $(this).closest('form').submit();
     });
 });
@@ -40,12 +40,12 @@ function onSubmit(event) {
     var d2 = new Date(di + ' ' + hf);
     var m1 = d1.getMinutes();
     var m2 = d2.getMinutes();
-    
-    if (!(ar>0) || !(ac>0)) {
+
+    if (!(ar > 0) || !(ac > 0)) {
         $('#msj').text('Ingrese Area y Actividad');
-        err = true;       
+        err = true;
     }
-    if ((d1.getTime() >= d2.getTime()) || ((m1!=0 && m1!=30) || (m2!=0 && m2!=30)) || (co <= 0)) {
+    if ((d1.getTime() >= d2.getTime()) || ((m1 != 0 && m1 != 30) || (m2 != 0 && m2 != 30)) || (co <= 0)) {
         $('#msj').text('Verifique horario y/o comisión');
         err = true;
     };
@@ -53,14 +53,14 @@ function onSubmit(event) {
         $.ajax({
             type: "POST",
             url: "/ocupado",
-            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id, 'ac': ac, 'co': co},
+            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id, 'ac': ac, 'co': co },
             async: false,
             success: function (res) {
                 if (res == 'true') {
                     err = true;
                     $('#msj').text('Se superpone el horario');
                 };
-            } 
+            }
         });
     };
     if (err) {
@@ -68,6 +68,26 @@ function onSubmit(event) {
         $(".spinner").css("display", "none");
     }
 };
+
+// filtrar Catedras por Area en modal
+function onChangeArea() {
+    var selArea = $('#ocupacion_id_area');
+    var selCatedra = $('#ocupacion_id_catedra');
+    $('#ocupacion_id_area').change(function () {
+        selCatedra.html('');
+        if (selArea.val() > 0) {
+            $.ajax({
+                url: '/areas/' + selArea.val() + '/catedras',
+                type: 'POST',
+                dataType: 'JSON'
+            }).done(function (catedras) {
+                $.each(catedras, function (key, catedra) {
+                    selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
+                });
+            });
+        }
+    });
+}
 
 // nueva Ocupacion
 function nueva(btn) {
@@ -79,19 +99,23 @@ function nueva(btn) {
     var area = 0;
     var activ = 0;
     if (btn.hasAttribute("data-area")) {
-        area = btn.getAttribute("data-area");    
+        area = btn.getAttribute("data-area");
     };
     if (btn.hasAttribute("data-activ")) {
-        activ = btn.getAttribute("data-activ");    
+        activ = btn.getAttribute("data-activ");
     };
     err = false;
-    $.post(dr, {'aula': aula, 'dia': dia, 'hora': hora, 'vista': vista, 'area': area, 'activ': activ }, function (result) {
+    $('#ocupacion_id_area').change(function () { });
+    $.post(dr, { 'aula': aula, 'dia': dia, 'hora': hora, 'vista': vista, 'area': area, 'activ': activ }, function (result) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);
         $('#ocupacion_id_area').val(area).change();
         $('#ocupacion_id_catedra').val(activ).change();
+    }).always(function () {
+        $('#ocupacion_id_area').on('change', onChangeArea());
     });
+
 };
 
 // editar Ocupacion
@@ -103,5 +127,7 @@ function editar(btn) {
         $('#editOcup').modal('show');
         $("#edit-result").html(result);
         $("#formOcup").on('submit', onSubmit);
+    }).always(function () {
+        $('#ocupacion_id_area').on('change', onChangeArea());
     });
 };

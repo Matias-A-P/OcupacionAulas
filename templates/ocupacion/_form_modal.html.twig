@@ -73,23 +73,3 @@
 		{{ include('ocupacion/_delete_form.html.twig', {'id': ocupacion.id}) }}
 	{% endif %}
 </div>
-
-<script>
-	// filtrar Catedras por Area
-	var selArea = $('#ocupacion_id_area');
-	var selCatedra = $('#ocupacion_id_catedra');
-	$('#ocupacion_id_area').change(function() {
-		selCatedra.html('');
-		if (selArea.val()>0) {
-  		$.ajax({
-    		url : '/areas/'+ selArea.val() +'/catedras',
-    		type: 'POST',
-    		dataType : 'JSON'
-		  }).done(function(catedras) {
-				$.each(catedras, function (key, catedra) {
-        			selCatedra.append('<option value="' + catedra.id + '">' + catedra.nombre + '</option>');
-        		});
-    		});
-		}
-	});
-</script>
