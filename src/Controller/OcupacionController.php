@@ -307,7 +307,8 @@ class OcupacionController extends AbstractController
         $id = $request->request->get('id', 0);
         $ac = $request->request->get('ac', 0);
         $co = $request->request->get('co', 0);
-        $ocup = $this->doctrine->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id, $ac, $co);
+        $us = $request->request->get('us', 0);
+        $ocup = $this->doctrine->getRepository(Ocupacion::class)->horarioOcupado($aula, $dia, $hi, $hf, $id, $ac, $co, $us);
         return new JsonResponse(json_encode($ocup));
     }
 }

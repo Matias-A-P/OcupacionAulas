@@ -53,19 +53,30 @@ class OcupacionRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function horarioOcupado(int $aula, string $dia, $hora_inicio, $hora_fin, int $id, int $actividad, int $comision): bool
+    public function horarioOcupado(int $aula, string $dia, $hora_inicio, $hora_fin, int $id, $actividad, $comision, $profesor): bool
     {
         $entm = $this->getEntityManager();
         $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and (o.id_catedra<>:ac or (o.id_catedra=:ac and o.comision=:co)) and o.id<>:id and o.fecha=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))')
             ->setParameter('a', $aula)
-            ->setParameter('d1', new \DateTime($dia)) 
+            ->setParameter('d1', new \DateTime($dia))
             ->setParameter('hi', $hora_inicio)
             ->setParameter('hf', $hora_fin)
             ->setParameter('id', $id)
             ->setParameter('ac', $actividad)
             ->setParameter('co', $comision);
 
-        return (count($query->getResult()) > 0);
+        $ocup = (count($query->getResult()) > 0);
+        if (!$ocup) {
+            $query2 = $entm->createQuery('select o from App\Entity\Ocupacion o where o.user_id=:us and o.fecha>=:d1 and (((:hi >= o.hora_inicio and :hi < o.hora_fin) or (:hf > o.hora_inicio and :hf <= o.hora_fin)) or ((o.hora_inicio >= :hi and o.hora_inicio < :hf) or (o.hora_fin > :hi and o.hora_fin <= :hf)))')
+                ->setParameter('us', $profesor)
+                ->setParameter('d1', new \DateTime($dia))
+                ->setParameter('hi', $hora_inicio)
+                ->setParameter('hf', $hora_fin);
+
+            $ocup = (count($query2->getResult()) > 0);
+        }
+
+        return $ocup;
     }
 
     public function repetir(Ocupacion $ocupacion)

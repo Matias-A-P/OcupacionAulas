@@ -36,6 +36,7 @@ function onSubmit(event) {
     var hi = $('#ocupacion_hora_inicio').val();
     var hf = $('#ocupacion_hora_fin').val();
     var co = $('#ocupacion_comision').val();
+    var us = $('#ocupacion_user').val();
     var d1 = new Date(di + ' ' + hi);
     var d2 = new Date(di + ' ' + hf);
     var m1 = d1.getMinutes();
@@ -53,7 +54,7 @@ function onSubmit(event) {
         $.ajax({
             type: "POST",
             url: "/ocupado",
-            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id, 'ac': ac, 'co': co },
+            data: { 'aula': au, 'dia': di, 'hi': hi, 'hf': hf, 'id': id, 'ac': ac, 'co': co, 'us': us },
             async: false,
             success: function (res) {
                 if (res == 'true') {
