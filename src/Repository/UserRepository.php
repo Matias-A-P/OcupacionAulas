@@ -36,6 +36,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findProfesores(int $id = 0) {
+        $entm = $this->getEntityManager();
+        if ($id>0) {
+            $query = $entm->createQuery("select u from App\Entity\User u where u.id=:id")->setParameter('id', $id);
+        }
+        else {
+            $query = $entm->createQuery("select u from App\Entity\User u where u.roles like '%ROLE_PROF%'");
+        }
+        $result = $query->getResult();
+
+        return $result;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

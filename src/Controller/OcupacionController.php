@@ -9,6 +9,7 @@ use App\Entity\Aulas;
 use App\Entity\Edificios;
 use App\Entity\Areas;
 use App\Entity\Catedras;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class OcupacionController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $doctrine) {}
+    public function __construct(private ManagerRegistry $doctrine)
+    {
+    }
 
     /**
      * @Route("/ocupacion", name="ocupacion_index", methods={"GET","POST"})
@@ -49,7 +52,7 @@ class OcupacionController extends AbstractController
             $session->set('edificio', $ed->getEdificio());
         }
 
-        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio'=>$edificio]);
+        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio' => $edificio]);
         $arrOcup = [];
         $i = 0;
         $w = date('w', strtotime($dia));
@@ -156,18 +159,21 @@ class OcupacionController extends AbstractController
         }
         $dia->setTime(0, 0, 0);
         $ocupacion = new Ocupacion();
+        // valores por defecto pasados desde el template
         $ocupacion->setIdAula($this->doctrine->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
         $ocupacion->setHoraInicio(new \DateTime($hora));
         $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
         $ocupacion->setRepFechaFin($dia);
-        if ($area>0) {
+        if ($area > 0) {
             $ocupacion->setIdArea($this->doctrine->getRepository(Areas::class)->find($area));
         }
-        if ($activ>0) {
+        if ($activ > 0) {
             $ocupacion->setIdCatedra($this->doctrine->getRepository(Catedras::class)->find($activ));
         }
-        $form = $this->createForm(OcupacionType::class, $ocupacion);
+
+        $profesores = $this->doctrine->getRepository(User::class)->findProfesores();
+        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -182,7 +188,7 @@ class OcupacionController extends AbstractController
 
             return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia, 'vista' => $vista], Response::HTTP_SEE_OTHER);
         }
-
+        // si es repetición, buscar la inicial
         $fecha_padre = $ocupacion->getFecha();
         if ($ocupacion->getRepIdPadre() > 0) {
             $padre = $this->doctrine->getRepository(Ocupacion::class)->find($ocupacion->getRepIdPadre());
@@ -243,7 +249,8 @@ class OcupacionController extends AbstractController
 
         $ocupacion = $this->doctrine->getRepository(Ocupacion::class)->find($id);
 
-        $form = $this->createForm(OcupacionType::class, $ocupacion);
+        $profesores = $this->doctrine->getRepository(User::class)->findProfesores();
+        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

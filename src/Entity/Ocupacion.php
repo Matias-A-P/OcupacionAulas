@@ -75,6 +75,11 @@ class Ocupacion
      */
     private $observaciones;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -208,6 +213,18 @@ class Ocupacion
     public function setObservaciones(?string $observaciones): self
     {
         $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

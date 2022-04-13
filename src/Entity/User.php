@@ -40,6 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $dni;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nombre;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,5 +144,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dni = $dni;
 
         return $this;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(?string $nombre): self
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
     }
 }

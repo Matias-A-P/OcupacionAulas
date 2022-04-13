@@ -1,9 +1,13 @@
 <div class="container">
 	{{ form_start(form, {'action': action, 'attr': {'id': 'formOcup'} } ) }}
 	<div class="input-group mb-3">
-		<div class="form-floating col-12">
+		<div class="form-floating col-5">
 			{{form_widget(form.id_aula)}}
 			<label for="ocupacion_id_aula">Aula</label>
+		</div>
+		<div class="form-floating col-7 ps-2">
+			{{form_widget(form.user)}}
+			<label for="ocupacion_user">Profesor</label>
 		</div>
 	</div>
 	<div class="input-group mb-3">
