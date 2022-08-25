@@ -42,7 +42,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $query = $entm->createQuery("select u from App\Entity\User u where u.id=:id")->setParameter('id', $id);
         }
         else {
-            $query = $entm->createQuery("select u from App\Entity\User u where u.roles like '%ROLE_PROF%'");
+            $query = $entm->createQuery("select u from App\Entity\User u where u.roles like '%ROLE_PROF%' order by u.nombre");
         }
         $result = $query->getResult();
 

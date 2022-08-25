@@ -29,7 +29,6 @@ class OcupacionController extends AbstractController
     /**
      * @Route("/ocupacion", name="ocupacion_index", methods={"GET","POST"})
      * 
-     * @IsGranted("ROLE_USER")
      */
     public function index(Request $request, OcupacionRepository $ocupacionRepository, SessionInterface $session): Response
     {
