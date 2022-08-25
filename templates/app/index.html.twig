@@ -27,13 +27,10 @@
 	{% endif %}
 	<div class="container-sm">
 		<div class="text-center">
-			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			{# {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %} #}
 				{# <small>Usuario: {{ app.user.username }}</small> #}
-				<a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button">
-					<i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
-			{% else %}
-				<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
-			{% endif %}
+				<a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
+			{# {% else %}	<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>	{% endif %} #}
 		</div>
 	</div>
 	</div>
