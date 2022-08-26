@@ -4,36 +4,38 @@
 {% block stylesheets %}
 	{{ parent() }}
 	{#<style>
-		{% if not is_mobile %}
-			.container-fluid {
-				background-image: url("{{ asset('image/fcvs_uader_publica.jpg') }}");
-				background-repeat: no-repeat;
-				background-attachment: fixed;
-				background-size: 100%;
-				
-			}
-		{% endif %}
-	</style>#}
+			{% if not is_mobile %}
+				.container-fluid {
+					background-image: url("{{ asset('image/fcvs_uader_publica.jpg') }}");
+					background-repeat: no-repeat;
+					background-attachment: fixed;
+					background-size: 100%;
+					
+				}
+			{% endif %}
+		</style>#}
 {% endblock %}
 {% block body %}
 	{{parent()}}
 	<div class="container-fluid p-5 my-5 border bg-primary">
-	{% if is_mobile %}
-		<h5 class="text-center">Bienvenido</h2>
-		<h6 class="text-center">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
-	{% else %}
-		<h4 class="text-center text-white">Bienvenido</h2>
-		<h5 class="text-center text-white">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
-	{% endif %}
-	<div class="container-sm">
-		<div class="text-center">
-			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				{# <small>Usuario: {{ app.user.username }}</small> #}
-				<a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
-			{% else %}	
-				<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">Ingresar</a>
-			{% endif %} 
+		{% if is_mobile %}
+			<h5 class="text-center">Sistema de Ocupación de Aulas</h2>
+			<h6 class="text-center">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
+		{% else %}
+			<h4 class="text-center text-white">Sistema de Ocupación de Aulas</h2>
+			<h5 class="text-center text-white">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
+		{% endif %}
+		<br>
+		<div class="container-sm">
+			<div class="text-center">
+				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+					<a class="btn btn-success btn-lg" href="{{ path('ocupacion_index') }}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
+					{# <a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a> #}
+				{% else %}
+					<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
+				{% endif %}
+			</div>
 		</div>
 	</div>
-	</div>
 {% endblock %}
+{% block footer %} {{parent()}} {% endblock %}
