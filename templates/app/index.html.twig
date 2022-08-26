@@ -4,20 +4,20 @@
 {% block stylesheets %}
 	{{ parent() }}
 	{#<style>
-			{% if not is_mobile %}
-				.container-fluid {
-					background-image: url("{{ asset('image/fcvs_uader_publica.jpg') }}");
-					background-repeat: no-repeat;
-					background-attachment: fixed;
-					background-size: 100%;
-					
-				}
-			{% endif %}
-		</style>#}
+					{% if not is_mobile %}
+						.container-fluid {
+							background-image: url("{{ asset('image/fcvs_uader_publica.jpg') }}");
+							background-repeat: no-repeat;
+							background-attachment: fixed;
+							background-size: 100%;
+							
+						}
+					{% endif %}
+				</style>#}
 {% endblock %}
 {% block body %}
 	{{parent()}}
-	<div class="container-fluid p-5 my-5 border bg-primary">
+	<div class="container-fluid p-5 my-5 border bg-success">
 		{% if is_mobile %}
 			<h5 class="text-center">Sistema de Ocupación de Aulas</h2>
 			<h6 class="text-center">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
@@ -26,16 +26,40 @@
 			<h5 class="text-center text-white">Aquí podrá consultar la ocupación de los diferentes espacios de la Facultad, sus actividades y horarios</h5>
 		{% endif %}
 		<br>
-		<div class="container-sm">
+		{# <div class="container-sm">
 			<div class="text-center">
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-					<a class="btn btn-success btn-lg" href="{{ path('ocupacion_index') }}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
-					{# <a class="btn btn-lg" href="{{path('ocupacion_index')}}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a> #}
+					<a class="btn btn-success btn-lg" href="{{ path('ocupacion_index') }}" role="button">
+						<i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
 				{% else %}
-					<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button"><i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
+					<a class="btn btn-success btn-lg" href="{{ path('app_login') }}" role="button">
+						<i class="bi bi-calendar2-check"></i>&nbsp;Ver Ocupaciones</a>
 				{% endif %}
 			</div>
+		</div> #}
+	</div>
+
+	<div class="container">
+		<div class="row">
+			{% for edificio in edificios %}
+				<div class="col">
+					<div
+						class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+						{# <img src="..." class="card-img-top" alt="..."> #}
+						<i class="card-img-top bi bi-calendar2-check"></i>
+						<div
+							class="card-body">
+							<h5 class="card-title">{{edificio.edificio}}</h5>
+							{# <p class="card-text">{{edificio.edificio}}</p> #}
+							<a href="{{ path('ocupacion_index', {edificio: edificio.id}) }}" class="btn btn-primary">Ver Ocupaciones</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
 		</div>
 	</div>
+
 {% endblock %}
-{% block footer %} {{parent()}} {% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
