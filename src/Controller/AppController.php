@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Edificios;
 
 class AppController extends AbstractController
 {
@@ -15,6 +16,9 @@ class AppController extends AbstractController
     public function index(): Response
     {
         date_default_timezone_set("America/Buenos_Aires");
-        return $this->render('app/index.html.twig', ['controller_name' => 'AppController']);
+
+        $edificios = $this->getDoctrine()->getRepository(Edificios::class)->findAll();
+
+        return $this->render('app/index.html.twig', ['controller_name' => 'AppController', 'edificios' => $edificios]);
     }
 }
