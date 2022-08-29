@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edificios de Usuario{% endblock %}
+
+{% block body %}
+    <h1>Edificios de Usuario</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Edificio</th>
+                <th>acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_edificio in user_edificios %}
+            <tr>
+                <td>{{ user_edificio.id }}</td>
+                <td>{{ user_edificio.user }}</td>
+                <td>{{ user_edificio.edificio }}</td>
+                <td>
+                    <a href="{{ path('app_user_edificios_show', {'id': user_edificio.id}) }}">ver</a>
+                    <a href="{{ path('app_user_edificios_edit', {'id': user_edificio.id}) }}">editar</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">sin registros</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_edificios_new') }}">Nuevo</a>
+{% endblock %}

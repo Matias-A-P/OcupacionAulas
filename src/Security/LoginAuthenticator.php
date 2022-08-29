@@ -34,8 +34,12 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): PassportInterface
     {
         $dni = $request->request->get('dni', '');
-        
+
         $this->edificio = $request->request->get('edificio', 1);
+
+        if ($this->edificio<>1) {
+            return new Passport(new UserBadge(0), new PasswordCredentials(''));
+        };
 
         $request->getSession()->set(Security::LAST_USERNAME, $dni);
 
@@ -67,5 +71,4 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST');
     }
-
 }

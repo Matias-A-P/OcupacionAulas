@@ -10,12 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @Route("/aulas")
  */
 class AulasController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine) {}
+
     /**
      * @Route("/", name="aulas_index", methods={"GET"})
      * 
@@ -43,7 +46,7 @@ class AulasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($aula);
             $entityManager->flush();
 
@@ -79,7 +82,7 @@ class AulasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             return $this->redirectToRoute('aulas_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -98,7 +101,7 @@ class AulasController extends AbstractController
     public function delete(Request $request, Aulas $aula): Response
     {
         if ($this->isCsrfTokenValid('delete'.$aula->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($aula);
             $entityManager->flush();
         }

@@ -46,7 +46,17 @@
 									<li class="nav-item">
 										<a {% if route_name == "catedras_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('catedras_index')}}">
 											<i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;Actividades</a>
+									</li>							
+								{% endif %}
+								{% if is_granted("ROLE_ROOT") %}
+									<li class="nav-item">
+										<a {% if route_name == "app_user_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('app_user_index')}}">
+											<i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;Usuarios</a>
 									</li>
+									<li class="nav-item">
+										<a {% if route_name == "app_user_edificios_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('app_user_edificios_index')}}">
+											<i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;Edificios Usuario</a>
+									</li>	
 								{% endif %}
 								<li class="nav-item">
 									<a {% if route_name == "ocupacion_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('ocupacion_index')}}">
