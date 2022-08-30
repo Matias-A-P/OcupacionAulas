@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Nuevo Usuario{% endblock %}
-
-{% block body %}
-    <h1>Nuevo Usuario</h1>
-
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Nuevo Usuario</h5>
+	</div>
+	<div class="col-sm-1">
+         
+	</div>
+{% endblock %}
+{% block cardbody %}
     {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('app_user_index') }}">volver</a>
+    <a href="{{ path('app_user_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}
