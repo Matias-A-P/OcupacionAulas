@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,6 +46,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nombre;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserEdificios::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $userEdificios;
+
+    public function __construct()
+    {
+        $this->userEdificios = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -161,5 +173,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    /**
+     * @return Collection<int, UserEdificios>
+     */
+    public function getUserEdificios(): Collection
+    {
+        return $this->userEdificios;
+    }
+
+    public function addUserEdificio(UserEdificios $userEdificio): self
+    {
+        if (!$this->userEdificios->contains($userEdificio)) {
+            $this->userEdificios[] = $userEdificio;
+            $userEdificio->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserEdificio(UserEdificios $userEdificio): self
+    {
+        if ($this->userEdificios->removeElement($userEdificio)) {
+            // set the owning side to null (unless already changed)
+            if ($userEdificio->getUser() === $this) {
+                $userEdificio->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

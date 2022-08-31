@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edificios index{% endblock %}
-
-{% block body %}
-    <h1>Edificios index</h1>
-
+{% block title %}Edificios{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-8">
+		<h5><i class="bi bi-columns"></i> Edificios</h5>
+	</div>
+    <div class="col-sm-4">
+        <a href="{{ path('edificios_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>
+    </div>
+{% endblock %}
+{% block cardbody %}
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Edificio</th>
-                <th>actions</th>
+                <th>Sede</th>
+                <th>acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -18,18 +24,17 @@
             <tr>
                 <td>{{ edificio.id }}</td>
                 <td>{{ edificio.edificio }}</td>
+                <td>{{ edificio.Sede }}</td>
                 <td>
-                    <a href="{{ path('edificios_show', {'id': edificio.id}) }}">show</a>
-                    <a href="{{ path('edificios_edit', {'id': edificio.id}) }}">edit</a>
+                    {# <a href="{{ path('edificios_show', {'id': edificio.id}) }}">ver</a> #}
+                    <a href="{{ path('edificios_edit', {'id': edificio.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">sin registros</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('edificios_new') }}">Create new</a>
 {% endblock %}

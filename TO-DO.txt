@@ -1,7 +1,3 @@
-mas de una comision por ocupacion
 comisiones -> cantidad estudiantes -> ver capacidad aula
-mapa edificio
-catedras
-	docente
-	tutoria/teoria/practica/otros
+
 

@@ -6,9 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Edificios;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AppController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine) {}
 
     /**
      * @Route("/homepage", name="app_homepage")
@@ -17,7 +19,7 @@ class AppController extends AbstractController
     {
         date_default_timezone_set("America/Buenos_Aires");
 
-        $edificios = $this->getDoctrine()->getRepository(Edificios::class)->findAll();
+        $edificios = $this->doctrine->getRepository(Edificios::class)->findBy(array(), array('Sede' => 'ASC'));
 
         return $this->render('app/index.html.twig', ['controller_name' => 'AppController', 'edificios' => $edificios]);
     }

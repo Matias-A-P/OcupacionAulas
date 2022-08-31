@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Edificio de Usuario{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Editar Edificio de Usuario</h5>
+	</div>
+	<div class="col-sm-1">
+         {{ include('user_edificios/_delete_form.html.twig') }}
+	</div>
+{% endblock %}
+{% block cardbody %}
+    {{ include('user_edificios/_form.html.twig', {'button_label': 'Update'}) }}
+    <a href="{{ path('app_user_edificios_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
+{% endblock %}

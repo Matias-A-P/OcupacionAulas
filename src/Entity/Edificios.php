@@ -34,6 +34,11 @@ class Edificios
      */
     private $edificiosPisos;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $Sede;
+
     public function __construct()
     {
         $this->aulas = new ArrayCollection();
@@ -117,6 +122,18 @@ class Edificios
                 $edificiosPiso->setIdEdificio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSede(): ?string
+    {
+        return $this->Sede;
+    }
+
+    public function setSede(?string $Sede): self
+    {
+        $this->Sede = $Sede;
 
         return $this;
     }

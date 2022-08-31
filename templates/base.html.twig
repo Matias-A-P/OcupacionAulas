@@ -46,7 +46,21 @@
 									<li class="nav-item">
 										<a {% if route_name == "catedras_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('catedras_index')}}">
 											<i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;Actividades</a>
+									</li>		
+									<li class="nav-item">
+										<a {% if route_name == "edificios_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('edificios_index')}}">
+											<i class="bi bi-house"></i>&nbsp;Edificios</a>
+									</li>						
+								{% endif %}
+								{% if is_granted("ROLE_ROOT") %}
+									<li class="nav-item">
+										<a {% if route_name == "app_user_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('app_user_index')}}">
+											<i class="bi bi-people"></i>&nbsp;Usuarios</a>
 									</li>
+									<li class="nav-item">
+										<a {% if route_name == "app_user_edificios_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('app_user_edificios_index')}}">
+											<i class="bi bi-house"></i><i class="bi bi-person"></i>&nbsp;Edificios Usuario</a>
+									</li>	
 								{% endif %}
 								<li class="nav-item">
 									<a {% if route_name == "ocupacion_index" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{path('ocupacion_index')}}">
@@ -84,11 +98,11 @@
 			<br><br><br>
 			<div class="container">
 				<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-					<div class="col-md-4 d-flex align-items-center">
+					<div class="col-md-6 d-flex align-items-center">
 						<a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
 							<img src="{{ asset('image/logo2.png') }}" alt="" width="250" height="40">
 						</a>
-						<span class="text-muted">© 2022 Informática</span>
+						<span class="text-muted">© 2022 Dpto. Informática FCVyS - UADER</span>
 					</div>
 					<ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
 						<li class="ms-3">

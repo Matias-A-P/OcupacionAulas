@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220425141703 extends AbstractMigration
+final class Version20220828230721 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -40,13 +40,13 @@ final class Version20220425141703 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE aulas DROP FOREIGN KEY FK_CAB6B16A9277E621');
+        $this->addSql('ALTER TABLE aulas DROP FOREIGN KEY FK_CAB6B16AC45599DF');
         $this->addSql('ALTER TABLE catedras DROP FOREIGN KEY FK_813D2E80BD0F409C');
-        $this->addSql('ALTER TABLE ocupacion DROP FOREIGN KEY FK_C6DC2466392E9EC');
+        $this->addSql('ALTER TABLE edificios_pisos DROP FOREIGN KEY FK_772ADAF09277E621');
         $this->addSql('ALTER TABLE ocupacion DROP FOREIGN KEY FK_C6DC2467387BB25');
         $this->addSql('ALTER TABLE ocupacion DROP FOREIGN KEY FK_C6DC246CCB14CBA');
-        $this->addSql('ALTER TABLE aulas DROP FOREIGN KEY FK_CAB6B16A9277E621');
-        $this->addSql('ALTER TABLE edificios_pisos DROP FOREIGN KEY FK_772ADAF09277E621');
-        $this->addSql('ALTER TABLE aulas DROP FOREIGN KEY FK_CAB6B16AC45599DF');
+        $this->addSql('ALTER TABLE ocupacion DROP FOREIGN KEY FK_C6DC2466392E9EC');
         $this->addSql('ALTER TABLE ocupacion DROP FOREIGN KEY FK_C6DC246A76ED395');
         $this->addSql('DROP TABLE areas');
         $this->addSql('DROP TABLE aulas');
