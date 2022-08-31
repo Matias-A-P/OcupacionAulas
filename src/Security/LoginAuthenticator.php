@@ -46,8 +46,8 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             $uId = $u[0]->getId();
         }
         $ue = $this->doctrine->getRepository(UserEdificios::class)->findBy(['user' => $uId, 'edificio' => $this->edificio]);
-        if ((empty($ue)) || ($ue[0]->getId() <> $this->edificio)) {
-            //$this->edificio = 0; 
+        if ((empty($ue)) or ($ue[0]->getEdificio()->getId() <> $this->edificio)) {
+            $this->edificio = 0; 
             return new Passport(new UserBadge(0), new PasswordCredentials(''));
         };
 
