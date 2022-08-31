@@ -19,7 +19,7 @@ class AppController extends AbstractController
     {
         date_default_timezone_set("America/Buenos_Aires");
 
-        $edificios = $this->doctrine->getRepository(Edificios::class)->findAll();
+        $edificios = $this->doctrine->getRepository(Edificios::class)->findBy(array(), array('Sede' => 'ASC'));
 
         return $this->render('app/index.html.twig', ['controller_name' => 'AppController', 'edificios' => $edificios]);
     }

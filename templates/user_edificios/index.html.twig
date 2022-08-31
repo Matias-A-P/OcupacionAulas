@@ -26,8 +26,8 @@
                 <td>{{ user_edificio.user }}</td>
                 <td>{{ user_edificio.edificio }}</td>
                 <td>
-                    <a href="{{ path('app_user_edificios_show', {'id': user_edificio.id}) }}">ver</a>
-                    <a href="{{ path('app_user_edificios_edit', {'id': user_edificio.id}) }}">editar</a>
+                    {# <a href="{{ path('app_user_edificios_show', {'id': user_edificio.id}) }}">ver</a> #}
+                    <a href="{{ path('app_user_edificios_edit', {'id': user_edificio.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
         {% else %}

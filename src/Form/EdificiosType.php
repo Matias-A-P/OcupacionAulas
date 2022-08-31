@@ -13,6 +13,7 @@ class EdificiosType extends AbstractType
     {
         $builder
             ->add('edificio')
+            ->add('Sede')
         ;
     }
 

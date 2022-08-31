@@ -13,8 +13,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
+use App\Entity\UserEdificios;
 
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -26,18 +28,26 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     private $edificio = 1;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, private ManagerRegistry $doctrine)
     {
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         $dni = $request->request->get('dni', '');
-
         $this->edificio = $request->request->get('edificio', 1);
 
-        if ($this->edificio<>1) {
+        // verificar que tenga acceso al edificio
+        $u = $this->doctrine->getRepository(User::class)->findBy(['dni' => $dni]);
+        if (empty($u)) {
+            $uId = 0;
+        } else {
+            $uId = $u[0]->getId();
+        }
+        $ue = $this->doctrine->getRepository(UserEdificios::class)->findBy(['user' => $uId, 'edificio' => $this->edificio]);
+        if ((empty($ue)) || ($ue[0]->getId() <> $this->edificio)) {
+            //$this->edificio = 0; 
             return new Passport(new UserBadge(0), new PasswordCredentials(''));
         };
 
@@ -54,11 +64,6 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-        //     //return new RedirectResponse($targetPath);
-        //     return new RedirectResponse($this->urlGenerator->generate($targetPath, ['edificio' => $this->edificio]));
-        // }
-
         return new RedirectResponse($this->urlGenerator->generate('ocupacion_index', ['edificio' => $this->edificio]));
     }
 
