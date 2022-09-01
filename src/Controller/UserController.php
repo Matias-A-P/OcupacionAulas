@@ -38,7 +38,7 @@ class UserController extends AbstractController
 
             $plainpwd = $user->getPassword();
             $hashedPassword = $passwordHasher->hashPassword($user, $plainpwd);
-            $user->setPassword($hashedPassword);    
+            $user->setPassword($hashedPassword);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -69,9 +69,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainpwd = $user->getPassword();
-            $hashedPassword = $passwordHasher->hashPassword($user, $plainpwd);
-            $user->setPassword($hashedPassword); 
+            $editpass = $form['edit_pass']->getData(); 
+            if ($editpass) {
+                $plainpwd = $form['plain_pass']->getData(); //$user->getPassword();
+                $hashedPassword = $passwordHasher->hashPassword($user, $plainpwd);
+                $user->setPassword($hashedPassword);
+            } else {
+                //$user-> ('password');
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
@@ -87,7 +93,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_ROOT')]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }

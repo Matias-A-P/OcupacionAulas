@@ -52,6 +52,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $userEdificios;
 
+    private $edit_pass;
+    private $plain_pass;
+
+    public function getEdit_pass(): bool
+    {
+        return $this->edit_pass;
+    }
+    
+    public function setEdit_pass(bool $edit_pass): self
+    {
+        $this->edit_pass = $edit_pass;
+        return $this;
+    }
+
+    public function getPlain_pass(): string
+    {
+        return $this->plain_pass;
+    }
+    
+    public function setPlain_pass(string $plain_pass): self
+    {
+        $this->plain_pass = $plain_pass;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->userEdificios = new ArrayCollection();
