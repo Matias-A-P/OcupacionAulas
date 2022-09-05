@@ -44,7 +44,7 @@
 			{% for edificio in edificios %}
 				<div class="col">
 					<div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
-						<h5 class="card-title"><i class="bi bi-house"></i>{{edificio.Sede}}</h5>
+						<h5 class="card-title"><i class="bi bi-house"></i>&nbsp;{{edificio.Sede}}</h5>
 						<div class="card-body">
 							<a class="card-text" href="{{ path('ocupacion_index', {edificio: edificio.id}) }}">{{edificio.edificio}}</a>
 						</div>
