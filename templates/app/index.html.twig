@@ -52,7 +52,7 @@
 				<h5 class="card-title"><i class="bi bi-house"></i>&nbsp;{{edificio.Sede}}</h5>
 				<div class="card-body">
 			{% endif %}
-			<a class="card-text" href="{{ path('ocupacion_index', {edificio: edificio.id}) }}">{{edificio.edificio}}</a>
+			<p><a class="card-text" href="{{ path('ocupacion_index', {edificio: edificio.id}) }}">{{edificio.edificio}}</a></p>
 			{% if loop.last %}
 				</div></div></div>
 			{% endif %}
