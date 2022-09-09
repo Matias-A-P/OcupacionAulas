@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New EdificiosPisos{% endblock %}
-
-{% block body %}
-    <h1>Create new EdificiosPisos</h1>
-
-    {{ include('edificios_pisos/_form.html.twig') }}
-
-    <a href="{{ path('edificios_pisos_index') }}">back to list</a>
+{% block title %}Nuevo Piso
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Nuevo Piso</h5>
+	</div>
+	<div class="col-sm-1"></div>
+{% endblock %}
+{% block cardbody %}
+	{{ include('edificios_pisos/_form.html.twig') }}
+	<a href="{{ path('edificios_pisos_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

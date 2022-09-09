@@ -6,7 +6,7 @@
 {% endblock %}
 {% block cardheader %}
 	<div class="col-sm-3 pt-1">
-		<h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5>
+		<a class="btn btn-sm btn-outline-secondary" href="{{path('app_homepage')}}" role="button"><h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5></a>
 	</div>
 	<div class="col-sm-5 pt-1">
 		<div class="d-flex justify-content-center">

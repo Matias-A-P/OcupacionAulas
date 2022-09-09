@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit EdificiosPisos{% endblock %}
-
-{% block body %}
-    <h1>Edit EdificiosPisos</h1>
-
-    {{ include('edificios_pisos/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('edificios_pisos_index') }}">back to list</a>
-
-    {{ include('edificios_pisos/_delete_form.html.twig') }}
+{% block title %}Editar Piso{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-11">
+		<h5>Editar Piso</h5>
+	</div>
+	<div class="col-sm-1">
+         {{ include('edificios_pisos/_delete_form.html.twig') }}
+	</div>
 {% endblock %}
+{% block cardbody %}
+    {{ include('edificios_pisos/_form.html.twig', {'button_label': 'Update'}) }}
+    <a href="{{ path('edificios_pisos_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
+{% endblock %}
+
