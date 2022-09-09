@@ -27,34 +27,26 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'choices'  => [
-                  'Usuario' => 'ROLE_USER',
-                  'Profesor' => 'ROLE_PROF',
-                  'Admin' => 'ROLE_ADMIN',
-                  'Root' => 'ROLE_ROOT',
+                    'Usuario' => 'ROLE_USER',
+                    'Profesor' => 'ROLE_PROF',
+                    'Admin' => 'ROLE_ADMIN',
+                    'Root' => 'ROLE_ROOT',
                 ],
-            ])
-            ->add('edit_pass', CheckboxType::class, ['required' => false, 'value' => false, 'mapped' => false, 'label' => 'Cambiar Clave'])
-            ->add('plain_pass', PasswordType::class, ['required' => false, 'mapped' => false, 'label' => 'Clave'])        
-        ;
-
-        // $builder->get('roles')
-        //     ->addModelTransformer(new CallbackTransformer(
-        //         function ($rolesArray) {
-        //             // transform the array to a string
-        //             return count($rolesArray)? $rolesArray[0]: null;
-        //         },
-        //         function ($rolesString) {
-        //             // transform the string back to an array
-        //             return [$rolesString];
-        //         }   
-        //     ));
-
+            ]);
+        if ($options['nuevo']) {
+            $builder->add('password', PasswordType::class, ['label' => 'Clave']);
+        } else {
+            $builder
+                ->add('edit_pass', CheckboxType::class, ['required' => false, 'value' => false, 'mapped' => false, 'label' => 'Cambiar Clave'])
+                ->add('plain_pass', PasswordType::class, ['required' => false, 'mapped' => false, 'label' => 'Nueva Clave']);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'nuevo' => true,
         ]);
     }
 }

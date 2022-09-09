@@ -1,11 +1,16 @@
 <div class="container">
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    {# {{ form_widget(form.nombre) }}
-    {{ form_widget(form.dni) }}
-    {{ form_widget(form.email) }}
-    {{ form_widget(form.roles) }}
-    {{ form_widget(form.password) }} #}
-    <button type="submit" class="btn btn-primary">Guardar</button>
-{{ form_end(form) }}
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{# {{ form_widget(form.nombre) }}
+	{{ form_widget(form.dni) }}
+	{{ form_widget(form.email) }}
+	{{ form_widget(form.roles) }}
+	{% if nuevo %}
+		{{ form_widget(form.password) }}
+	{% else %}
+		{{ form_widget(form.edit_pass) }}
+		{{ form_widget(form.plain_pass) }}
+	{% endif %} #}
+	<button type="submit" class="btn btn-primary">Guardar</button>
+	{{ form_end(form) }}  {# ,{'render_rest': false} #}
 </div>

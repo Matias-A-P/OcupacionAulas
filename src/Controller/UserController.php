@@ -31,7 +31,7 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['nuevo'=>true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,6 +49,7 @@ class UserController extends AbstractController
         return $this->renderForm('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+            'nuevo' => true,
         ]);
     }
 
@@ -65,7 +66,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_ROOT')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['nuevo'=>false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,6 +87,7 @@ class UserController extends AbstractController
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
+            'nuevo' => false,
         ]);
     }
 
