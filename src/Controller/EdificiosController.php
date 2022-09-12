@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Edificios;
+use App\Entity\EdificiosPisos;
 use App\Form\EdificiosType;
 use App\Repository\EdificiosRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,11 @@ class EdificiosController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $edificio = new Edificios();
+
+        $piso1 = new EdificiosPisos();
+        $piso1->setPiso('Planta Baja');
+        $edificio->getEdificiosPisos()->add($piso1);
+
         $form = $this->createForm(EdificiosType::class, $edificio);
         $form->handleRequest($request);
 

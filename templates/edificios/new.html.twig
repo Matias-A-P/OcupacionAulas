@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nuevo Edificio{% endblock %}
+{% block title %}Nuevo Edificio
+{% endblock %}
 {% block cardheader %}
 	<div class="col-sm-11">
 		<h5>Nuevo Edificio</h5>
 	</div>
-	<div class="col-sm-1">
-         
-	</div>
+	<div class="col-sm-1"></div>
 {% endblock %}
 {% block cardbody %}
-    {{ include('edificios/_form.html.twig') }}
-    <a href="{{ path('edificios_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
+	{{ include('edificios/_form.html.twig') }}
+	<a href="{{ path('edificios_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

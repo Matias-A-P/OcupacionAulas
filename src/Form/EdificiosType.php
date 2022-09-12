@@ -6,6 +6,7 @@ use App\Entity\Edificios;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EdificiosType extends AbstractType
 {
@@ -15,6 +16,11 @@ class EdificiosType extends AbstractType
             ->add('edificio')
             ->add('Sede')
         ;
+        $builder->add('getEdificiosPisos', CollectionType::class, [
+            'entry_type' => EdificiosPisosType::class,
+            'entry_options' => ['label' => false],
+            'allow_add' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
