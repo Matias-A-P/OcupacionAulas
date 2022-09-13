@@ -20,21 +20,27 @@ class OcupacionRepository extends ServiceEntityRepository
         parent::__construct($registry, Ocupacion::class);
     }
 
-    public function getOcupacionesDia(string $dia, int $aula, int $area = 0)
+    public function getOcupacionesDia(string $dia, int $aula, int $area = 0, int $edificio = 0)
     {
         $entm = $this->getEntityManager(); //JOIN App\Entity\Aulas au   // and au.id_edificio=:ed
-        if ($area == 0) {
-            $query = $entm->createQuery(
-                'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
-            )
-                ->setParameter('a', $aula)
+        if ($aula == 0) { // vista horas
+            $query = $entm->createQuery('select o from App\Entity\Ocupacion o JOIN App\Entity\Aulas au where au.id_edificio=:e and o.fecha=:d order by o.hora_inicio ASC, o.id_area')
+                ->setParameter('e', $edificio)
                 ->setParameter('d', new \DateTime($dia));
         } else {
-            $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC')
-                ->setParameter('a', $aula)
-                ->setParameter('d', new \DateTime($dia))
-                ->setParameter('ar', $area);
-        };
+            if ($area == 0) {
+                $query = $entm->createQuery(
+                    'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
+                )
+                    ->setParameter('a', $aula)
+                    ->setParameter('d', new \DateTime($dia));
+            } else {
+                $query = $entm->createQuery('select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d and o.id_area=:ar order by o.id_aula ASC, o.hora_inicio ASC')
+                    ->setParameter('a', $aula)
+                    ->setParameter('d', new \DateTime($dia))
+                    ->setParameter('ar', $area);
+            };
+        }
 
         $result = $query->getResult();
 

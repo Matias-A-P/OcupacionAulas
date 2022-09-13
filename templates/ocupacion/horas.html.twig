@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block cardheader %}
+	<div class="col-sm-3 pt-1">
+		<a class="btn btn-sm btn-outline-secondary" href="{{path('app_homepage')}}" role="button">
+			<h5>
+				<i class="bi bi-bank"></i>
+				{{ app.session.get('edificio') }}</h5>
+		</a>
+	</div>
+	<div class="col-sm-5 pt-1">
+		<div class="d-flex justify-content-center">
+			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
+				<i class="bi bi-calendar4-event"></i>
+				Hoy</a>
+			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button">
+				<i class="bi bi-arrow-left"></i>
+			</a>
+			<form action="/ocupacion?dia=dia">
+				<input type="date" name="dia" id="dia" value={{fecha}} class="form-control form-control-sm" onkeydown="return false">
+			</form>
+			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button">
+				<i class="bi bi-arrow-right"></i>
+			</a>
+			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button">
+				<i class="bi bi-calendar4-week"></i>
+				Semanal</a>
+		</div>
+	</div>
+	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "horas"}) }}
+{% endblock %}
+{% block cardbody %}
+{% set ultHora = '99:99' %}
+{% set ocupacion=ocupacions[0] %}
+{% for ocup in ocupacion %}
+	{% set inicio = ocup.horaInicio|date('H:i') %}
+	{% set fin = ocup.horaFin|date('H:i') %}
+	{% if ultHora != inicio %}
+		{% set ultHora = inicio %}
+		{% if not loop.first %}
+			</div></div>></div>
+		{% endif %}
+		<div class="row">
+			<div class="col-sm-2">{{inicio}}</div>
+			<div class="col-sm-10">
+			<div class="row">
+	{% endif %}
+	<div class="col-md-auto">
+		<div class="container-ocup">
+			<div class="info-ocup">
+				<div class="lh-1">
+					{{ocup.IdCatedra }}
+				</div>
+				<div class="text-verdelogo">{{ocup.IdArea}}</div>
+				<div class="text-black align-bottom fw-bold">
+					{{ocup.IdAula}}&nbsp;-&nbsp;{{inicio}}&nbsp;a&nbsp;{{fin}}&nbsp;hs.
+				</div>
+			</div>
+			{% if ocup.observaciones %}
+				<div class="overlay">
+					<div class="obs-ocup px-1 lh-1">{{ ocup.observaciones }}</div>
+				</div>
+			{% endif %}
+		</div>
+		<small>Comisiones:</small>
+		<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
+			<div class="badge bg-secondary text-white">{{ocup.comision}}</div>
+		</a>
+	</div>
+	{% if loop.last %}
+		</div></div>></div>
+	{% endif %}
+{% endfor %}
+{% endblock %}

@@ -1,10 +1,10 @@
 <td class="bg-info border-end" colspan="{{bloques}}">
 	<div class="container-ocup">
 		<div class="info-ocup">
-			<div class="lh-1"><strong>{{ocup.IdCatedra }}</strong></div>
+			<div class="lh-1">{{ocup.IdCatedra }}</div>
 			<div class="text-verdelogo">{{ocup.IdArea}}</div>
 			<div class="text-black align-bottom fw-bold">
-				<small>{{inicio}}&nbsp;a&nbsp;{{fin}}</small>
+				{{ocup.IdAula}}&nbsp;-&nbsp;{{inicio}}&nbsp;a&nbsp;{{fin}}&nbsp;hs.
 			</div>
 		</div>
 		{% if ocup.observaciones %}

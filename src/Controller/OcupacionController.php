@@ -50,9 +50,6 @@ class OcupacionController extends AbstractController
             $ed = $this->doctrine->getRepository(Edificios::class)->find($edificio);
             $session->set('edificio', $ed->getEdificio());
         }
-
-        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio' => $edificio]);
-        $arrOcup = [];
         $i = 0;
         $w = date('w', strtotime($dia));
         $lun = date('Y-m-d', strtotime('-' . ($w - 1) . ' days', strtotime($dia)));
@@ -61,54 +58,59 @@ class OcupacionController extends AbstractController
         $jue = date('Y-m-d', strtotime('-' . ($w - 4) . ' days', strtotime($dia)));
         $vie = date('Y-m-d', strtotime('-' . ($w - 5) . ' days', strtotime($dia)));
         $sab = date('Y-m-d', strtotime('-' . ($w - 6) . ' days', strtotime($dia)));
-
-        foreach ($aulas as $aula) {
-            if ($vista == 'semanal') {
-                $lunes[$i] = $ocupacionRepository->getOcupacionesDia($lun, $aula->getId(), $area, $edificio);
-                if (empty($lunes[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $lunes[$i] = array($ocup);
+        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio' => $edificio]);
+        $arrOcup = [];
+        if ($vista == 'horas') {
+            $arrOcup[0] = $ocupacionRepository->getOcupacionesDia($dia, 0, $area, $edificio);
+        } else {
+            foreach ($aulas as $aula) {
+                if ($vista == 'semanal') {
+                    $lunes[$i] = $ocupacionRepository->getOcupacionesDia($lun, $aula->getId(), $area, $edificio);
+                    if (empty($lunes[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $lunes[$i] = array($ocup);
+                    }
+                    $martes[$i] = $ocupacionRepository->getOcupacionesDia($mar, $aula->getId(), $area, $edificio);
+                    if (empty($martes[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $martes[$i] = array($ocup);
+                    }
+                    $miercoles[$i] = $ocupacionRepository->getOcupacionesDia($mie, $aula->getId(), $area, $edificio);
+                    if (empty($miercoles[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $miercoles[$i] = array($ocup);
+                    }
+                    $jueves[$i] = $ocupacionRepository->getOcupacionesDia($jue, $aula->getId(), $area, $edificio);
+                    if (empty($jueves[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $jueves[$i] = array($ocup);
+                    }
+                    $viernes[$i] = $ocupacionRepository->getOcupacionesDia($vie, $aula->getId(), $area, $edificio);
+                    if (empty($viernes[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $viernes[$i] = array($ocup);
+                    }
+                    $sabado[$i] = $ocupacionRepository->getOcupacionesDia($sab, $aula->getId(), $area, $edificio);
+                    if (empty($sabado[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $sabado[$i] = array($ocup);
+                    }
+                } else {
+                    $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId(), $area, $edificio);
+                    if (empty($arrOcup[$i])) {
+                        $ocup = new Ocupacion();
+                        $ocup->setIdAula($aula);
+                        $arrOcup[$i] = array($ocup);
+                    }
                 }
-                $martes[$i] = $ocupacionRepository->getOcupacionesDia($mar, $aula->getId(), $area, $edificio);
-                if (empty($martes[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $martes[$i] = array($ocup);
-                }
-                $miercoles[$i] = $ocupacionRepository->getOcupacionesDia($mie, $aula->getId(), $area, $edificio);
-                if (empty($miercoles[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $miercoles[$i] = array($ocup);
-                }
-                $jueves[$i] = $ocupacionRepository->getOcupacionesDia($jue, $aula->getId(), $area, $edificio);
-                if (empty($jueves[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $jueves[$i] = array($ocup);
-                }
-                $viernes[$i] = $ocupacionRepository->getOcupacionesDia($vie, $aula->getId(), $area, $edificio);
-                if (empty($viernes[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $viernes[$i] = array($ocup);
-                }
-                $sabado[$i] = $ocupacionRepository->getOcupacionesDia($sab, $aula->getId(), $area, $edificio);
-                if (empty($sabado[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $sabado[$i] = array($ocup);
-                }
-            } else {
-                $arrOcup[$i] = $ocupacionRepository->getOcupacionesDia($dia, $aula->getId(), $area, $edificio);
-                if (empty($arrOcup[$i])) {
-                    $ocup = new Ocupacion();
-                    $ocup->setIdAula($aula);
-                    $arrOcup[$i] = array($ocup);
-                }
+                $i++;
             }
-            $i++;
         }
 
         if ($vista == 'semanal') {
@@ -121,6 +123,13 @@ class OcupacionController extends AbstractController
                 'sabado' => $sabado,
                 'fecha' => strtotime($lun),
                 'aulas' => $aulas,
+                'area' => $area,
+                'edificio' => $edificio,
+            ]);
+        } elseif ($vista == 'horas') {
+            return $this->render('ocupacion/horas.html.twig', [
+                'ocupacions' => $arrOcup,
+                'fecha' => $dia,
                 'area' => $area,
                 'edificio' => $edificio,
             ]);
