@@ -34,12 +34,12 @@ class OcupacionController extends AbstractController
     {
         if ($request->isMethod('GET')) {
             $dia = $request->query->get('dia', date('Y-m-d'));
-            $vista = $request->query->get('vista', 'horas');
+            $vista = $request->query->get('vista', 'dia');
             $area = $request->query->get('area', 0);
             $edificio = $request->query->get('edificio', 0);
         } else {
             $dia = $request->request->get('dia', date('Y-m-d'));
-            $vista = $request->request->get('vista', 'horas');
+            $vista = $request->request->get('vista', 'dia');
             $area = $request->request->get('area', 0);
             $edificio = $request->request->get('edificio', 0);
         }

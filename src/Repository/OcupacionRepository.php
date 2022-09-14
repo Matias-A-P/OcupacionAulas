@@ -24,14 +24,14 @@ class OcupacionRepository extends ServiceEntityRepository
     {
         $entm = $this->getEntityManager(); //JOIN App\Entity\Aulas au   // and au.id_edificio=:ed
         if ($aula == 0) { // vista horas
-            $query = $entm->createQuery('select o from App\Entity\Ocupacion o JOIN App\Entity\Aulas au where au.id_edificio=:e and o.fecha=:d order by o.hora_inicio ASC, o.id_area')
-                ->setParameter('e', $edificio)
+            $query = $entm->createQuery(
+                'select o from App\Entity\Ocupacion o JOIN App\Entity\Aulas au where o.fecha=:d and au.id_edificio=:ed order by o.hora_inicio ASC, o.id_area, o.id_catedra')
+                ->setParameter('ed', $edificio)
                 ->setParameter('d', new \DateTime($dia));
         } else {
             if ($area == 0) {
                 $query = $entm->createQuery(
-                    'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC'
-                )
+                    'select o from App\Entity\Ocupacion o where o.id_aula=:a and o.fecha=:d order by o.id_aula ASC, o.hora_inicio ASC')
                     ->setParameter('a', $aula)
                     ->setParameter('d', new \DateTime($dia));
             } else {
