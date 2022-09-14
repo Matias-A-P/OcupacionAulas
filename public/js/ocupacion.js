@@ -15,6 +15,12 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+    $("#inputFiltroHoras").on("keyup click", function () {
+        var value = $(this).val().toLowerCase();
+        $("#rowOcups").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });    
     // cambio de dia
     $('#dia').on('change', function () {
         $(this).closest('form').submit();

@@ -15,12 +15,12 @@
 			        <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>            
                     <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
                 {% else %}
-			        <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
-                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+			        <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d'), vista: 'dia'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'dia'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
                 {% endif %}
             {% endif %}
             <a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-clock"></i> Horas</a>
-            <a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d')}) }}" role="button"><i class="bi bi-calendar4-event"></i> Diario</a>
+            <a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'dia'}) }}" role="button"><i class="bi bi-calendar4-event"></i> Diario</a>
 			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-calendar4-week"></i> Semanal</a>
 		</div>
 	</div>
