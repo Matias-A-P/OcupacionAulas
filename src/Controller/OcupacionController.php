@@ -34,12 +34,12 @@ class OcupacionController extends AbstractController
     {
         if ($request->isMethod('GET')) {
             $dia = $request->query->get('dia', date('Y-m-d'));
-            $vista = $request->query->get('vista', 'dia');
+            $vista = $request->query->get('vista', 'horas');
             $area = $request->query->get('area', 0);
             $edificio = $request->query->get('edificio', 0);
         } else {
             $dia = $request->request->get('dia', date('Y-m-d'));
-            $vista = $request->request->get('vista', 'dia');
+            $vista = $request->request->get('vista', 'horas');
             $area = $request->request->get('area', 0);
             $edificio = $request->request->get('edificio', 0);
         }
@@ -126,15 +126,15 @@ class OcupacionController extends AbstractController
                 'area' => $area,
                 'edificio' => $edificio,
             ]);
-        } elseif ($vista == 'horas') {
-            return $this->render('ocupacion/horas.html.twig', [
+        } elseif ($vista == 'dia') {
+            return $this->render('ocupacion/index.html.twig', [
                 'ocupacions' => $arrOcup,
                 'fecha' => $dia,
                 'area' => $area,
                 'edificio' => $edificio,
             ]);
         } else {
-            return $this->render('ocupacion/index.html.twig', [
+            return $this->render('ocupacion/horas.html.twig', [
                 'ocupacions' => $arrOcup,
                 'fecha' => $dia,
                 'area' => $area,

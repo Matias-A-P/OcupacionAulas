@@ -7,22 +7,7 @@
 	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block cardheader %}
-	<div class="col-sm-3">
-		<h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5>
-	</div>
-	<div class="col-sm-5">
-	<div class="d-flex justify-content-center">
-		<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button">
-		<i class="bi bi-calendar4-event"></i>
-		</a>
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("-7 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button">
-			<i class="bi bi-arrow-left"></i>
-		</a>
-		<div class="text-verdelogo fw-bold mx-3">{{fecha|date('d/m/Y')}}</div>
-		<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify("+7 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button">
-			<i class="bi bi-arrow-right"></i>
-		</a>
-	</div></div>
+	{{ include("ocupacion/_fecha_vistas.html.twig", {vista: "semanal"}) }}
 	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "semanal"}) }}
 {% endblock %}
 {% block cardbody %}

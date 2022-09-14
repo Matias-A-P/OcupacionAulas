@@ -5,20 +5,7 @@
 	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block cardheader %}
-	<div class="col-sm-3 pt-1">
-		<a class="btn btn-sm btn-outline-secondary" href="{{path('app_homepage')}}" role="button"><h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5></a>
-	</div>
-	<div class="col-sm-5 pt-1">
-		<div class="d-flex justify-content-center">
-			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: date()}) }}" role="button"><i class="bi bi-calendar4-event"></i> Hoy</a>
-			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
-			<form action="/ocupacion?dia=dia">
-				<input type="date" name="dia" id="dia" value={{fecha}} class="form-control form-control-sm" onkeydown="return false">
-			</form>
-			<a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
-			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-calendar4-week"></i> Semanal</a>
-		</div>
-	</div>
+	{{ include("ocupacion/_fecha_vistas.html.twig", {vista: "dia"}) }}
 	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "dia"}) }}
 {% endblock %}
 {% block cardbody %}
@@ -73,8 +60,8 @@
 								{% set ultCol=0 %}
 								{% set i = 0 %}
 								{% set cant = ocupacion|length %}
-								{% for idx in 0..13 %}
-								{% if idx>i or idx==0 %}	
+								{% for idx in 0..13 %} {# cantidad de bloques de media hora #}
+								{% if idx>i or idx==0 %} {# si no se cargó la ocupacion siguiente #}	
 								{% set i = idx %}	
 									{% if i < cant %}
 										{% set ocup=ocupacion[i] %}
