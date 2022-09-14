@@ -1,0 +1,26 @@
+	<div class="col-sm-3 pt-1">
+		<a class="btn btn-sm btn-outline-secondary" href="{{path('app_homepage')}}" role="button"><h5><i class="bi bi-bank"></i> {{ app.session.get('edificio') }}</h5></a>
+	</div>
+	<div class="col-sm-5 pt-1">
+		<div class="d-flex justify-content-center">
+            {% if vista == 'semanal' %}		
+                <div class="text-verdelogo fw-bold mx-3">{{fecha|date('d/m/Y')}}</div>	    
+			    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -7 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>            
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +7 day")|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+            {% else %}		
+			    <form action="/ocupacion?dia=dia">
+				    <input type="date" name="dia" id="dia" value={{fecha}} class="form-control form-control-sm" onkeydown="return false">
+			    </form>
+                {% if vista == 'horas' %}                	    
+			        <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>            
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+                {% else %}
+			        <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d')}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+                {% endif %}
+            {% endif %}
+            <a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-clock"></i> Horas</a>
+            <a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d')}) }}" role="button"><i class="bi bi-calendar4-event"></i> Diario</a>
+			<a class="btn btn-sm btn-outline-secondary mx-3" href="{{ path('ocupacion_index', {dia: fecha|date('Y-m-d'), vista: 'semanal'}) }}" role="button"><i class="bi bi-calendar4-week"></i> Semanal</a>
+		</div>
+	</div>
