@@ -1,9 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
-{% endblock %}
 {% block cardheader %}
 	{{ include("ocupacion/_fecha_vistas.html.twig", {vista: "horas"}) }}
 	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "horas"}) }}

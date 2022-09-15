@@ -1,18 +1,18 @@
+<div class="col-md-auto bg-info border-bottom border-end">
 <div class="container-ocup">
-	<div class="info-ocup">
-		<div class="text-verdelogo lh-1"><strong>{{ocup.IdCatedra }}</strong></div>
+	<div class="info-ocup p-2">
+		<div class="">{{ocup.IdCatedra }}</div>
 		<div class="text-verdelogo">{{ocup.IdArea}}</div>
-		<div class="text-black align-bottom fw-bold">{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</div>
+		<div class="text-black align-bottom fw-bold">{{ ocup.IdAula }}&nbsp;-&nbsp;{{ocup.horaInicio|date('H:i')}}&nbsp;a&nbsp;{{ocup.horaFin|date('H:i')}}</div>
 	</div>
 	{% if ocup.observaciones %}
-	<div class="overlay">
-		<div class="obs-ocup px-1 lh-1">{{ ocup.observaciones }}</div>
-	</div>
+		<div class="overlay"><div class="obs-ocup px-1 lh-1">{{ ocup.observaciones }}</div></div>
 	{% endif %}
-</div>
-<small>Comisiones:</small>
-<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
-<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+	<small>Comisiones:</small>
+	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
+	<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+{# no cierro los dos div por si se agrega comision #}
+
 {#
 {% set break = false %}
 {% for c in range(1,9) %}
