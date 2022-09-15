@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ocupacion;
+use App\Entity\Aulas;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateInterval;
@@ -22,10 +23,10 @@ class OcupacionRepository extends ServiceEntityRepository
 
     public function getOcupacionesDia(string $dia, int $aula, int $area = 0, int $edificio = 0)
     {
-        $entm = $this->getEntityManager(); //JOIN App\Entity\Aulas au   // and au.id_edificio=:ed
+        $entm = $this->getEntityManager();
         if ($aula == 0) { // vista horas
-            $query = $entm->createQuery(
-                'select o from App\Entity\Ocupacion o JOIN App\Entity\Aulas au where o.fecha=:d and au.id_edificio=:ed order by o.hora_inicio ASC, o.id_area, o.id_catedra')
+             $query = $entm->createQuery(
+                'select o from App\Entity\Ocupacion o JOIN o.id_aula a where o.fecha=:d and a.id_edificio=:ed order by o.hora_inicio ASC, o.id_area, o.id_catedra')
                 ->setParameter('ed', $edificio)
                 ->setParameter('d', new \DateTime($dia));
         } else {
@@ -43,6 +44,7 @@ class OcupacionRepository extends ServiceEntityRepository
         }
 
         $result = $query->getResult();
+        //$result = $query->getQuery()->getResult();
 
         return $result;
     }
