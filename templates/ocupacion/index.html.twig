@@ -31,7 +31,7 @@
 						<th class="col-sm-1 text-uppercase">20:30</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="tabody">
 					{% for ocupacion in ocupacions %} {# ocupacion = ocupaciones de un aula #}
 						{% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
 							<tr>
@@ -553,6 +553,6 @@
 	</div>
 {% endblock %}
 {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('js/ocupacion.js') }}"></script>
+	{{ parent() }}
+	<script src="{{ asset('js/ocupacion.js') }}"></script>
 {% endblock %}

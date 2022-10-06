@@ -11,7 +11,7 @@ $(document).ready(function () {
     // filtro palabra 
     $("#inputFiltro").on("keyup click", function () {
         var value = $(this).val().toLowerCase();
-        $("#tablaOcup tr").filter(function () {
+        $("#tabody").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
