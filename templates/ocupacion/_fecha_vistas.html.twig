@@ -13,7 +13,7 @@
 			    </form>
                 {% if vista == 'horas' %}                	    
 			        <a class="btn btn-sm btn-outline-secondary mx-1" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>            
-                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
+                    <a class="btn btn-sm btn-outline-secondary me-3" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'horas'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>
                 {% else %}
 			        <a class="btn btn-sm btn-outline-secondary mx-1" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" -1 day")|date('Y-m-d'), vista: 'dia'}) }}" role="button"><i class="bi bi-arrow-left"></i></a>
                     <a class="btn btn-sm btn-outline-secondary" href="{{ path('ocupacion_index', {dia: fecha|date_modify(" +1 day")|date('Y-m-d'), vista: 'dia'}) }}" role="button"><i class="bi bi-arrow-right"></i></a>

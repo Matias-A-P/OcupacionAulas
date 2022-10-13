@@ -10,21 +10,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @Route("/catedras")
  */
 class CatedrasController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine) {}
+
     /**
      * @Route("/", name="catedras_index", methods={"GET"})
      * 
      * @IsGranted("ROLE_ADMIN")
      */
-    public function index(CatedrasRepository $catedrasRepository): Response
+    public function index(Request $request, CatedrasRepository $catedrasRepository): Response
     {
+        $area = $request->query->get('area', 0);
+        if ($area>0) {
+            $catedras = $catedrasRepository->findBy(['area'=>$area]);
+        }
+        else {
+            $catedras = $catedrasRepository->findBy([], ['area'=>'ASC']);
+        }
         return $this->render('catedras/index.html.twig', [
-            'catedras' => $catedrasRepository->findAll(),
+            'catedras' => $catedras,
         ]);
     }
 
@@ -40,11 +50,11 @@ class CatedrasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($catedra);
             $entityManager->flush();
 
-            return $this->redirectToRoute('catedras_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('catedras_index', ['area'=>$catedra->getArea()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('catedras/new.html.twig', [
@@ -76,9 +86,9 @@ class CatedrasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
-            return $this->redirectToRoute('catedras_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('catedras_index', ['area'=>$catedra->getArea()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('catedras/edit.html.twig', [
@@ -95,7 +105,7 @@ class CatedrasController extends AbstractController
     public function delete(Request $request, Catedras $catedra): Response
     {
         if ($this->isCsrfTokenValid('delete'.$catedra->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($catedra);
             $entityManager->flush();
         }

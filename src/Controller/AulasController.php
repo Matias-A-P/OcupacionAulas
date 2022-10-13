@@ -25,9 +25,12 @@ class AulasController extends AbstractController
      * 
      * @IsGranted("ROLE_USER")
      */
-    public function index(AulasRepository $aulasRepository, SessionInterface $session): Response
+    public function index(Request $request, AulasRepository $aulasRepository, SessionInterface $session): Response
     {
-        $edificio = $session->get('id_edificio');
+        $edificio = $request->query->get('edificio', 0);
+        if ($edificio==0) {
+            $edificio = $session->get('id_edificio');
+        }
 
         return $this->render('aulas/index.html.twig', [
             'aulas' => $aulasRepository->findBy(['id_edificio'=>$edificio], ['id_edificio'=>'ASC', 'id_piso'=>'ASC']),

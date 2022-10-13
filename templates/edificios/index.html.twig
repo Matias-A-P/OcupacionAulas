@@ -20,7 +20,7 @@
 				<th>Edificio</th>
 				<th>Sede</th>
                 <th>Pisos</th>
-                <th>acciones</th>
+                {# <th>acciones</th> #}
 			</tr>
 		</thead>
 		<tbody>
@@ -40,6 +40,8 @@
 						<a href="{{ path('edificios_edit', {'id': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Editar" data-bs-custom-class="custom-tooltip"><i class="bi bi-pencil-square"></i></a>
                         &nbsp;
 						<a href="{{ path('edificios_pisos_index', {'edificio': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pisos"><i class="bi bi-bookshelf"></i></a>
+                        &nbsp;
+						<a href="{{ path('aulas_index', {'edificio': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Aulas"><i class="bi bi-columns"></i></a>
                         &nbsp;
                         <a href="{{ path('app_user_edificios_index', {'edificio': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Usuarios"><i class="bi bi-people"></i></a>
 					</td>

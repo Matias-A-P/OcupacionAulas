@@ -2,19 +2,19 @@
 
 {% block cardheader %}
 	<div class="col-sm-8">
-		<h5><i class="bi bi-file-earmark-spreadsheet"></i> Actividades</h5>
+		<h5><i class="bi bi-file-earmark-spreadsheet"></i> {{catedras[0].area}} <i class="bi bi-arrow-right-short"></i> Actividades</h5>
 	</div>
     <div class="col-sm-4">
         <a href="{{ path('catedras_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nueva</a>
     </div>
 {% endblock %}
 {% block cardbody %}
-    <table class="table table-sm table-striped table-borderless">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>acciones</th>
+                {# <th>acciones</th> #}
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,6 @@
                 <td>{{ catedra.id }}</td>
                 <td>{{ catedra.nombre }}</td>
                 <td>
-                    {# <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('catedras_show', {'id': catedra.id}) }}">Ver</a> #}
                     {% if is_granted("ROLE_ROOT") %}
                     <a href="{{ path('catedras_edit', {'id': catedra.id}) }}"><i class="bi bi-pencil-square"></i></i></a>
                     {% endif %}
@@ -36,4 +35,5 @@
         {% endfor %}
         </tbody>
     </table>
+    <a href="{{ path('areas_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}
