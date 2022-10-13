@@ -6,7 +6,7 @@
 		<h5><i class="bi bi-columns"></i> Edificios Pisos</h5>
 	</div>
     <div class="col-sm-4">
-        <a href="{{ path('edificios_pisos_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>
+        <a href="{{ path('edificios_pisos_new', {'edificio': app.request.get('edificio')}) }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>
     </div>
 {% endblock %}
 {% block cardbody %}
@@ -36,6 +36,5 @@
         {% endfor %}
         </tbody>
     </table>
-
-
+    <a href="{{ path('edificios_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}

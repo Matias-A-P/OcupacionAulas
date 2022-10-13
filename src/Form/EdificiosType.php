@@ -16,11 +16,11 @@ class EdificiosType extends AbstractType
             ->add('edificio')
             ->add('Sede')
         ;
-        $builder->add('getEdificiosPisos', CollectionType::class, [
-            'entry_type' => EdificiosPisosType::class,
-            'entry_options' => ['label' => false],
-            'allow_add' => true,
-        ]);
+        // $builder->add('getEdificiosPisos', CollectionType::class, [
+        //     'entry_type' => EdificiosPisosType::class,
+        //     'entry_options' => ['label' => false],
+        //     'allow_add' => true,
+        // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

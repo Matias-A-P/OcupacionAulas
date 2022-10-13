@@ -15,10 +15,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class UserEdificiosController extends AbstractController
 {
     #[Route('/', name: 'app_user_edificios_index', methods: ['GET'])]
-    public function index(UserEdificiosRepository $userEdificiosRepository): Response
+    public function index(Request $request, UserEdificiosRepository $userEdificiosRepository): Response
     {
+        $edificio = $request->query->get('edificio', 0);
+        if ($edificio > 0) {
+            $usuarios = $userEdificiosRepository->findBy(['edificio' => $edificio]);
+        } else {
+            $usuarios = $userEdificiosRepository->findAll();
+        }
         return $this->render('user_edificios/index.html.twig', [
-            'user_edificios' => $userEdificiosRepository->findAll(),
+            'user_edificios' => $usuarios,
         ]);
     }
 

@@ -29,8 +29,8 @@ class UserType extends AbstractType
                 'choices'  => [
                     'Usuario' => 'ROLE_USER',
                     'Profesor' => 'ROLE_PROF',
-                    'Admin' => 'ROLE_ADMIN',
-                    'Root' => 'ROLE_ROOT',
+                    'Administrador' => 'ROLE_ADMIN',
+                    'SuperAdmin' => 'ROLE_ROOT',
                 ],
             ]);
         if ($options['nuevo']) {

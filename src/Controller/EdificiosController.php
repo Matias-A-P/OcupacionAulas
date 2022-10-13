@@ -12,10 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route('/edificios')]
 class EdificiosController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine)
+    {
+        
+    }
+
     #[Route('/', name: 'edificios_index', methods: ['GET'])]
     public function index(EdificiosRepository $edificiosRepository): Response
     {
@@ -30,6 +36,7 @@ class EdificiosController extends AbstractController
         $edificio = new Edificios();
 
         $piso1 = new EdificiosPisos();
+        $piso1->setIdEdificio($edificio);
         $piso1->setPiso('Planta Baja');
         $edificio->getEdificiosPisos()->add($piso1);
 
@@ -104,7 +111,7 @@ class EdificiosController extends AbstractController
     #[Route('/{id}/pisos', name: 'edificios_pisos', methods: ['GET','POST'])]
     public function getPisos(int $id): Response
     {
-        $edificio = $this->getDoctrine()->getRepository(Edificios::class)->find($id);
+        $edificio = $this->doctrine->getRepository(Edificios::class)->find($id);
         $pisos = $edificio->getEdificiosPisos();
         $responseArray = array();
         foreach ($pisos as $piso) {

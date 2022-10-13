@@ -1,40 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edificios{% endblock %}
+{% block title %}Edificios
+{% endblock %}
 {% block cardheader %}
 	<div class="col-sm-8">
-		<h5><i class="bi bi-columns"></i> Edificios</h5>
+		<h5>
+			<i class="bi bi-columns"></i>
+			Edificios</h5>
 	</div>
-    <div class="col-sm-4">
-        <a href="{{ path('edificios_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>
-    </div>
+	<div class="col-sm-4">
+		<a href="{{ path('edificios_new') }}" class="btn btn-sm btn-outline-secondary" role="button">
+			<i class="bi bi-plus-square"></i>
+			Nuevo</a>
+	</div>
 {% endblock %}
 {% block cardbody %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Edificio</th>
-                <th>Sede</th>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Edificio</th>
+				<th>Sede</th>
+                <th>Pisos</th>
                 <th>acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for edificio in edificios %}
-            <tr>
-                <td>{{ edificio.id }}</td>
-                <td>{{ edificio.edificio }}</td>
-                <td>{{ edificio.Sede }}</td>
-                <td>
-                    {# <a href="{{ path('edificios_show', {'id': edificio.id}) }}">ver</a> #}
-                    <a href="{{ path('edificios_edit', {'id': edificio.id}) }}"><i class="bi bi-pencil-square"></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">sin registros</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+			</tr>
+		</thead>
+		<tbody>
+			{% for edificio in edificios %}
+				<tr>
+					<td>{{ edificio.id }}</td>
+					<td>{{ edificio.edificio }}</td>
+					<td>{{ edificio.Sede }}</td>
+					<td>
+						<ul>
+							{% for p in edificio.getEdificiosPisos %}
+								<li>{{ p.piso }}</li>
+							{% endfor %}
+						</ul>
+					</td>
+					<td>
+						<a href="{{ path('edificios_edit', {'id': edificio.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                        &nbsp;
+						<a href="{{ path('edificios_pisos_index', {'edificio': edificio.id}) }}"><i class="bi bi-columns"></i></a>
+                        &nbsp;
+                        <a href="{{ path('app_user_edificios_index', {'edificio': edificio.id}) }}"><i class="bi bi-people"></i></a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">sin registros</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

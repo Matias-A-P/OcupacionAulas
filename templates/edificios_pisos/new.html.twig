@@ -10,5 +10,5 @@
 {% endblock %}
 {% block cardbody %}
 	{{ include('edificios_pisos/_form.html.twig') }}
-	<a href="{{ path('edificios_pisos_index') }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
+	<a href="{{ path('edificios_pisos_index', {'edificio': app.request.get('edificio')}) }}" class="btn btn-sm btn-outline-secondary" role="button">volver</a>
 {% endblock %}
