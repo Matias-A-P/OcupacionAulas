@@ -26,7 +26,7 @@ class EdificiosController extends AbstractController
     public function index(EdificiosRepository $edificiosRepository): Response
     {
         return $this->render('edificios/index.html.twig', [
-            'edificios' => $edificiosRepository->findAll(),
+            'edificios' => $edificiosRepository->findBy([], ['Sede'=>'ASC']),
         ]);
     }
 

@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edificios Pisos{% endblock %}
 {% block cardheader %}
 	<div class="col-sm-8">
-		<h5><i class="bi bi-columns"></i> Edificios Pisos</h5>
+		<h5><i class="bi bi-bookshelf"></i> {{edificios_pisos[0].getIdEdificio}} <i class="bi bi-arrow-right-short"></i> Pisos</h5>
 	</div>
     <div class="col-sm-4">
         <a href="{{ path('edificios_pisos_new', {'edificio': app.request.get('edificio')}) }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>

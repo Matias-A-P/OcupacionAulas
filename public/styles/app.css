@@ -24,12 +24,10 @@ body{
     margin: auto;
 }
 
-/* input[type=search]::-webkit-search-cancel-button {
-    -webkit-appearance: searchfield-cancel-button;
-} */
+.custom-tooltip {
+    --bs-tooltip-bg: var(--bs-primary);
+}
 
-/* .table thead {
-    border-bottom: 0.6px solid green;
-} */
+
 
 /* verde logo fcvs: #047835 */

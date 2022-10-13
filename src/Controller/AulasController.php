@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route("/aulas")
@@ -24,13 +25,12 @@ class AulasController extends AbstractController
      * 
      * @IsGranted("ROLE_USER")
      */
-    public function index(AulasRepository $aulasRepository): Response
+    public function index(AulasRepository $aulasRepository, SessionInterface $session): Response
     {
-        $session = $this->get('session');
         $edificio = $session->get('id_edificio');
 
         return $this->render('aulas/index.html.twig', [
-            'aulas' => $aulasRepository->findBy(['id_edificio'=>$edificio]),
+            'aulas' => $aulasRepository->findBy(['id_edificio'=>$edificio], ['id_edificio'=>'ASC', 'id_piso'=>'ASC']),
         ]);
     }
 

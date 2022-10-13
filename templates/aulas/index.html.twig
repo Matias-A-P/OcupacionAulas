@@ -9,13 +9,14 @@
     </div>
 {% endblock %}
 {% block cardbody %}
-    <table class="table table-sm table-striped table-borderless">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Aula</th>
                 <th>Capacidad</th>
                 <th>Edificio</th>
+                <th>Piso</th>
                 <th>acciones</th>
             </tr>
         </thead>
@@ -26,8 +27,8 @@
                 <td>{{ aula.aula }}</td>             
                 <td>{{ aula.capacidad }}</td>
                 <td>{{ aula.IdEdificio.edificio }}</td>
+                <td>{{ aula.IdPiso.piso }}</td>
                 <td>
-                  {# <a class="btn btn-outline-primary btn-sm" role="button" href="{{ path('aulas_show', {'id': aula.id}) }}">Ver</a> #}
                   {% if is_granted("ROLE_ROOT") %}
                   <a href="{{ path('aulas_edit', {'id': aula.id}) }}"><i class="bi bi-pencil-square"></i></a>
                   {% endif %}

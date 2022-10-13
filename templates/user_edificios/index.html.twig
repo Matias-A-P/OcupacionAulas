@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edificios de Usuario{% endblock %}
 {% block cardheader %}
 	<div class="col-sm-8">
-		<h5><i class="bi bi-columns"></i> Edificios de Usuario</h5>
+		<h5><i class="bi bi-people"></i> {{user_edificios[0].edificio}} <i class="bi bi-arrow-right-short"></i> Usuarios habilitados</h5>
 	</div>
     <div class="col-sm-4">
         <a href="{{ path('app_user_edificios_new') }}" class="btn btn-sm btn-outline-secondary" role="button"><i class="bi bi-plus-square"></i> Nuevo</a>

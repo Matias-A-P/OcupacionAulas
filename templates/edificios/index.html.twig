@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edificios
-{% endblock %}
 {% block cardheader %}
 	<div class="col-sm-8">
 		<h5>
-			<i class="bi bi-columns"></i>
+			<i class="bi bi-house"></i>
 			Edificios</h5>
 	</div>
 	<div class="col-sm-4">
@@ -39,11 +37,11 @@
 						</ul>
 					</td>
 					<td>
-						<a href="{{ path('edificios_edit', {'id': edificio.id}) }}"><i class="bi bi-pencil-square"></i></a>
+						<a href="{{ path('edificios_edit', {'id': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Editar" data-bs-custom-class="custom-tooltip"><i class="bi bi-pencil-square"></i></a>
                         &nbsp;
-						<a href="{{ path('edificios_pisos_index', {'edificio': edificio.id}) }}"><i class="bi bi-columns"></i></a>
+						<a href="{{ path('edificios_pisos_index', {'edificio': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pisos"><i class="bi bi-bookshelf"></i></a>
                         &nbsp;
-                        <a href="{{ path('app_user_edificios_index', {'edificio': edificio.id}) }}"><i class="bi bi-people"></i></a>
+                        <a href="{{ path('app_user_edificios_index', {'edificio': edificio.id}) }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Usuarios"><i class="bi bi-people"></i></a>
 					</td>
 				</tr>
 			{% else %}
@@ -53,4 +51,11 @@
 			{% endfor %}
 		</tbody>
 	</table>
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script>
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+	</script>
 {% endblock %}
