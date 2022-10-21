@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Ocupacion;
-use App\Entity\Aulas;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateInterval;

@@ -102,7 +102,7 @@ function nueva(btn) {
     var aula = btn.getAttribute("data-id-aula");
     var dia = btn.getAttribute("data-dia");
     var hora = btn.getAttribute("data-hora");
-    var vista = btn.getAttribute("data-vista");
+   // var vista = btn.getAttribute("data-vista");
     var area = 0;
     var activ = 0;
     if (btn.hasAttribute("data-area")) {
@@ -112,8 +112,8 @@ function nueva(btn) {
         activ = btn.getAttribute("data-activ");
     };
     err = false;
-    $('#ocupacion_id_area').change(function () { });
-    $.post(dr, { 'aula': aula, 'dia': dia, 'hora': hora, 'vista': vista, 'area': area, 'activ': activ }, function (result) {
+    $('#ocupacion_id_area').change(function () { });  // 'vista': vista,
+    $.post(dr, { 'aula': aula, 'dia': dia, 'hora': hora, 'area': area, 'activ': activ }, function (result) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);

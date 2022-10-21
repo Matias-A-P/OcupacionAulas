@@ -3,25 +3,27 @@
 namespace App\Controller;
 
 use App\Entity\Ocupacion;
-use App\Form\OcupacionType;
-use App\Repository\OcupacionRepository;
 use App\Entity\Aulas;
 use App\Entity\Edificios;
 use App\Entity\Areas;
 use App\Entity\Catedras;
 use App\Entity\User;
+use App\Form\OcupacionType;
+use App\Repository\OcupacionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use DateInterval;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use DateInterval;
 
 class OcupacionController extends AbstractController
 {
+    //private $edificio=0;
+
     public function __construct(private ManagerRegistry $doctrine)
     {
     }
@@ -148,7 +150,7 @@ class OcupacionController extends AbstractController
      * 
      * @IsGranted("ROLE_ADMIN")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
         if ($request->isMethod('GET')) {
             $aula = $request->query->get('aula', 0);
@@ -179,9 +181,9 @@ class OcupacionController extends AbstractController
         if ($activ > 0) {
             $ocupacion->setIdCatedra($this->doctrine->getRepository(Catedras::class)->find($activ));
         }
-
+        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio' => $session->get('id_edificio')]);
         $profesores = $this->doctrine->getRepository(User::class)->findProfesores();
-        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores]);
+        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores, 'aulas' => $aulas]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -225,40 +227,23 @@ class OcupacionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/ocupacion/{id}/edit", name="ocupacion_edit", methods={"GET","POST"})
-     * 
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function edit(Request $request, Ocupacion $ocupacion): Response
-    {
-        $form = $this->createForm(OcupacionType::class, $ocupacion);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->doctrine->getManager()->flush();
-
-            return $this->redirectToRoute('ocupacion_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('ocupacion/edit.html.twig', [
-            'ocupacion' => $ocupacion,
-            'form' => $form,
-        ]);
-    }
 
     /**
      * @Route("/ocupacion/edit_modal/{id}", name="ocupacion_edit_modal", methods={"GET","POST"})
      * 
      * @IsGranted("ROLE_ADMIN")
      */
-    public function editModal(Request $request, int $id): Response
+    public function editModal(Request $request, int $id, SessionInterface $session): Response
     {
-
+        if ($request->isMethod('GET')) {
+            $vista = $request->query->get('vista', 'dia');
+        } else {
+            $vista = $request->request->get('vista', 'dia');
+        }
         $ocupacion = $this->doctrine->getRepository(Ocupacion::class)->find($id);
-
         $profesores = $this->doctrine->getRepository(User::class)->findProfesores();
-        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores]);
+        $aulas = $this->doctrine->getRepository(Aulas::class)->findBy(['id_edificio' => $session->get('id_edificio')]);
+        $form = $this->createForm(OcupacionType::class, $ocupacion, ['profesores' => $profesores, 'aulas' => $aulas]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -270,7 +255,7 @@ class OcupacionController extends AbstractController
             if ($ocupacion->getRepSemanal() && ($ocupacion->getRepIdPadre() <= 0)) {
                 $this->doctrine->getRepository(Ocupacion::class)->repetir($ocupacion);
             }
-            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('ocupacion_index', ['dia' => $sdia, 'vista' => $vista], Response::HTTP_SEE_OTHER);
         }
         $fecha_padre = $ocupacion->getFecha();
         if ($ocupacion->getRepIdPadre() > 0) {
