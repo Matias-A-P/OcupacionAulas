@@ -35,6 +35,11 @@ class Areas
      */
     private $ocupacions;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $facultad;
+
     public function __construct()
     {
         $this->catedras = new ArrayCollection();
@@ -119,6 +124,18 @@ class Areas
                 $ocupacion->setIdArea(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFacultad(): ?string
+    {
+        return $this->facultad;
+    }
+
+    public function setFacultad(?string $facultad): self
+    {
+        $this->facultad = $facultad;
 
         return $this;
     }

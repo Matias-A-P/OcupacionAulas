@@ -10,22 +10,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class OcupacionType extends AbstractType
 {
-    private $em;
-
-    /**
-     * 
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -35,7 +24,6 @@ class OcupacionType extends AbstractType
             ->add('fecha', DateType::class, ['widget' => 'single_text'])
             ->add('hora_inicio', TimeType::class, ['widget' => 'single_text'])
             ->add('hora_fin', TimeType::class, ['widget' => 'single_text'])
-            //->add('id_aula')
             ->add('id_aula', EntityType::class, [
                 'class' => Aulas::class,
                 'placeholder' => '',
@@ -50,8 +38,6 @@ class OcupacionType extends AbstractType
                 'class' => User::class,
                 'placeholder' => '',
                 'choices' => $profesores]);
-
-        //$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {});
     }
 
     public function configureOptions(OptionsResolver $resolver): void

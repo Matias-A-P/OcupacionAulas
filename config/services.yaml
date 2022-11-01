@@ -7,6 +7,7 @@ parameters:
     locale: 'es'
     app_locales: 'es'
     app.min_role_new: 'ROLE_ROOT'
+    # app.facultad: '%env(APP_FACULTAD)%' # setear variable APP_FACULTAD en el archivo .env
     
 services:
     # default configuration for services in *this* file

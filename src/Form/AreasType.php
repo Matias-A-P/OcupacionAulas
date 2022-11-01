@@ -6,6 +6,7 @@ use App\Entity\Areas;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AreasType extends AbstractType
 {
@@ -13,6 +14,16 @@ class AreasType extends AbstractType
     {
         $builder
             ->add('area')
+            ->add('facultad', ChoiceType::class, [
+                'required' => true,
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'Ciencias de la Vida y la Salud' => 'localhost', // aulasfcvs.uader.edu.ar
+                    'Ciencia y Tecnología' => 'aulas.fcyt.uader.edu.ar',
+                    'Ciencias de la Gestión' => 'aulas.fcg.uader.edu.ar'
+                ]
+            ])
         ;
     }
 

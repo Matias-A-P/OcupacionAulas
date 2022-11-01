@@ -39,6 +39,11 @@ class Edificios
      */
     private $Sede;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $facultad;
+
     public function __construct()
     {
         $this->aulas = new ArrayCollection();
@@ -134,6 +139,18 @@ class Edificios
     public function setSede(?string $Sede): self
     {
         $this->Sede = $Sede;
+
+        return $this;
+    }
+
+    public function getFacultad(): ?string
+    {
+        return $this->facultad;
+    }
+
+    public function setFacultad(?string $facultad): self
+    {
+        $this->facultad = $facultad;
 
         return $this;
     }

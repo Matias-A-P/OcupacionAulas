@@ -11,18 +11,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 #[Route('/areas')]
 class AreasController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $doctrine) {}
 
     #[Route('/', name: 'areas_index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(AreasRepository $areasRepository): Response
+    public function index(AreasRepository $areasRepository, SessionInterface $session): Response
     {
         return $this->render('areas/index.html.twig', [
-            'areas' => $areasRepository->findAll(),
+            'areas' => $areasRepository->findBy([], ['facultad'=>'ASC']),
+            //'areas' => $areasRepository->findBy(['facultad'=>$session->get('facultad')]),
         ]);
     }
 
@@ -35,7 +39,7 @@ class AreasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($area);
             $entityManager->flush();
 
@@ -49,9 +53,9 @@ class AreasController extends AbstractController
     }
 
     #[Route('/json', name: 'areas_json', methods: ['GET','POST'])]
-    public function getAreasJson(AreasRepository $areasRepository): Response
+    public function getAreasJson(AreasRepository $areasRepository, SessionInterface $session): Response
     {
-        $areas = $areasRepository->findAll();
+        $areas = $areasRepository->findBy(['facultad'=>$session->get('facultad')]);
         $responseArray = array();
         foreach($areas as $a){
             $responseArray[] = array(
@@ -79,7 +83,7 @@ class AreasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             return $this->redirectToRoute('areas_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -95,7 +99,7 @@ class AreasController extends AbstractController
     public function delete(Request $request, Areas $area): Response
     {
         if ($this->isCsrfTokenValid('delete'.$area->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($area);
             $entityManager->flush();
         }
@@ -106,7 +110,7 @@ class AreasController extends AbstractController
     #[Route('/{id}/catedras', name: 'areas_catedras', methods: ['POST'])]
     public function getCatedras(int $id): Response
     {
-        $area = $this->getDoctrine()->getRepository(Areas::class)->find($id);
+        $area = $this->doctrine->getRepository(Areas::class)->find($id);
         $catedras = $area->getCatedras();
         $responseArray = array();
         foreach($catedras as $catedra){
