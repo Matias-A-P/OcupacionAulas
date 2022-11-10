@@ -156,6 +156,7 @@ class OcupacionController extends AbstractController
             $aula = $request->query->get('aula', 0);
             $dia = new \DateTime($request->query->get('dia', date('Y-m-d')));
             $hora = $request->query->get('hora', '14:00');
+            $hora_fin = $request->query->get('hora_fin', '15:00');
             $vista = $request->query->get('vista', 'dia');
             $area = $request->query->get('area', 0);
             $activ = $request->query->get('activ', 0);
@@ -163,6 +164,7 @@ class OcupacionController extends AbstractController
             $aula = $request->request->get('aula', 0);
             $dia = new \DateTime($request->request->get('dia', date('Y-m-d')));
             $hora = $request->request->get('hora', '14:00');
+            $hora_fin = $request->request->get('hora_fin', '15:00');
             $vista = $request->request->get('vista', 'dia');
             $area = $request->request->get('area', 0);
             $activ = $request->request->get('activ', 0);
@@ -173,7 +175,8 @@ class OcupacionController extends AbstractController
         $ocupacion->setIdAula($this->doctrine->getRepository(Aulas::class)->find($aula));
         $ocupacion->setFecha($dia);
         $ocupacion->setHoraInicio(new \DateTime($hora));
-        $ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
+        $ocupacion->setHoraFin(new \DateTime($hora_fin));
+        //$ocupacion->setHoraFin((new \DateTime($hora))->add(new DateInterval('PT1H')));
         $ocupacion->setRepFechaFin($dia);
         if ($area > 0) {
             $ocupacion->setIdArea($this->doctrine->getRepository(Areas::class)->find($area));

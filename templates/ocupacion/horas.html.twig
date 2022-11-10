@@ -36,7 +36,11 @@
 		{% endif %}
 		<small>Comisiones:</small>
 		<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
+		{% if ocup.comision==0 %}
+			<div class="badge bg-secondary text-white">Todas</div></a>
+		{% else %}
 			<div class="badge bg-secondary text-white">{{ ocup.comision }}</div></a>
+		{% endif %}
 		{% if not loop.last %}
 			{% set ocupSig = ocupacion[loop.index0+1] %}
 			{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}

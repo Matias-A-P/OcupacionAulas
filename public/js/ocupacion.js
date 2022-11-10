@@ -52,7 +52,7 @@ function onSubmit(event) {
         $('#msj').text('Ingrese Area y Actividad');
         err = true;
     }
-    if ((d1.getTime() >= d2.getTime()) || ((m1 != 0 && m1 != 30) || (m2 != 0 && m2 != 30)) || (co <= 0)) {
+    if ((d1.getTime() >= d2.getTime()) || ((m1 != 0 && m1 != 30) || (m2 != 0 && m2 != 30)) || (co < 0)) {
         $('#msj').text('Verifique horario y/o comisión');
         err = true;
     };
@@ -102,6 +102,10 @@ function nueva(btn) {
     var aula = btn.getAttribute("data-id-aula");
     var dia = btn.getAttribute("data-dia");
     var hora = btn.getAttribute("data-hora");
+    var hora_fin = btn.getAttribute("data-hora-fin");
+    if (hora_fin==null) {
+        hora_fin = hora;
+    }
    // var vista = btn.getAttribute("data-vista");
     var area = 0;
     var activ = 0;
@@ -113,7 +117,7 @@ function nueva(btn) {
     };
     err = false;
     $('#ocupacion_id_area').change(function () { });  // 'vista': vista,
-    $.post(dr, { 'aula': aula, 'dia': dia, 'hora': hora, 'area': area, 'activ': activ }, function (result) {
+    $.post(dr, { 'aula': aula, 'dia': dia, 'hora': hora, 'hora_fin': hora_fin, 'area': area, 'activ': activ }, function (result) {
         $('#newOcup').modal('show');
         $("#new-result").html(result);
         $("#formOcup").on('submit', onSubmit);

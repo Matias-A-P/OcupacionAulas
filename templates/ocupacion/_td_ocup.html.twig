@@ -15,4 +15,10 @@
 	</div>
 	<small>Comisiones:</small>
 	<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocup.id }}" onclick="editar(this);">
-	<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+	{% if ocup.comision==0 %}
+		<div class="badge bg-secondary text-white">Todas</div></a>
+	{% else %}
+		<div class="badge bg-secondary text-white">{{ocup.comision}}</div></a>
+	{% endif %}
+	
+	
