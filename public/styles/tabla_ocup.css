@@ -2,13 +2,13 @@
     position: relative;
     /*width: 50%;*/
 }
-  
+
 .info-ocup {
     display: block;
     width: 100%;
     height: auto;
 }
-  
+
 .overlay {
     position: absolute;
     bottom: 100%;
@@ -17,25 +17,31 @@
     background-color: #047835;
     overflow: hidden;
     width: 100%;
-    height:0;
+    height: 0;
     transition: .5s ease;
 }
-  
+
 .container-ocup:hover .overlay {
     bottom: 0;
     height: 100%;
 }
-  
+
 .obs-ocup {
     position: absolute;
     text-align: center;
     color: white;
     padding-top: 5px;
-/*    font-size: 20px;   
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-*/
+}
+
+thead {
+    display: block !important;
+    position: sticky !important;
+    top: 0 !important;
+}
+
+tbody {
+    display: block;
+    max-height: 420px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }

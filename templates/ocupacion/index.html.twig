@@ -1,558 +1,751 @@
 {% extends 'base.html.twig' %}
-
 {% block stylesheets %}
-	{{ parent() }}
-	<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
+{{ parent() }}
+<link href="{{ asset('styles/tabla_ocup.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block cardheader %}
-	{{ include("ocupacion/_fecha_vistas.html.twig", {vista: "dia"}) }}
-	{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "dia"}) }}
+{{ include("ocupacion/_fecha_vistas.html.twig", {vista: "dia"}) }}
+{{ include("ocupacion/_form_filtro_area.html.twig", {vista: "dia"}) }}
 {% endblock %}
 {% block cardbody %}
-	<div class="container-fluid">
-		<div class="table-responsive">
-			<table class="table table-sm table-hover table-borderless align-top text-center" id="tablaOcup">
-				<thead class="table-light text-verdelogo">
-					<tr>
-						<th class="col-sm-1 text-uppercase">Aula</th>
-						<th class="col-sm-1 text-uppercase">14:00</th>
-						<th class="col-sm-1 text-uppercase">14:30</th>
-						<th class="col-sm-1 text-uppercase">15:00</th>
-						<th class="col-sm-1 text-uppercase">15:30</th>
-						<th class="col-sm-1 text-uppercase">16:00</th>
-						<th class="col-sm-1 text-uppercase">16:30</th>
-						<th class="col-sm-1 text-uppercase">17:00</th>
-						<th class="col-sm-1 text-uppercase">17:30</th>
-						<th class="col-sm-1 text-uppercase">18:00</th>
-						<th class="col-sm-1 text-uppercase">18:30</th>
-						<th class="col-sm-1 text-uppercase">19:00</th>
-						<th class="col-sm-1 text-uppercase">19:30</th>
-						<th class="col-sm-1 text-uppercase">20:00</th>
-						<th class="col-sm-1 text-uppercase">20:30</th>
-					</tr>
-				</thead>
-				<tbody id="tabody">
-					{% for ocupacion in ocupacions %} {# ocupacion = ocupaciones de un aula #}
-						{% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
-							<tr>
-								<td class="table-light align-middle">
-									{{ocupacion[0].IdAula}}<br>
-									{{ocupacion[0].IdAula.getIdPiso}}
-									<div class="text-muted">Capacidad:{{ocupacion[0].IdAula.capacidad}}</div>
-								</td>
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
-								{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
-							</tr>
-						{% elseif not ocupacion[0].id is null %}
-							<tr>
-								{% set ultCol=0 %}
-								{% set i = 0 %}
-								{% set cant = ocupacion|length %}
-								{% for idx in 0..cant %} {# cantidad de bloques de media hora: 14 #}
-								{% if idx>i or idx==0 %} {# si no se cargó la ocupacion siguiente #}	
-									{% set i = idx %}	
-									{% if i < cant %}
-										{% set ocup=ocupacion[i] %}
-									{% endif %}
-									{% set inicio=ocup.horaInicio|date('H:i') %}
-									{% set fin=ocup.horaFin|date('H:i') %}
-									{% set h1=ocup.horaInicio|date('H') %}
-									{% set m1=ocup.horaInicio|date('i') %}
-									{% set h2=ocup.horaFin|date('H') %}
-									{% set m2=ocup.horaFin|date('i') %}
-									{% if m1 in range(1,15) %}
-										{% set m1=0 %}
-									{% endif %}
-									{% if m1 in	range(16,44) %}
-										{% set m1=30 %}
-									{% endif %}
-									{% if m1 in range(45,59) %}
-										{% set h1=h1+1 %}
-										{% set m1=0 %}
-									{% endif %}
-									{% set bloques=(((h2-h1)*60+m2-m1)/30)|round %}
-									{% set continuar=true %}
-
-									{% if ultCol==0 %}
-										<td class="align-middle">
-											{{ocup.IdAula}}
-											{{ocup.IdAula.getIdPiso}}
-											<div class="text-muted">Capacidad:{{ocup.IdAula.capacidad}}
-											</div>
-										</td>
-									{% endif %}
-
-									{% if 1 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==14 and m1==00 %}
-												{% set ultCol=bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>		
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=1 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 2 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==14 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=2 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 3 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==15 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=3 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 4 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==15 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=4 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 5 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==16 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=5 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 6 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==16 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=6 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 7 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==17 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=7 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 8 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==17 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=8 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 9 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==18 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=9 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 10 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==18 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=10 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 11 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==19 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=11 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 12 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==19 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=12 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 13 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==20 and m1==00 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=13 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-
-									{% if 14 > ultCol %}
-										{% if continuar==true %}
-											{% if h1==20 and m1==30 %}
-												{% set ultCol=ultCol+bloques %}
-												{% include 'ocupacion/_td_ocup.html.twig' %}
-												{% set break = false %}
-												{% for c in range(1,cant) %}
-												{% if i+1 < cant and not break%}
-													{% set ocupSig = ocupacion[i+1] %}
-													{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
-														<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
-														<div class="badge bg-secondary text-white">{{ocupSig.comision}}</div></a>
-														{% set i = (i+1) %}
-													{% else %}
-														{% set break = true %}
-													{% endif %}
-												{% else %}
-													{% set break = true %}
-												{% endif %}
-												{% endfor %}
-												{% if is_granted("ROLE_ADMIN") %}
-													<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ocup.IdAula.id}} data-dia={{fecha|date('Y-m-d')}} data-hora="{{ocup.horaInicio|date('H:i')}}" data-hora-fin="{{ocup.horaFin|date('H:i')}}" data-area={{ocup.IdArea.id}} data-activ={{ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>
-												{% endif %}
-												</td></td>													
-												{% set continuar=false %}
-											{% else %}
-												{% set ultCol=14 %}
-												{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
-											{% endif %}
-										{% endif %}
-									{% endif %}
-								{% endif %}
-								{% endfor %}
-							</tr>
+<div class="container-fluid">
+   <div class="table-responsive">
+      <table class="table table-sm table-hover table-borderless align-top text-center" id="tablaOcup">
+         {# <thead class="table-light text-verdelogo">
+            <tr>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+               <th class="col-sm-1 text-uppercase">
+                  
+               </th>
+            </tr>
+         </thead>
+         <tbody id="tabody"> #}
+            {% for ocupacion in ocupacions %}
+            {# ocupacion = ocupaciones de un aula #}
+            {% if ocupacion[0].id is null and is_granted("ROLE_ADMIN") %}
+            <tr>
+               <td class="headcol table-light align-middle">
+                  {{ ocupacion[0].IdAula }}
+                  <br>
+                  {{ ocupacion[0].IdAula.getIdPiso }}
+                  <div class="text-muted">
+                     Capacidad:
+                     {{ ocupacion[0].IdAula.capacidad }}
+                  </div>
+               </td>
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '08:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '08:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '09:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '09:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '10:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '10:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '11:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '11:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '12:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '12:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '13:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '13:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '21:00'}) }}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '21:30'}) }}
+            </tr>
+            {% elseif not ocupacion[0].id is null %}
+            <tr>
+               {% set ultCol=0 %}
+               {% set i = 0 %}
+               {% set cant = ocupacion|length %}
+               {% for idx in 0..cant %}
+               {# cantidad de bloques de media hora: 26 #}
+               {% if idx>i or idx==0 %}
+               {# si no se cargó la ocupacion siguiente #}
+               {% set i = idx %}
+               {% if i < cant %}
+               {% set ocup=ocupacion[i] %}
+               {% endif %}
+               {% set inicio=ocup.horaInicio|date('H:i') %}
+               {% set fin=ocup.horaFin|date('H:i') %}
+               {% set h1=ocup.horaInicio|date('H') %}
+               {% set m1=ocup.horaInicio|date('i') %}
+               {% set h2=ocup.horaFin|date('H') %}
+               {% set m2=ocup.horaFin|date('i') %}
+               {% if m1 in range(1,15) %}
+               {% set m1=0 %}
+               {% endif %}
+               {% if m1 in range(16,44) %}
+               {% set m1=30 %}
+               {% endif %}
+               {% if m1 in range(45,59) %}
+               {% set h1=h1+1 %}
+               {% set m1=0 %}
+               {% endif %}
+               {% set bloques=(((h2-h1)*60+m2-m1)/30)|round %}
+               {% set continuar=true %}
+               {% if ultCol==0 %}
+               <td class="headcol align-middle">
+                  {{ ocup.IdAula }}
+                  {{ ocup.IdAula.getIdPiso }}
+                  <div class="text-muted">
+                     Capacidad:
+                     {{ ocup.IdAula.capacidad }}
+                  </div>
+               </td>
+               {% endif %}
+               {% endif %}
+               {% if 1 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==08 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id }} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '08:00'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 2 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==08 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '08:30'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 3 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==09 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '09:00'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 4 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==09 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '09:30'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 5 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==10 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '10:00'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 6 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==10 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '10:30'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 7 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==11 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '11:00'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 8 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==11 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '11:30'}) }}
+               {% endif %}
+               {% endif %}
+               {% endif %}
+               {% if 9 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==12 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '12:00'}) }}
+               {% endif %}
+               {% endif %}{% endif %}
+               {% if 10 > ultCol %}
+               {% if continuar==true %}
+               {% if h1==12 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}
+               {% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '12:30'}) }}
+               {% endif %}{% endif %}{% endif %}
+               {% if 11 > ultCol %}{% if continuar==true %}
+               {% if h1==13 and m1==00 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td>
+               </td>
+               {% set continuar=false %}{% else %}
+               {% set ultCol=1 %}
+               {{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '13:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 12 > ultCol %}{% if continuar==true %}{% if h1==13 and m1==30 %}
+               {% set ultCol=bloques %}
+               {% include 'ocupacion/_td_ocup.html.twig' %}
+               {% set break = false %}
+               {% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}
+               </td></td>{% set continuar=false %}{% else %}{% set ultCol=1 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '13:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 13 > ultCol %}{% if continuar==true %}{% if h1==14 and m1==00 %}{% set ultCol=bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}
+               {% if i+1 < cant and not break %}
+               {% set ocupSig=ocupacion[i+1] %}
+               {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               <i class="bi bi-plus-square"></i>
+               {% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=1 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:00'}) }}{% endif %}{% endif %}{% endif %}
+               
+			   {% if 14 > ultCol %}
+				 {% if continuar==true %}
+				 	{% if h1==14 and m1==30 %}
+						{% set ultCol=ultCol+bloques %}
+						{% include 'ocupacion/_td_ocup.html.twig' %}
+						{% set break = false %}
+						{% for c in range(1,cant) %}
+							{% if i+1 < cant and not break %}
+               					{% set ocupSig=ocupacion[i+1] %}
+               					{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               						<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  					<div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               						</a>
+               						{% set i = (i+1) %}
+               					{% else %}
+               						{% set break = true %}
+               					{% endif %}
+							{% else %}
+               					{% set break = true %}
+							{% endif %}
+						{% endfor %}
+						{% if is_granted("ROLE_ADMIN") %}
+							<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3">
+               				<i class="bi bi-plus-square"></i>
 						{% endif %}
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		{% include "ocupacion/_modales.html.twig" %}
-	</div>
+						</td></td>
+						{% set continuar=false %}
+					{% else %}
+						{% set ultCol=2 %}
+						{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '14:30'}) }}
+					{% endif %}
+				  {% endif %}
+				{% endif %}
+               
+			   {% if 15 > ultCol %}{% if continuar==true %}{% if h1==15 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% else %}
+               {% set break = true %}
+               {% endif %}
+               {% endfor %}
+               {% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=3 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 16 > ultCol %}{% if continuar==true %}{% if h1==15 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=4 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '15:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 17 > ultCol %}{% if continuar==true %}{% if h1==16 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">
+                     {{ ocupSig.comision }}
+                  </div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=5 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:00'}) }}{% endif %}{% endif %}{% endif %}{% if 18 > ultCol %}{% if continuar==true %}{% if h1==16 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=6 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '16:30'}) }}{% endif %}{% endif %} {% endif %} {% if 19 > ultCol %}{% if continuar==true %}{% if h1==17 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=7 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:00'}) }}{% endif %} {% endif %}{% endif %}{% if 20 > ultCol %} {% if continuar==true %}{% if h1==17 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %} {% else %}{% set ultCol=8 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '17:30'}) }} {% endif %}{% endif %}{% endif %}
+               {% if 21 > ultCol %}{% if continuar==true %} {% if h1==18 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td> </td> {% set continuar=false %}{% else %} {% set ultCol=9 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 22 > ultCol %}{% if continuar==true %}{% if h1==18 and m1==30 %} {% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %} {% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %} {% endfor %} {% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %} </td></td>{% set continuar=false %}{% else %}{% set ultCol=10 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '18:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 23 > ultCol %}{% if continuar==true %}{% if h1==19 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %} {% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %} {% else %}{% set break = true %} {% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %} <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i> {% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=11 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 24 > ultCol %}{% if continuar==true %}{% if h1==19 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %} {% set ocupSig=ocupacion[i+1] %} {% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %} {% else %}{% set break = true %} {% endif %}{% else %} {% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"> <i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=12 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '19:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 25 > ultCol %}{% if continuar==true %}{% if h1==20 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %} 
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %} {% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=13 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 26 > ultCol %}{% if continuar==true %}{% if h1==20 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=14 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '20:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 27 > ultCol %}{% if continuar==true %}{% if h1==21 and m1==00 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=14 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '21:00'}) }}{% endif %}{% endif %}{% endif %}
+               {% if 28 > ultCol %}{% if continuar==true %}{% if h1==21 and m1==30 %}{% set ultCol=ultCol+bloques %}{% include 'ocupacion/_td_ocup.html.twig' %}{% set break = false %}{% for c in range(1,cant) %}{% if i+1 < cant and not break %}{% set ocupSig=ocupacion[i+1] %}{% if ocupSig.IdCatedra==ocup.IdCatedra and ocupSig.horaInicio==ocup.horaInicio and ocupSig.IdAula==ocup.IdAula %}
+               <a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-edit-id="{{ ocupSig.id }}" onclick="editar(this);">
+                  <div class="badge bg-secondary text-white">{{ ocupSig.comision }}</div>
+               </a>
+               {% set i = (i+1) %}{% else %}{% set break = true %}{% endif %}{% else %}{% set break = true %}{% endif %}{% endfor %}{% if is_granted("ROLE_ADMIN") %}<a href="javascript:void(0)" rel="nofollow" id="btn-edit" data-ref={{ path('ocupacion_new') }} data-id-aula={{ ocup.IdAula.id}} data-dia={{ fecha|date('Y-m-d')}} data-hora="{{ ocup.horaInicio|date('H:i') }}" data-hora-fin="{{ ocup.horaFin|date('H:i') }}" data-area={{ ocup.IdArea.id}} data-activ={{ ocup.IdCatedra.id}} onclick="nueva(this);" class="mx-3"><i class="bi bi-plus-square"></i>{% endif %}</td></td>{% set continuar=false %}{% else %}{% set ultCol=14 %}{{ include('ocupacion/_td_ocup_vacia.html.twig', {'hora': '21:30'}) }}{% endif %}{% endif %}{% endif %}
+               {% endfor %}
+            </tr>
+            {% endif %}{% endfor %}
+         {# </tbody> #}
+      </table>
+   </div>
+   {% include "ocupacion/_modales.html.twig" %}
+</div>
 {% endblock %}
 {% block javascripts %}
-	{{ parent() }}
-	<script src="{{ asset('js/ocupacion.js') }}"></script>
+{{ parent() }}
+<script src="{{ asset('js/ocupacion.js') }}"></script>
 {% endblock %}

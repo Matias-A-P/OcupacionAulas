@@ -1,11 +1,11 @@
 <td class="bg-info border-end" colspan="{{bloques}}">
 	<div class="container-ocup">
 		<div class="info-ocup">
-			<div class="lh-1">{{ocup.IdCatedra }}</div>
-			<div class="text-verdelogo">{{ocup.IdArea}}</div>
-			<div class="text-black align-bottom fw-bold">
+			<div class="text-black align-bottom">
 				{{ocup.IdAula}}&nbsp;-&nbsp;{{inicio}}&nbsp;a&nbsp;{{fin}}&nbsp;hs.
 			</div>
+			<div class="text-verdelogo">{{ocup.IdArea}}</div>
+			<div class="lh-1 fw-bold">{{ocup.IdCatedra }}</div>
 		</div>
 		{% if ocup.observaciones %}
 			<div class="overlay">
